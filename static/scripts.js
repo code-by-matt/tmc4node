@@ -13,10 +13,12 @@ function createBoard(board, canvas, gameStats) {
     }
   }
   // Draw game history.
+  ctx.font = "80px Arial";
   for (let i = 0; i < gameStats.history.length; i += 3) {
     let color = gameStats.history.charAt(i);
     let col = gameStats.history.charAt(i + 1);
     let row = gameStats.history.charAt(i + 2);
+    let number = (i / 3) + 1;
     if (color == "b") {
       ctx.fillStyle = "#007BFF";
       ctx.fillRect((200 * col), (200 * (5 - row)), 200, 200);
@@ -25,6 +27,10 @@ function createBoard(board, canvas, gameStats) {
       ctx.fillStyle = "#DC3545";
       ctx.fillRect((200 * col), (200 * (5 - row)), 200, 200);
     }
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(number, (200 * col) + 100, (200 * (5 - row)) + 100);
   }
   // Draw lines.
   ctx.strokeStyle = "#D8D8D8";
