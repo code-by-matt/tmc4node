@@ -58,28 +58,21 @@
           }
         });
 
-        // Update board when broadcasts gameStats.
+        // Update board and gameStats when server broadcasts a move.
         socket.on('move', function(newGameStats) {
+          gameStats = newGameStats;
+          createBoard(board, canvas, gameStats);
+        });
+
+        // Update board and gameStats when server broadcasts a reset.
+        socket.on('reset', function(newGameStats) {
           gameStats = newGameStats;
           createBoard(board, canvas, gameStats);
         });
 
         // Reset game when reset is clicked.
         document.getElementById("reset").addEventListener("click", function() {
-          $.ajax({
-            type: "POST",
-            url: "qgdf",
-            data: {
-              csrfmiddlewaretoken: '{{ csrf_token }}',
-              reset: "true"
-            },
-            dataType: "json",
-            success: function(data) {
-              gameStats.history = data.history;
-              gameStats.openRows = data.open_rows;
-              createBoard(gameStats);
-            }
-          });
+          socket.emit('reset');
           console.log("reset!");
         });
         

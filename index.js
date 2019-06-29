@@ -15,7 +15,7 @@ var db = pgp(cn);
 module.exports = db; // not sure what this line does tbh...
 
 // test query
-db.any('SELECT * FROM testgame LIMIT 1', [true]).then(function(data) {
+db.any('SELECT * FROM testgame LIMIT 1').then(function(data) {
   console.log(data[0]);
 }).catch(function(error) {
   console.log("problem!");
@@ -44,6 +44,12 @@ io.on('connection', function(socket) {
     // add code to put this gameStats into the database
     console.log('YAY THIS WORKS');
     io.emit('move', gameStats);
+  });
+  socket.on('reset', function() {
+    var red = Math.random() > 0.5;
+    var turn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
+    db.none('UPDATE testgame SET "history" = $1, "isRedsTurn" = $2, "openRows" = ARRAY [0, 0, 0, 0, 0, 0, 0], "turnNumber" = $3', ['', red, turn]);
+    console.log('reset!');
   });
   socket.on('disconnect', function() {
     console.log('a user disconnected!');
