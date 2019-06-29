@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Meta tags needed to make Bootstrap work. -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- My own CSS, favicon, title. -->
+    <link rel="stylesheet" type="text/css" href='style.css'>
+    <link rel="icon" type="image/png" href='logo.svg'>
+    <title>TMC4</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="regbox">  
+        <img src='logo.svg' alt="Thue-Morse Connect Four Logo" title="Thue-Morse Connect Four Logo" width="40" height="40">
+        <h3 class="text-center">Thue-Morse Connect Four</h3>
+        <canvas id="canvas" style="display:none" width="1400" height="1200"></canvas>
+        <img id="board" width="100%" class="card-img rounded-0">
+        <a id="reset" href="#" class="btn btn-primary">Reset</a>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src='scripts.js'></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+
+        // Initialize variables.
+        var board = document.getElementById("board");
+        var canvas = document.getElementById("canvas");
+        var gameStats = {
+          history: "",
+          isRedsTurn: true,
+          openRows: [0, 0, 0, 0, 0, 0, 0],
+          turnNumber: 0  // YOU WILL HAVE TO HIDE THIS FROM THE CLIENT IN THE FINAL VERSION
+        };
+        var socket = io();
+
+        createBoard(board, canvas, gameStats);
+
+        // Change cursor style when appropriate.
+        board.addEventListener("mousemove",  function(event) {
+          var col = getCol(board, event);
+          if (gameStats.openRows[col] < 6) {
+            board.style.cursor = "pointer";
+          }
+          else {
+            board.style.cursor = "default";
+          }
+        });
+
+        // Update gameStats and send it to the server.
+        board.addEventListener("click", function(event) {
+          var col = getCol(board, event);
+          if (gameStats.openRows[col] < 6) {
+            updateGameStats(gameStats, col);
+            socket.emit('move', gameStats);
+          }
+        });
+
+        // Update board when broadcasts gameStats.
+        socket.on('move', function(newGameStats) {
+          gameStats = newGameStats;
+          createBoard(board, canvas, gameStats);
+        });
+
+        // Reset game when reset is clicked.
+        document.getElementById("reset").addEventListener("click", function() {
+          $.ajax({
+            type: "POST",
+            url: "qgdf",
+            data: {
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              reset: "true"
+            },
+            dataType: "json",
+            success: function(data) {
+              gameStats.history = data.history;
+              gameStats.openRows = data.open_rows;
+              createBoard(gameStats);
+            }
+          });
+          console.log("reset!");
+        });
+        
+      });
+    </script>
+  </body>
+</html>
