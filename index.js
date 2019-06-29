@@ -15,8 +15,8 @@ var db = pgp(cn);
 module.exports = db; // not sure what this line does tbh...
 
 // test query
-db.any('SELECT * FROM users', [true]).then(function(data) {
-  console.log(data);
+db.any('SELECT * FROM testgame LIMIT 1', [true]).then(function(data) {
+  console.log(data[0]);
 }).catch(function(error) {
   console.log("problem!");
 });
@@ -40,9 +40,10 @@ var io = require('socket.io')(server);
 // handle websocket connections
 io.on('connection', function(socket) {
   console.log('a user connected!');
-  socket.on('move', function(gameConfig) {
+  socket.on('move', function(gameStats) {
+    // add code to put this gameStats into the database
     console.log('YAY THIS WORKS');
-    io.emit('move', gameConfig);
+    io.emit('move', gameStats);
   });
   socket.on('disconnect', function() {
     console.log('a user disconnected!');
