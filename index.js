@@ -2,6 +2,25 @@
 var express = require('express');
 var app = express();
 
+// connect to the database
+var pgp = require('pg-promise')();
+var cn = {
+  host: '127.0.0.1',
+  port: 5432,
+  database: 'tmc4node',
+  user: 'postgres',
+  password: 'carpedm'
+};
+var db = pgp(cn);
+module.exports = db; // not sure what this line does tbh...
+
+// test query
+db.any('SELECT * FROM users', [true]).then(function(data) {
+  console.log(data);
+}).catch(function(error) {
+  console.log("problem!");
+});
+
 // middleware?
 app.use(express.static('static'));
 
