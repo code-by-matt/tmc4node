@@ -34,6 +34,8 @@
           openRows: [0, 0, 0, 0, 0, 0, 0],
           turnNumber: 0  // YOU WILL HAVE TO HIDE THIS FROM THE CLIENT IN THE FINAL VERSION
         };
+
+        // Establish websocket connection.
         var socket = io();
 
         createBoard(board, canvas, gameStats);

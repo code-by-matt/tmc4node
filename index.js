@@ -39,18 +39,27 @@ var io = require('socket.io')(server);
 
 // handle websocket connections
 io.on('connection', function(socket) {
+
+  // connection check
   console.log('a user connected!');
+
+  // when a move is received, update gameStats in database, then emit gameStats
   socket.on('move', function(gameStats) {
     // add code to put this gameStats into the database
     console.log('YAY THIS WORKS');
     io.emit('move', gameStats);
   });
+
+  // when a reset is received, reset gameStats in database, then emit gameStats
   socket.on('reset', function() {
     var red = Math.random() > 0.5;
+    var rows = [0, 0, 0, 0, 0, 0, 0];
     var turn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
-    db.none('UPDATE testgame SET "history" = $1, "isRedsTurn" = $2, "openRows" = ARRAY [0, 0, 0, 0, 0, 0, 0], "turnNumber" = $3', ['', red, turn]);
+    db.none('UPDATE testgame SET "history" = $1, "isRedsTurn" = $2, "openRows" = $3, "turnNumber" = $4', ['', red, rows, turn]);
     console.log('reset!');
   });
+
+  // disconnection check
   socket.on('disconnect', function() {
     console.log('a user disconnected!');
   });
