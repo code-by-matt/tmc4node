@@ -53,6 +53,13 @@ function getCol(board, event) {
   return Math.floor((7 * (event.pageX - board.offsetLeft))/board.offsetWidth);
 }
 
+function resetGameStats(gameStats) {
+  gameStats.history = '';
+  gameStats.isRedsTurn = Math.random() > 0.5;
+  gameStats.openRows = [0, 0, 0, 0, 0, 0, 0];
+  gameStats.turnNumber = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
+}
+
 function updateGameStats(gameStats, col) {
   // Update history.
   var row = gameStats.openRows[col];

@@ -24,21 +24,16 @@
     <script>
       document.addEventListener("DOMContentLoaded", function() {
 
-        // Initialize variables.
+        // Initialize variables. 
         var board = document.getElementById("board");
         var canvas = document.getElementById("canvas");
-        // add code to grab the gameStats from the database
-        var gameStats = {
-          history: "",
-          isRedsTurn: true,
-          openRows: [0, 0, 0, 0, 0, 0, 0],
-          turnNumber: 0  // YOU WILL HAVE TO HIDE THIS FROM THE CLIENT IN THE FINAL VERSION
-        };
+        var gameStats;
 
         // Establish websocket connection.
         var socket = io();
 
-        createBoard(board, canvas, gameStats);
+        // Request the game stats from the server.
+        socket.emit('stats request');
 
         // Change cursor style when appropriate.
         board.addEventListener("mousemove",  function(event) {
@@ -56,25 +51,20 @@
           var col = getCol(board, event);
           if (gameStats.openRows[col] < 6) {
             updateGameStats(gameStats, col);
-            socket.emit('move', gameStats);
+            socket.emit('stats', gameStats);
           }
         });
 
-        // Update board and gameStats when server broadcasts a move.
-        socket.on('move', function(newGameStats) {
-          gameStats = newGameStats;
-          createBoard(board, canvas, gameStats);
-        });
-
-        // Update board and gameStats when server broadcasts a reset.
-        socket.on('reset', function(newGameStats) {
+        // Update board and gameStats when server broadcasts stats.
+        socket.on('stats', function(newGameStats) {
           gameStats = newGameStats;
           createBoard(board, canvas, gameStats);
         });
 
         // Reset game when reset is clicked.
         document.getElementById("reset").addEventListener("click", function() {
-          socket.emit('reset');
+          resetGameStats(gameStats);
+          socket.emit('stats', gameStats);
           console.log("reset!");
         });
         
