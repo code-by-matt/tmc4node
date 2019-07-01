@@ -1,5 +1,48 @@
-function createBoard(board, canvas, gameStats) {
-  var ctx = canvas.getContext("2d");
+// THESE FUNCTIONS DEAL WITH CHANGING THE GAME DATA–––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+function color(turnNumber) {
+  var count = 0
+  while (turnNumber != 0) {
+    turnNumber = turnNumber & (turnNumber - 1);
+    count++;
+  }
+  return count % 2;
+}
+
+function resetGameStats(gameStats) {
+  gameStats.history = '';
+  gameStats.openRows = [0, 0, 0, 0, 0, 0, 0];
+  // gameStats.turnNumber = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
+  gameStats.turnNumber = 0;
+  gameStats.future = [0, 0, 0, 0, 0, 0, 0, 0];
+  for (let i = 0; i < 8; i++) {
+    gameStats.future[i] = color(gameStats.turnNumber + i);
+  }
+}
+
+function updateGameStats(gameStats, col) {
+  // Update history.
+  var row = gameStats.openRows[col];
+  if (gameStats.future[0] == 0) {
+    gameStats.history += "r" + col + row;
+  }
+  else {
+    gameStats.history += "b" + col + row;
+  }
+  // Update openRows.
+  gameStats.openRows[col] += 1;
+  // Update turnNumber.
+  gameStats.turnNumber += 1;
+  // Update future.
+  for (let i = 0; i < 8; i++) {
+    gameStats.future[i] = color(gameStats.turnNumber + i);
+  }
+}
+
+// THESE FUNCTIONS DEAL WITH CREATING THE VISUALS–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+function createBoard(boardImg, boardCanvas, gameStats) {
+  var ctx = boardCanvas.getContext("2d");
   // Wipe out the previous board.
   ctx.fillStyle = "#FFFFFF";
   ctx.fillRect(0, 0, 1400, 1200);
@@ -46,37 +89,29 @@ function createBoard(board, canvas, gameStats) {
       ctx.stroke();
   }
   // Put the canvas into the image.
-  board.src = canvas.toDataURL();
+  boardImg.src = boardCanvas.toDataURL();
 }
 
-function getCol(board, event) {
-  return Math.floor((7 * (event.pageX - board.offsetLeft))/board.offsetWidth);
+function createCounter(counterImg, counterCanvas, gameStats) {
+  var ctx = counterCanvas.getContext("2d");
+  // Wipe out the previous counter.
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(0, 0, 1600, 200);
+  // Draw the future, ooh!
+  for (let i = 0; i < 8; i++) {
+    if (gameStats.future[i] == 0) {
+      ctx.fillStyle = "#DC3545";
+      ctx.fillRect((200 * i), 0, 200, 200);
+    }
+    else {
+      ctx.fillStyle = "#007BFF";
+      ctx.fillRect((200 * i), 0, 200, 200);
+    }
+  }
+  // Put the canvas into the image.
+  counterImg.src = counterCanvas.toDataURL();
 }
 
-function resetGameStats(gameStats) {
-  gameStats.history = '';
-  gameStats.isRedsTurn = Math.random() > 0.5;
-  gameStats.openRows = [0, 0, 0, 0, 0, 0, 0];
-  gameStats.turnNumber = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
-}
-
-function updateGameStats(gameStats, col) {
-  // Update history.
-  var row = gameStats.openRows[col];
-  if (gameStats.isRedsTurn == true) {
-    gameStats.history += "r" + col + row;
-  }
-  else {
-    gameStats.history += "b" + col + row;
-  }
-  // Update openRows.
-  gameStats.openRows[col] += 1;
-  // Increment turnNumber while grabbing values that determine the next move's color.
-  var current = (gameStats.turnNumber.toString(2).split('1').length - 1) % 2;
-  gameStats.turnNumber += 1;
-  var next = (gameStats.turnNumber.toString(2).split('1').length - 1) % 2;
-  // Flip isRedsTurn if necessary.
-  if (current != next) {
-    gameStats.isRedsTurn = !gameStats.isRedsTurn;
-  }
+function getCol(boardImg, event) {
+  return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
 }

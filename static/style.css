@@ -3,6 +3,10 @@
   margin: 0px;
 }
 
+.marge {
+  margin: 4px;
+}
+
 canvas {
   display: none;
 }

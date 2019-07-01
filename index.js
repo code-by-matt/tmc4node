@@ -51,8 +51,8 @@ io.on('connection', function(socket) {
   });
 
   socket.on('stats', function(gameStats) {
-    db.none('UPDATE testgame SET "history" = $1, "isRedsTurn" = $2, "openRows" = $3, "turnNumber" = $4',
-    [gameStats.history, gameStats.isRedsTurn, gameStats.openRows, gameStats.turnNumber]);
+    db.none('UPDATE testgame SET "history" = $1, "openRows" = $2, "turnNumber" = $3, "future" = $4',
+    [gameStats.history, gameStats.openRows, gameStats.turnNumber, gameStats.future]);
     io.emit('stats', gameStats);
     console.log('stats sent to client!');
   });

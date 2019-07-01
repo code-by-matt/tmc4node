@@ -11,16 +11,17 @@
   </head>
   <body>
     <div class="container">
-      <canvas width="1400" height="1200"></canvas>
+      <canvas id="board-canvas" width="1400" height="1200"></canvas>
       <!-- Inline styling of this image is needed to prevent border wiggle in Chrome. -->
-      <img class="row" id="board" style="border-style: solid; border-color: gray">
+      <img class="row" id="board-img" style="border-style: solid; border-color: gray">
       <div class="row border player-bar">
-        <div>littlesquares</div>
+        <canvas id="counter-canvas" width="1600" height="200"></canvas>
+        <img class="marge" id="counter-img" height="20">
         <a id="reset" href="#">Reset</a>
       </div>
       <div class="row border player-bar">
-        <div>Player 1</div>
-        <div>Player 2</div>
+        <div class="marge">Player 1</div>
+        <div class="marge">Player 2</div>
       </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -29,8 +30,10 @@
       document.addEventListener("DOMContentLoaded", function() {
 
         // Initialize variables. 
-        var board = document.getElementById("board");
-        var canvas = document.getElementsByTagName("canvas")[0];
+        var boardImg = document.getElementById("board-img");
+        var boardCanvas = document.getElementById("board-canvas");
+        var counterImg = document.getElementById("counter-img");
+        var counterCanvas = document.getElementById("counter-canvas");
         var gameStats;
 
         // Establish websocket connection.
@@ -40,19 +43,19 @@
         socket.emit('stats request');
 
         // Change cursor style when appropriate.
-        board.addEventListener("mousemove",  function(event) {
-          var col = getCol(board, event);
+        boardImg.addEventListener("mousemove",  function(event) {
+          var col = getCol(boardImg, event);
           if (gameStats.openRows[col] < 6) {
-            board.style.cursor = "pointer";
+            boardImg.style.cursor = "pointer";
           }
           else {
-            board.style.cursor = "default";
+            boardImg.style.cursor = "default";
           }
         });
 
         // Update gameStats and send it to the server.
-        board.addEventListener("click", function(event) {
-          var col = getCol(board, event);
+        boardImg.addEventListener("click", function(event) {
+          var col = getCol(boardImg, event);
           if (gameStats.openRows[col] < 6) {
             updateGameStats(gameStats, col);
             socket.emit('stats', gameStats);
@@ -62,7 +65,8 @@
         // Update board and gameStats when server broadcasts stats.
         socket.on('stats', function(newGameStats) {
           gameStats = newGameStats;
-          createBoard(board, canvas, gameStats);
+          createBoard(boardImg, boardCanvas, gameStats);
+          createCounter(counterImg, counterCanvas, gameStats);
         });
 
         // Reset game when reset is clicked.
