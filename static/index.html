@@ -11,12 +11,16 @@
   </head>
   <body>
     <div class="container">
-      <div class="regbox">  
-        <img src='logo.svg' alt="Thue-Morse Connect Four Logo" title="Thue-Morse Connect Four Logo" width="40" height="40">
-        <h3 class="text-center">Thue-Morse Connect Four</h3>
-        <canvas id="canvas" style="display:none" width="1400" height="1200"></canvas>
-        <img id="board" width="100%" class="card-img rounded-0">
-        <a id="reset" href="#" class="btn btn-primary">Reset</a>
+      <canvas width="1400" height="1200"></canvas>
+      <!-- Inline styling of this image is needed to prevent border wiggle in Chrome. -->
+      <img class="row" id="board" style="border-style: solid; border-color: gray">
+      <div class="row border player-bar">
+        <div>littlesquares</div>
+        <a id="reset" href="#">Reset</a>
+      </div>
+      <div class="row border player-bar">
+        <div>Player 1</div>
+        <div>Player 2</div>
       </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -26,7 +30,7 @@
 
         // Initialize variables. 
         var board = document.getElementById("board");
-        var canvas = document.getElementById("canvas");
+        var canvas = document.getElementsByTagName("canvas")[0];
         var gameStats;
 
         // Establish websocket connection.
