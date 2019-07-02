@@ -13,15 +13,21 @@
     <div class="container">
       <canvas id="board-canvas" width="1400" height="1200"></canvas>
       <!-- Inline styling of this image is needed to prevent border wiggle in Chrome. -->
-      <img class="row" id="board-img" style="border-style: solid; border-color: gray">
+      <img class="row" id="board-img" style="border-style: solid">
       <div class="row border player-bar">
         <canvas id="counter-canvas" width="1600" height="200"></canvas>
         <img class="marge" id="counter-img" height="20">
-        <a id="reset" href="#">Reset</a>
+        <button class="marge" id="reset">Reset</button>
       </div>
       <div class="row border player-bar">
-        <div class="marge">Player 1</div>
-        <div class="marge">Player 2</div>
+        <div class="player">
+          <img class="marge" width="20" height="20" style="background-color: #DC3545">
+          <div class="marge">Player 1</div>
+        </div>
+        <div class="player">
+          <div class="marge">Player 2</div>
+          <img class="marge" width="20" height="20" style="background-color: #007BFF">
+        </div>
       </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>

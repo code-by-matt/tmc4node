@@ -1,4 +1,4 @@
-// THESE FUNCTIONS DEAL WITH CHANGING THE GAME DATA–––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// THESE FUNCTIONS DEAL WITH CHANGING THE GAME DATA ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 function color(turnNumber) {
   var count = 0
@@ -39,7 +39,7 @@ function updateGameStats(gameStats, col) {
   }
 }
 
-// THESE FUNCTIONS DEAL WITH CREATING THE VISUALS–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// THESE FUNCTIONS DEAL WITH CREATING THE VISUALS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 function createBoard(boardImg, boardCanvas, gameStats) {
   var ctx = boardCanvas.getContext("2d");
