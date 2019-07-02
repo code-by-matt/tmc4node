@@ -11,12 +11,20 @@ canvas {
   display: none;
 }
 
-.marge {
+.margin-4 {
   margin: 4px;
 }
 
 .border {
   border-style: solid;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
 }
 
 @media (min-width: 576px) {
@@ -45,13 +53,4 @@ canvas {
 
 .row {
   margin-bottom: -2px;
-}
-
-.player-bar {
-  display: flex;
-  justify-content: space-between;
-}
-
-.player {
-  display: flex;
 }

@@ -1,9 +1,9 @@
 // THESE FUNCTIONS DEAL WITH CHANGING THE GAME DATA ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-function color(turnNumber) {
+function thueMorse(n) {
   var count = 0
-  while (turnNumber != 0) {
-    turnNumber = turnNumber & (turnNumber - 1);
+  while (n != 0) {
+    n = n & (n - 1);
     count++;
   }
   return count % 2;
@@ -12,11 +12,12 @@ function color(turnNumber) {
 function resetGameStats(gameStats) {
   gameStats.history = '';
   gameStats.openRows = [0, 0, 0, 0, 0, 0, 0];
-  // gameStats.turnNumber = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
-  gameStats.turnNumber = 0;
+  gameStats.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
+  gameStats.currentTurn = gameStats.firstTurn;
   gameStats.future = [0, 0, 0, 0, 0, 0, 0, 0];
   for (let i = 0; i < 8; i++) {
-    gameStats.future[i] = color(gameStats.turnNumber + i);
+    // XORing with thueMorse(gameStats.firstTurn) ensures that the first player is always red.
+    gameStats.future[i] = thueMorse(gameStats.firstTurn) ^ thueMorse(gameStats.currentTurn + i);
   }
 }
 
@@ -31,11 +32,11 @@ function updateGameStats(gameStats, col) {
   }
   // Update openRows.
   gameStats.openRows[col] += 1;
-  // Update turnNumber.
-  gameStats.turnNumber += 1;
+  // Update currentTurn.
+  gameStats.currentTurn += 1;
   // Update future.
   for (let i = 0; i < 8; i++) {
-    gameStats.future[i] = color(gameStats.turnNumber + i);
+    gameStats.future[i] = thueMorse(gameStats.firstTurn) ^ thueMorse(gameStats.currentTurn + i);
   }
 }
 
