@@ -40,6 +40,38 @@ function updateGameStats(gameStats, col) {
   }
 }
 
+// THESE FUNCTIONS DEAL WITH READING THE GAME DATA –––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+function getCol(boardImg, event) {
+  return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
+}
+
+function count(gameStats, up, right) {
+  var color = gameStats.history.slice(-3, -2);
+  var col = parseInt(gameStats.history.slice(-2, -1));
+  var row = parseInt(gameStats.history.slice(-1));
+  var count = 0;
+  var move = color + col + row
+  while (gameStats.history.includes(move)) {
+    col += right;
+    row += up;
+    move = color + col + row;
+    count++;
+  }
+  return count;
+}
+
+function checkWin(gameStats) {
+  var hori = count(gameStats, 0, -1) + count(gameStats, 0, 1) - 1;
+  var vert = count(gameStats, -1, 0) + count(gameStats, 1, 0) - 1;
+  var diag = count(gameStats, 1, -1) + count(gameStats, -1, 1) - 1;
+  var antd = count(gameStats, 1, 1) + count(gameStats, -1, -1) - 1;
+  console.log("horizontal: " + hori);
+  console.log("vertical: " + vert);
+  console.log("diagonal: " + diag);
+  console.log("anti-diagonal: " + antd);
+}
+
 // THESE FUNCTIONS DEAL WITH CREATING THE VISUALS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 function createBoard(boardImg, boardCanvas, gameStats) {
@@ -111,8 +143,4 @@ function createCounter(counterImg, counterCanvas, gameStats) {
   }
   // Put the canvas into the image.
   counterImg.src = counterCanvas.toDataURL();
-}
-
-function getCol(boardImg, event) {
-  return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
 }

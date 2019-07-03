@@ -59,11 +59,12 @@
           }
         });
 
-        // Update gameStats and send it to the server.
+        // Update gameStats, send gameStats to the server, and check win.
         boardImg.addEventListener("click", function(event) {
           var col = getCol(boardImg, event);
           if (gameStats.openRows[col] < 6) {
             updateGameStats(gameStats, col);
+            checkWin(gameStats);
             socket.emit('stats', gameStats);
           }
         });
