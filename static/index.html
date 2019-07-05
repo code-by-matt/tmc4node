@@ -22,7 +22,7 @@
       <div class="row border flex justify-content-between">
         <div class="flex">
           <img class="margin-4" width="20" height="20" style="background-color: #DC3545">
-          <div class="margin-4">Player 1</div>
+          <div id="test" class="margin-4">Player 1</div>
         </div>
         <div class="flex">
           <div class="margin-4">Player 2</div>
@@ -64,7 +64,9 @@
           var col = getCol(boardImg, event);
           if (gameStats.openRows[col] < 6) {
             updateGameStats(gameStats, col);
-            checkWin(gameStats);
+            if (isWin(gameStats)) {
+              document.getElementById("test").innerHTML = "WIN!!!";
+            }
             socket.emit('stats', gameStats);
           }
         });

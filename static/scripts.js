@@ -61,7 +61,7 @@ function count(gameStats, up, right) {
   return count;
 }
 
-function checkWin(gameStats) {
+function isWin(gameStats) {
   var hori = count(gameStats, 0, -1) + count(gameStats, 0, 1) - 1;
   var vert = count(gameStats, -1, 0) + count(gameStats, 1, 0) - 1;
   var diag = count(gameStats, 1, -1) + count(gameStats, -1, 1) - 1;
@@ -70,6 +70,10 @@ function checkWin(gameStats) {
   console.log("vertical: " + vert);
   console.log("diagonal: " + diag);
   console.log("anti-diagonal: " + antd);
+  if (hori >=4 | vert >= 4 | diag >= 4 | antd >= 4) {
+    return true;
+  }
+  else return false;
 }
 
 // THESE FUNCTIONS DEAL WITH CREATING THE VISUALS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
