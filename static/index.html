@@ -26,6 +26,7 @@
         <div class="flex">
           <img class="margin-4" width="20" height="20" style="background-color: #DC3545">
           <div class="margin-4">Player 1</div>
+          <div id="clock" class="margin-4"></div>
         </div>
         <div class="flex">
           <div class="margin-4">Player 2</div>
@@ -37,6 +38,10 @@
     <script type="text/javascript" src='scripts.js'></script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
+
+        // Set the clock.
+        displayTime("clock");
+        setInterval('displayTime("clock")', '1000');
 
         // Initialize variables. 
         var boardImg = document.getElementById("board-img");

@@ -79,6 +79,18 @@ function isWin(gameStats) {
   else return false;
 }
 
+function displayTime(id) {
+  date = new Date();
+  h = date.getHours();
+  m = date.getMinutes();
+  s = date.getSeconds();
+  if (h<10) h = "0"+h;
+  if (m<10) m = "0"+m;
+  if (s<10) s = "0"+s;
+  result = h + ':' + m + ':' + s;
+  document.getElementById(id).innerHTML = result;
+}
+
 // THESE FUNCTIONS DEAL WITH CREATING THE VISUALS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 function createBoard(boardImg, boardCanvas, gameStats) {
