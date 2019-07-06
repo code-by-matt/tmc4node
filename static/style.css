@@ -23,6 +23,10 @@ canvas {
   display: flex;
 }
 
+.justify-content-center {
+  justify-content: center;
+}
+
 .justify-content-between {
   justify-content: space-between;
 }
@@ -38,7 +42,7 @@ canvas {
 
 @media (max-width: 576px) {
   .row {
-  width: 100vw;
+  width: 99vw;
   }
 }
 

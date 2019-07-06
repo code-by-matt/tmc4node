@@ -15,6 +15,7 @@ function resetGameStats(gameStats) {
   gameStats.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
   gameStats.currentTurn = gameStats.firstTurn;
   gameStats.future = [0, 0, 0, 0, 0, 0, 0, 0];
+  gameStats.isGameOver = false;
   for (let i = 0; i < 8; i++) {
     // XORing with thueMorse(gameStats.firstTurn) ensures that the first player is always red.
     gameStats.future[i] = thueMorse(gameStats.firstTurn) ^ thueMorse(gameStats.currentTurn + i);
@@ -38,6 +39,8 @@ function updateGameStats(gameStats, col) {
   for (let i = 0; i < 8; i++) {
     gameStats.future[i] = thueMorse(gameStats.firstTurn) ^ thueMorse(gameStats.currentTurn + i);
   }
+  // Update isGameOver.
+  gameStats.isGameOver = isWin(gameStats);
 }
 
 // THESE FUNCTIONS DEAL WITH READING THE GAME DATA –––––––––––––––––––––––––––––––––––––––––––––––––––––––––

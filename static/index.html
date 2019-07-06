@@ -11,6 +11,9 @@
   </head>
   <body>
     <div class="container">
+      <div class="row border flex justify-content-center">
+        <div id="marquee" class="margin-4">Thue-Morse Connect Four</div>
+      </div>
       <canvas id="board-canvas" width="1400" height="1200"></canvas>
       <!-- Inline styling of this image is needed to prevent border wiggle in Chrome. -->
       <img class="row" id="board-img" style="border-style: solid">
@@ -22,7 +25,7 @@
       <div class="row border flex justify-content-between">
         <div class="flex">
           <img class="margin-4" width="20" height="20" style="background-color: #DC3545">
-          <div id="test" class="margin-4">Player 1</div>
+          <div class="margin-4">Player 1</div>
         </div>
         <div class="flex">
           <div class="margin-4">Player 2</div>
@@ -51,7 +54,7 @@
         // Change cursor style when appropriate.
         boardImg.addEventListener("mousemove",  function(event) {
           var col = getCol(boardImg, event);
-          if (gameStats.openRows[col] < 6) {
+          if (gameStats.openRows[col] < 6 && !gameStats.isGameOver) {
             boardImg.style.cursor = "pointer";
           }
           else {
@@ -59,14 +62,11 @@
           }
         });
 
-        // Update gameStats, send gameStats to the server, and check win.
+        // Update gameStats and send gameStats to the server when a valid move is made.
         boardImg.addEventListener("click", function(event) {
           var col = getCol(boardImg, event);
-          if (gameStats.openRows[col] < 6) {
+          if (gameStats.openRows[col] < 6 && !gameStats.isGameOver) {
             updateGameStats(gameStats, col);
-            if (isWin(gameStats)) {
-              document.getElementById("test").innerHTML = "WIN!!!";
-            }
             socket.emit('stats', gameStats);
           }
         });
@@ -76,6 +76,16 @@
           gameStats = newGameStats;
           createBoard(boardImg, boardCanvas, gameStats);
           createCounter(counterImg, counterCanvas, gameStats);
+          if (gameStats.isGameOver) {
+            var winner = "Red";
+            if (gameStats.history.slice(-3, -2) == "b") {
+              winner = "Blue";
+            }
+            document.getElementById("marquee").innerHTML = winner + " wins by connection!";
+          }
+          else {
+            document.getElementById("marquee").innerHTML = "Thue-Morse Connect Four";
+          }
         });
 
         // Reset game when reset is clicked.
