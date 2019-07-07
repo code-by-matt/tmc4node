@@ -11,8 +11,23 @@ canvas {
   display: none;
 }
 
-.margin-4 {
+.m4 {
   margin: 4px;
+}
+
+.vct {
+  display: flex;
+  align-items: center;
+}
+
+.lat {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.rat {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .border {
@@ -57,4 +72,11 @@ canvas {
 
 .row {
   margin-bottom: -2px;
+}
+
+.player {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
 }

@@ -79,18 +79,6 @@ function isWin(gameStats) {
   else return false;
 }
 
-function displayTime(id) {
-  date = new Date();
-  h = date.getHours();
-  m = date.getMinutes();
-  s = date.getSeconds();
-  if (h<10) h = "0"+h;
-  if (m<10) m = "0"+m;
-  if (s<10) s = "0"+s;
-  result = h + ':' + m + ':' + s;
-  document.getElementById(id).innerHTML = result;
-}
-
 // THESE FUNCTIONS DEAL WITH CREATING THE VISUALS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 function createBoard(boardImg, boardCanvas, gameStats) {
@@ -162,4 +150,73 @@ function createCounter(counterImg, counterCanvas, gameStats) {
   }
   // Put the canvas into the image.
   counterImg.src = counterCanvas.toDataURL();
+}
+
+// THESE FUNCTIONS DEAL WITH TIMING ——————————————––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+var redDiv = document.getElementById("redTime");
+var bluDiv = document.getElementById("bluTime");
+var redStart = Number.NEGATIVE_INFINITY; // The start time of the most recent red move.
+var bluStart = Number.NEGATIVE_INFINITY; // The start time of the most recent blu move.
+var redTime = 0; // The time elapsed for red, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+var bluTime = 0; // The time elapsed for blu, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+var handle;        // The integer that stores the repeating thing that start() creates.
+
+function convert(ms) {
+  var min = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+  var sec = Math.floor((ms % (1000 * 60)) / 1000);
+  if (min < 10) min = "0" + min;
+  if (sec < 10) sec = "0" + sec;
+  return min + ':' + sec;
+}
+
+function times() {
+  var redString, bluString;
+  var currentTime = new Date().getTime();
+  // Red is in the middle of making a move.
+  if (redStart > bluStart) {
+    redString = convert(redTime + currentTime - redStart);
+    bluString = convert(bluTime);
+  }
+  // Blu is in the middle of making a move.
+  else {
+    redString = convert(redTime);
+    bluString = convert(bluTime + currentTime - bluStart);
+  }
+  return [redString, bluString];
+}
+
+function start() {
+  var currentTime = new Date().getTime();
+  redStart = currentTime;
+  handle = setInterval(function() {
+    var yeet = times();
+    redDiv.innerHTML = yeet[0];
+    bluDiv.innerHTML = yeet[1];
+  }, 100);
+}
+
+function flip() {
+  var currentTime = new Date().getTime();
+  // Red is completing its move.
+  if (redStart > bluStart) {
+    redTime += currentTime - redStart;
+    bluStart = currentTime;
+  }
+  // Blu is completing its move.
+  else if (redStart < bluStart) {
+    bluTime += currentTime - bluStart;
+    redStart = currentTime;
+  }
+  // Hopefully redStart and bluStart are never equal...
+}
+
+function stop() {
+  clearInterval(handle);
+  redStart = Number.NEGATIVE_INFINITY;
+  bluStart = Number.NEGATIVE_INFINITY;
+  redTime = 0;
+  bluTime = 0;
+  redDiv.innerHTML = "00:00";
+  bluDiv.innerHTML = "00:00";
 }
