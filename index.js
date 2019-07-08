@@ -69,6 +69,13 @@ io.on('connection', function(socket) {
     console.log('start recorded, games started!');
   });
 
+  socket.on('join request', function(id) {
+    socket.join('ROOM');
+    io.to(id).emit('join response', io.sockets.adapter.rooms['ROOM'].length);
+    console.log('someone joined the room!');
+    console.log('population: ' + io.sockets.adapter.rooms['ROOM'].length);
+  });
+
   // disconnection check
   socket.on('disconnect', function() {
     console.log('a user disconnected!');

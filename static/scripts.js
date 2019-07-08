@@ -15,6 +15,9 @@
   var resetBtn = document.getElementById("reset");
   var redDiv = document.getElementById("red-div"); // Times are displayed in these two divs.
   var bluDiv = document.getElementById("blu-div");
+  var joinBtn = document.getElementById("join");
+  var statDiv = document.getElementById("status");
+  var popDiv = document.getElementById("pop");
 
   // Establish websocket connection. Requests go from client to server, responses go from server to client.
   var socket = io();
@@ -26,6 +29,10 @@
     game = newGame;
     createBoard();
     createFuture();
+  });
+
+  joinBtn.addEventListener("click", function() {
+    socket.emit('join request', socket.id);
   });
 
   // Change cursor style when appropriate.
@@ -70,6 +77,11 @@
 
   socket.on('start response', function() {
     start();
+  });
+
+  socket.on('join response', function(n) {
+    popDiv.innerHTML = "Room contains " + n + ".";
+    statDiv.innerHTML = "You ARE in the room."
   });
 
   socket.on('move response', function(newGame) {
