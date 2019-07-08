@@ -19,52 +19,47 @@
   var statDiv = document.getElementById("status");
   var popDiv = document.getElementById("pop");
 
-  // Establish websocket connection. Requests go from client to server, responses go from server to client.
+  // Establish a websocket connection and join the room. Requests go from client to server, responses go from server to client.
   var socket = io();
 
-  // Grab game data from the server.
-  var game;
-  socket.emit('game request');
-  socket.on('game response', function(newGame) {
-    game = newGame;
-    createBoard();
-    createFuture();
-  });
+  // The game data gets updated when the client receives a join response.
+  var game = null;
 
+  // When the join button is clicked, send a join request along with this socket's id.
+  // This is the only event listener that is attached before a client joins the room.
   joinBtn.addEventListener("click", function() {
     socket.emit('join request', socket.id);
   });
 
-  // Change cursor style when appropriate.
-  boardImg.addEventListener("mousemove",  function(event) {
-    var col = getCol(event);
-    if (game.openRows[col] < 6 && !game.isGameOver) {
-      boardImg.style.cursor = "pointer";
-    }
-    else {
-      boardImg.style.cursor = "default";
-    }
-  });
-
-  // When start is clicked, send start request.
-  startBtn.addEventListener("click", function() {
-    socket.emit('start request');
-  });
-
-  // When reset is clicked, reset game and send reset request.
-  resetBtn.addEventListener("click", function() {
-    resetGame();
-    socket.emit('reset request', game);
-  });
-
-  // When a valid move is made, update game and send move request.
-  boardImg.addEventListener("click", function(event) {
-    var col = getCol(event);
-    if (game.openRows[col] < 6 && !game.isGameOver) {
-      updateGame(col);
-      socket.emit('move request', game);
-    }
-  });
+  function attachListeners() {
+    // Change cursor style when appropriate.
+    boardImg.addEventListener("mousemove",  function(event) {
+      var col = getCol(event);
+      if (game.openRows[col] < 6 && !game.isGameOver) {
+        boardImg.style.cursor = "pointer";
+      }
+      else {
+        boardImg.style.cursor = "default";
+      }
+    });
+    // When a valid move is made, update game and send move request.
+    boardImg.addEventListener("click", function(event) {
+      var col = getCol(event);
+      if (game.openRows[col] < 6 && !game.isGameOver) {
+        updateGame(col);
+        socket.emit('move request', game);
+      }
+    });
+    // When start is clicked, send start request.
+    startBtn.addEventListener("click", function() {
+      socket.emit('start request');
+    });
+    // When reset is clicked, reset game and send reset request.
+    resetBtn.addEventListener("click", function() {
+      resetGame();
+      socket.emit('reset request', game);
+    });
+  }
 
   socket.on('reset response', function(newGame) {
     stop();
@@ -79,9 +74,16 @@
     start();
   });
 
-  socket.on('join response', function(n) {
-    popDiv.innerHTML = "Room contains " + n + ".";
+  socket.on('join response', function(newGame) {
     statDiv.innerHTML = "You ARE in the room."
+    game = newGame;
+    createBoard();
+    createFuture();
+    attachListeners();
+  });
+
+  socket.on('population response', function(n) {
+    popDiv.innerHTML = "Room contains " + n + ".";
   });
 
   socket.on('move response', function(newGame) {

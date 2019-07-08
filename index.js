@@ -43,13 +43,6 @@ io.on('connection', function(socket) {
   // Connection check.
   console.log('a user connected!');
 
-  socket.on('game request', function() {
-    db.any('SELECT * FROM testgame LIMIT 1').then(function(data) {
-      io.emit('game response', data[0]);
-      console.log('game sent to client!');
-    });
-  });
-
   socket.on('move request', function(game) {
     db.none('UPDATE testgame SET "history" = $1, "openRows" = $2, "currentTurn" = $3, "future" = $4, "firstTurn" = $5, "isGameOver" = $6',
     [game.history, game.openRows, game.currentTurn, game.future, game.firstTurn, game.isGameOver]);
@@ -71,8 +64,11 @@ io.on('connection', function(socket) {
 
   socket.on('join request', function(id) {
     socket.join('ROOM');
-    io.to(id).emit('join response', io.sockets.adapter.rooms['ROOM'].length);
-    console.log('someone joined the room!');
+    db.any('SELECT * FROM testgame LIMIT 1').then(function(data) {
+      io.to(id).emit('join response', data[0]);
+      console.log('someone joined the room!');
+    });
+    io.emit('population response', io.sockets.adapter.rooms['ROOM'].length);
     console.log('population: ' + io.sockets.adapter.rooms['ROOM'].length);
   });
 
