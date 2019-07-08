@@ -1,90 +1,82 @@
 // We use an IIFE to protect our script from evil outside forces.
 (function() {
-  // The squares object holds document elements that pertain to squares.
-  var squares = {
-    boardCan: document.getElementById("board-canvas"),
-    boardImg: document.getElementById("board-img"),
-    futureCan: document.getElementById("future-canvas"),
-    futureImg: document.getElementById("future-img"),
-  };
 
-  // The timer object holds document elements and numbers that pertain to the timer.
-  var timer = {
-    startBtn: document.getElementById("start"),
-    resetBtn: document.getElementById("reset"),
-    redDiv: document.getElementById("red-div"),
-    bluDiv: document.getElementById("blu-div"),
-    redStart: Number.NEGATIVE_INFINITY, // The start time of the most recent red move/pair of moves.
-    bluStart: Number.NEGATIVE_INFINITY, // The start time of the most recent blu move/pair of moves.
-    redTime: 0, // The time elapsed for red, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
-    bluTime: 0, // The time elapsed for blu, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
-    handle: 0, // This integer is zero iff the timer is not running.
-  };
+  // Initialize timer variables.
+  var redStart, bluStart = Number.NEGATIVE_INFINITY; // The start time (in ms) of each color's most recent move/pair of moves.
+  var redTime, bluTime = 0; // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+  var handle = 0; // This is a reference to the repeating code that runs the timer. It is zero when the timer is stopped.
 
-  // The game variable contains the data that we wish to share through a WebSocket.
-  var game;
+  // Grab lots of document elements.
+  var futureCan = document.getElementById("future-canvas"); // Future and board are drawn in these (invisbile) canvas elements...
+  var boardCan = document.getElementById("board-canvas");
+  var futureImg = document.getElementById("future-img"); // ...then they are displayed in these image elements.
+  var boardImg = document.getElementById("board-img");
+  var startBtn = document.getElementById("start"); // Timer start and reset buttons, duh.
+  var resetBtn = document.getElementById("reset");
+  var redDiv = document.getElementById("red-div"); // Times are displayed in these two divs.
+  var bluDiv = document.getElementById("blu-div");
 
-  // Establish websocket connection and request game from server.
-  // Requests go from client to server, responses go from server to client.
+  // Establish websocket connection. Requests go from client to server, responses go from server to client.
   var socket = io();
+
+  // Grab game data from the server.
+  var game;
   socket.emit('game request');
+  socket.on('game response', function(newGame) {
+    game = newGame;
+    createBoard();
+    createFuture();
+  });
 
   // Change cursor style when appropriate.
-  squares.boardImg.addEventListener("mousemove",  function(event) {
-    var col = getCol(squares, event);
+  boardImg.addEventListener("mousemove",  function(event) {
+    var col = getCol(event);
     if (game.openRows[col] < 6 && !game.isGameOver) {
-      squares.boardImg.style.cursor = "pointer";
+      boardImg.style.cursor = "pointer";
     }
     else {
-      squares.boardImg.style.cursor = "default";
+      boardImg.style.cursor = "default";
     }
   });
 
   // When start is clicked, send start request.
-  timer.startBtn.addEventListener("click", function() {
+  startBtn.addEventListener("click", function() {
     socket.emit('start request');
   });
 
   // When reset is clicked, reset game and send reset request.
-  timer.resetBtn.addEventListener("click", function() {
-    resetGame(game);
+  resetBtn.addEventListener("click", function() {
+    resetGame();
     socket.emit('reset request', game);
   });
 
   // When a valid move is made, update game and send move request.
-  squares.boardImg.addEventListener("click", function(event) {
-    var col = getCol(squares, event);
+  boardImg.addEventListener("click", function(event) {
+    var col = getCol(event);
     if (game.openRows[col] < 6 && !game.isGameOver) {
-      updateGame(game, col);
+      updateGame(col);
       socket.emit('move request', game);
     }
   });
 
-  socket.on('game response', function(newGame) {
-    // Update game, make all the color squares look right.
-    game = newGame;
-    createBoard(squares, game);
-    createFuture(squares, game);
-  });
-
   socket.on('reset response', function(newGame) {
-    stop(timer);
+    stop();
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
     game = newGame;
-    createBoard(squares, game);
-    createFuture(squares, game);
+    createBoard();
+    createFuture();
   });
 
   socket.on('start response', function() {
-    start(timer);
+    start();
   });
 
   socket.on('move response', function(newGame) {
     // Update game, make all the color squares look right.
     game = newGame;
-    createBoard(squares, game);
-    createFuture(squares, game);
+    createBoard();
+    createFuture();
     // Make the marquee look right.
     var marquee;
     if (game.isGameOver) {
@@ -96,8 +88,8 @@
     }
     document.getElementById("marquee").innerHTML = marquee;
     // Flip the timer if necessary.
-    if (game.history == '') stop(timer);
-    else if (game.history.slice(-3, -2) != game.future[0]) flip(timer);
+    if (game.history == '') stop();
+    else if (game.history.slice(-3, -2) != game.future[0]) flip();
   });
 
   // THESE FUNCTIONS DEAL WITH CHANGING THE GAME DATA ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -111,7 +103,7 @@
     return count % 2;
   }
 
-  function resetGame(game) {
+  function resetGame() {
     game.history = '';
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
     game.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
@@ -130,7 +122,7 @@
     }
   }
 
-  function updateGame(game, col) {
+  function updateGame(col) {
     var row = game.openRows[col];
     game.history += game.future[0] + col + row;
     game.openRows[col] += 1;
@@ -145,11 +137,11 @@
 
   // THESE FUNCTIONS DEAL WITH READING THE GAME DATA –––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-  function getCol(squares, event) {
-    return Math.floor((7 * (event.pageX - squares.boardImg.offsetLeft))/squares.boardImg.offsetWidth);
+  function getCol(event) {
+    return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
   }
 
-  function count(game, up, right) {
+  function count(up, right) {
     var color = game.history.slice(-3, -2);
     var col = parseInt(game.history.slice(-2, -1));
     var row = parseInt(game.history.slice(-1));
@@ -164,11 +156,11 @@
     return count;
   }
 
-  function isWin(game) {
-    var hori = count(game, 0, -1) + count(game, 0, 1) - 1;
-    var vert = count(game, -1, 0) + count(game, 1, 0) - 1;
-    var diag = count(game, 1, -1) + count(game, -1, 1) - 1;
-    var antd = count(game, 1, 1) + count(game, -1, -1) - 1;
+  function isWin() {
+    var hori = count(0, -1) + count(0, 1) - 1;
+    var vert = count(-1, 0) + count(1, 0) - 1;
+    var diag = count(1, -1) + count(-1, 1) - 1;
+    var antd = count(1, 1) + count(-1, -1) - 1;
     // console.log("horizontal: " + hori);
     // console.log("vertical: " + vert);
     // console.log("diagonal: " + diag);
@@ -181,8 +173,8 @@
 
   // THESE FUNCTIONS DEAL WITH CREATING THE VISUALS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-  function createBoard(squares, game) {
-    var ctx = squares.boardCan.getContext("2d");
+  function createBoard() {
+    var ctx = boardCan.getContext("2d");
     // Wipe out the previous board.
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, 1400, 1200);
@@ -229,11 +221,11 @@
         ctx.stroke();
     }
     // Put the canvas into the image.
-    squares.boardImg.src = squares.boardCan.toDataURL();
+    boardImg.src = boardCan.toDataURL();
   }
 
-  function createFuture(squares, game) {
-    var ctx = squares.futureCan.getContext("2d");
+  function createFuture() {
+    var ctx = futureCan.getContext("2d");
     // Wipe out the previous future.
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, 1600, 200);
@@ -249,7 +241,7 @@
       }
     }
     // Put the canvas into the image.
-    squares.futureImg.src = squares.futureCan.toDataURL();
+    futureImg.src = futureCan.toDataURL();
   }
 
   // THESE FUNCTIONS DEAL WITH TIMING ——————————————––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -262,58 +254,58 @@
     return min + ':' + sec;
   }
 
-  function times(timer) {
+  function times() {
     var redString, bluString;
     var currentTime = new Date().getTime();
     // Red is in the middle of making a move.
-    if (timer.redStart > timer.bluStart) {
-      redString = convert(timer.redTime + currentTime - timer.redStart);
-      bluString = convert(timer.bluTime);
+    if (redStart > bluStart) {
+      redString = convert(redTime + currentTime - redStart);
+      bluString = convert(bluTime);
     }
     // Blu is in the middle of making a move.
     else {
-      redString = convert(timer.redTime);
-      bluString = convert(timer.bluTime + currentTime - timer.bluStart);
+      redString = convert(redTime);
+      bluString = convert(bluTime + currentTime - bluStart);
     }
     return [redString, bluString];
   }
 
-  function start(timer) {
+  function start() {
     var currentTime = new Date().getTime();
-    timer.redStart = currentTime;
-    timer.handle = setInterval(function() {
-      var yeet = times(timer);
-      timer.redDiv.innerHTML = yeet[0];
-      timer.bluDiv.innerHTML = yeet[1];
+    redStart = currentTime;
+    handle = setInterval(function() {
+      var yeet = times();
+      redDiv.innerHTML = yeet[0];
+      bluDiv.innerHTML = yeet[1];
       console.log("running");
     }, 100);
     console.log("start");
   }
 
-  function flip(timer) {
+  function flip() {
     var currentTime = new Date().getTime();
     // Red is completing its move.
-    if (timer.redStart > timer.bluStart) {
-      timer.redTime += currentTime - timer.redStart;
-      timer.bluStart = currentTime;
+    if (redStart > bluStart) {
+      redTime += currentTime - redStart;
+      bluStart = currentTime;
     }
     // Blu is completing its move.
-    else if (timer.redStart < timer.bluStart) {
-      timer.bluTime += currentTime - timer.bluStart;
-      timer.redStart = currentTime;
+    else if (redStart < bluStart) {
+      bluTime += currentTime - bluStart;
+      redStart = currentTime;
     }
-    // Hopefully timer.redStart and timer.bluStart are never equal...
+    // Hopefully redStart and bluStart are never equal...
     console.log("flip");
   }
 
-  function stop(timer) {
-    clearInterval(timer.handle);
-    timer.handle = 0;
-    timer.redStart = Number.NEGATIVE_INFINITY;
-    timer.bluStart = Number.NEGATIVE_INFINITY;
-    timer.redTime = 0;
-    timer.bluTime = 0;
-    timer.redDiv.innerHTML = "00:00";
-    timer.bluDiv.innerHTML = "00:00";
+  function stop() {
+    clearInterval(handle);
+    handle = 0;
+    redStart = Number.NEGATIVE_INFINITY;
+    bluStart = Number.NEGATIVE_INFINITY;
+    redTime = 0;
+    bluTime = 0;
+    redDiv.innerHTML = "00:00";
+    bluDiv.innerHTML = "00:00";
   }
 })();
