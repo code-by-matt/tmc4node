@@ -9,53 +9,60 @@ function thueMorse(n) {
   return count % 2;
 }
 
-function resetGameStats(gameStats) {
-  gameStats.history = '';
-  gameStats.openRows = [0, 0, 0, 0, 0, 0, 0];
-  gameStats.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
-  gameStats.currentTurn = gameStats.firstTurn;
-  gameStats.future = [0, 0, 0, 0, 0, 0, 0, 0];
-  gameStats.isGameOver = false;
+function resetGame(game) {
+  game.history = '';
+  game.openRows = [0, 0, 0, 0, 0, 0, 0];
+  game.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
+  // game.firstTurn = 0;
+  game.currentTurn = game.firstTurn;
+  game.future = '';
+  game.isGameOver = false;
   for (let i = 0; i < 8; i++) {
-    // XORing with thueMorse(gameStats.firstTurn) ensures that the first player is always red.
-    gameStats.future[i] = thueMorse(gameStats.firstTurn) ^ thueMorse(gameStats.currentTurn + i);
+    // XORing with thueMorse(game.firstTurn) ensures that the first player is always red.
+    if (thueMorse(game.firstTurn) ^ thueMorse(game.currentTurn + i) == 0) {
+      game.future += "r";
+    }
+    else {
+      game.future += "b";
+    }
   }
 }
 
-function updateGameStats(gameStats, col) {
+function updateGame(game, col) {
   // Update history.
-  var row = gameStats.openRows[col];
-  if (gameStats.future[0] == 0) {
-    gameStats.history += "r" + col + row;
-  }
-  else {
-    gameStats.history += "b" + col + row;
-  }
+  var row = game.openRows[col];
+  game.history += game.future[0] + col + row;
   // Update openRows.
-  gameStats.openRows[col] += 1;
+  game.openRows[col] += 1;
   // Update currentTurn.
-  gameStats.currentTurn += 1;
+  game.currentTurn += 1;
   // Update future.
+  game.future = '';
   for (let i = 0; i < 8; i++) {
-    gameStats.future[i] = thueMorse(gameStats.firstTurn) ^ thueMorse(gameStats.currentTurn + i);
+    if (thueMorse(game.firstTurn) ^ thueMorse(game.currentTurn + i) == 0) {
+      game.future += "r";
+    }
+    else {
+      game.future += "b";
+    }
   }
   // Update isGameOver.
-  gameStats.isGameOver = isWin(gameStats);
+  game.isGameOver = isWin(game);
 }
 
 // THESE FUNCTIONS DEAL WITH READING THE GAME DATA –––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-function getCol(boardImg, event) {
-  return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
+function getCol(squares, event) {
+  return Math.floor((7 * (event.pageX - squares.boardImg.offsetLeft))/squares.boardImg.offsetWidth);
 }
 
-function count(gameStats, up, right) {
-  var color = gameStats.history.slice(-3, -2);
-  var col = parseInt(gameStats.history.slice(-2, -1));
-  var row = parseInt(gameStats.history.slice(-1));
+function count(game, up, right) {
+  var color = game.history.slice(-3, -2);
+  var col = parseInt(game.history.slice(-2, -1));
+  var row = parseInt(game.history.slice(-1));
   var count = 0;
   var move = color + col + row
-  while (gameStats.history.includes(move)) {
+  while (game.history.includes(move)) {
     col += right;
     row += up;
     move = color + col + row;
@@ -64,15 +71,15 @@ function count(gameStats, up, right) {
   return count;
 }
 
-function isWin(gameStats) {
-  var hori = count(gameStats, 0, -1) + count(gameStats, 0, 1) - 1;
-  var vert = count(gameStats, -1, 0) + count(gameStats, 1, 0) - 1;
-  var diag = count(gameStats, 1, -1) + count(gameStats, -1, 1) - 1;
-  var antd = count(gameStats, 1, 1) + count(gameStats, -1, -1) - 1;
-  console.log("horizontal: " + hori);
-  console.log("vertical: " + vert);
-  console.log("diagonal: " + diag);
-  console.log("anti-diagonal: " + antd);
+function isWin(game) {
+  var hori = count(game, 0, -1) + count(game, 0, 1) - 1;
+  var vert = count(game, -1, 0) + count(game, 1, 0) - 1;
+  var diag = count(game, 1, -1) + count(game, -1, 1) - 1;
+  var antd = count(game, 1, 1) + count(game, -1, -1) - 1;
+  // console.log("horizontal: " + hori);
+  // console.log("vertical: " + vert);
+  // console.log("diagonal: " + diag);
+  // console.log("anti-diagonal: " + antd);
   if (hori >=4 | vert >= 4 | diag >= 4 | antd >= 4) {
     return true;
   }
@@ -81,8 +88,8 @@ function isWin(gameStats) {
 
 // THESE FUNCTIONS DEAL WITH CREATING THE VISUALS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-function createBoard(boardImg, boardCanvas, gameStats) {
-  var ctx = boardCanvas.getContext("2d");
+function createBoard(squares, game) {
+  var ctx = squares.boardCan.getContext("2d");
   // Wipe out the previous board.
   ctx.fillStyle = "#FFFFFF";
   ctx.fillRect(0, 0, 1400, 1200);
@@ -97,10 +104,10 @@ function createBoard(boardImg, boardCanvas, gameStats) {
   }
   // Draw game history.
   ctx.font = "80px Arial";
-  for (let i = 0; i < gameStats.history.length; i += 3) {
-    let color = gameStats.history.charAt(i);
-    let col = gameStats.history.charAt(i + 1);
-    let row = gameStats.history.charAt(i + 2);
+  for (let i = 0; i < game.history.length; i += 3) {
+    let color = game.history.charAt(i);
+    let col = game.history.charAt(i + 1);
+    let row = game.history.charAt(i + 2);
     let number = (i / 3) + 1;
     if (color == "b") {
       ctx.fillStyle = "#007BFF";
@@ -129,17 +136,17 @@ function createBoard(boardImg, boardCanvas, gameStats) {
       ctx.stroke();
   }
   // Put the canvas into the image.
-  boardImg.src = boardCanvas.toDataURL();
+  squares.boardImg.src = squares.boardCan.toDataURL();
 }
 
-function createCounter(counterImg, counterCanvas, gameStats) {
-  var ctx = counterCanvas.getContext("2d");
-  // Wipe out the previous counter.
+function createFuture(squares, game) {
+  var ctx = squares.futureCan.getContext("2d");
+  // Wipe out the previous future.
   ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, 1600, 200);
   // Draw the future, ooh!
   for (let i = 0; i < 8; i++) {
-    if (gameStats.future[i] == 0) {
+    if (game.future[i] == "r") {
       ctx.fillStyle = "#DC3545";
       ctx.fillRect((200 * i), 0, 200, 200);
     }
@@ -149,18 +156,10 @@ function createCounter(counterImg, counterCanvas, gameStats) {
     }
   }
   // Put the canvas into the image.
-  counterImg.src = counterCanvas.toDataURL();
+  squares.futureImg.src = squares.futureCan.toDataURL();
 }
 
 // THESE FUNCTIONS DEAL WITH TIMING ——————————————––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-var redDiv = document.getElementById("redTime");
-var bluDiv = document.getElementById("bluTime");
-var redStart = Number.NEGATIVE_INFINITY; // The start time of the most recent red move.
-var bluStart = Number.NEGATIVE_INFINITY; // The start time of the most recent blu move.
-var redTime = 0; // The time elapsed for red, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
-var bluTime = 0; // The time elapsed for blu, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
-var handle;        // The integer that stores the repeating thing that start() creates.
 
 function convert(ms) {
   var min = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
@@ -170,53 +169,58 @@ function convert(ms) {
   return min + ':' + sec;
 }
 
-function times() {
+function times(timer) {
   var redString, bluString;
   var currentTime = new Date().getTime();
   // Red is in the middle of making a move.
-  if (redStart > bluStart) {
-    redString = convert(redTime + currentTime - redStart);
-    bluString = convert(bluTime);
+  if (timer.redStart > timer.bluStart) {
+    redString = convert(timer.redTime + currentTime - timer.redStart);
+    bluString = convert(timer.bluTime);
   }
   // Blu is in the middle of making a move.
   else {
-    redString = convert(redTime);
-    bluString = convert(bluTime + currentTime - bluStart);
+    redString = convert(timer.redTime);
+    bluString = convert(timer.bluTime + currentTime - timer.bluStart);
   }
   return [redString, bluString];
 }
 
-function start() {
+function start(timer) {
   var currentTime = new Date().getTime();
-  redStart = currentTime;
-  handle = setInterval(function() {
-    var yeet = times();
-    redDiv.innerHTML = yeet[0];
-    bluDiv.innerHTML = yeet[1];
+  timer.redStart = currentTime;
+  timer.handle = setInterval(function() {
+    var yeet = times(timer);
+    timer.redDiv.innerHTML = yeet[0];
+    timer.bluDiv.innerHTML = yeet[1];
   }, 100);
+  console.log("start");
 }
 
-function flip() {
+function flip(timer) {
   var currentTime = new Date().getTime();
   // Red is completing its move.
-  if (redStart > bluStart) {
-    redTime += currentTime - redStart;
-    bluStart = currentTime;
+  if (timer.redStart > timer.bluStart) {
+    timer.redTime += currentTime - timer.redStart;
+    timer.bluStart = currentTime;
   }
   // Blu is completing its move.
-  else if (redStart < bluStart) {
-    bluTime += currentTime - bluStart;
-    redStart = currentTime;
+  else if (timer.redStart < timer.bluStart) {
+    timer.bluTime += currentTime - timer.bluStart;
+    timer.redStart = currentTime;
   }
-  // Hopefully redStart and bluStart are never equal...
+  // Hopefully timer.redStart and timer.bluStart are never equal...
+  console.log("flip");
 }
 
-function stop() {
-  clearInterval(handle);
-  redStart = Number.NEGATIVE_INFINITY;
-  bluStart = Number.NEGATIVE_INFINITY;
-  redTime = 0;
-  bluTime = 0;
-  redDiv.innerHTML = "00:00";
-  bluDiv.innerHTML = "00:00";
+function stop(timer) {
+  clearInterval(timer.handle);
+  timer.handle = 0;
+  timer.redStart = Number.NEGATIVE_INFINITY;
+  timer.bluStart = Number.NEGATIVE_INFINITY;
+  timer.redTime = 0;
+  timer.bluTime = 0;
+  timer.redDiv.innerHTML = "00:00";
+  timer.bluDiv.innerHTML = "00:00";
 }
+
+var otherTest = 5;

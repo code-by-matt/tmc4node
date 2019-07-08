@@ -18,9 +18,14 @@
       <!-- Inline styling of this image is needed to prevent border wiggle in Chrome. -->
       <img class="row" id="board-img" style="border-style: solid">
       <div class="row border flex justify-content-between">
-        <canvas id="counter-canvas" width="1600" height="200"></canvas>
-        <img class="m4" id="counter-img" height="20">
-        <button class="m4" id="reset">Reset</button>
+        <div class="flex">
+          <canvas id="future-canvas" width="1600" height="200"></canvas>
+          <img class="m4" id="future-img" height="20">
+        </div>
+        <div class="flex">
+          <button class="m4" id="start">Start</button>
+          <button class="m4" id="reset">Reset</button>
+        </div>
       </div>
       <div class="row border flex justify-content-between">
         <div class="flex">
@@ -28,8 +33,8 @@
           <div class="m4 vct lat player">Player 1</div>
         </div>
         <div class="flex">
-          <div id="redTime" class="m4 vct">00:00</div>
-          <div id="bluTime" class="m4 vct">00:00</div>
+          <div id="red-div" class="m4 vct">00:00</div>
+          <div id="blu-div" class="m4 vct">00:00</div>
         </div>
         <div class="flex">
           <div class="m4 vct rat player">Player 2</div>
@@ -42,64 +47,106 @@
     <script>
       document.addEventListener("DOMContentLoaded", function() {
 
-        // Initialize variables. 
-        var boardImg = document.getElementById("board-img");
-        var boardCanvas = document.getElementById("board-canvas");
-        var counterImg = document.getElementById("counter-img");
-        var counterCanvas = document.getElementById("counter-canvas");
-        var gameStats;
+        var test = 4;
 
-        // Establish websocket connection.
+        // The squares object holds document elements that pertain to squares.
+        var squares = {
+          boardCan: document.getElementById("board-canvas"),
+          boardImg: document.getElementById("board-img"),
+          futureCan: document.getElementById("future-canvas"),
+          futureImg: document.getElementById("future-img"),
+        };
+
+        // The timer object holds document elements and numbers that pertain to the timer.
+        var timer = {
+          startBtn: document.getElementById("start"),
+          resetBtn: document.getElementById("reset"),
+          redDiv: document.getElementById("red-div"),
+          bluDiv: document.getElementById("blu-div"),
+          redStart: Number.NEGATIVE_INFINITY, // The start time of the most recent red move/pair of moves.
+          bluStart: Number.NEGATIVE_INFINITY, // The start time of the most recent blu move/pair of moves.
+          redTime: 0, // The time elapsed for red, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+          bluTime: 0, // The time elapsed for blu, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+          handle: 0, // This integer is zero iff the timer is not running.
+        };
+
+        // The game variable contains the data that we wish to share through a WebSocket.
+        var game;
+
+        // Establish websocket connection and request game from server.
+        // Requests go from client to server, responses go from server to client.
         var socket = io();
-
-        // Request the game stats from the server.
-        socket.emit('stats request');
+        socket.emit('game request');
 
         // Change cursor style when appropriate.
-        boardImg.addEventListener("mousemove",  function(event) {
-          var col = getCol(boardImg, event);
-          if (gameStats.openRows[col] < 6 && !gameStats.isGameOver) {
-            boardImg.style.cursor = "pointer";
+        squares.boardImg.addEventListener("mousemove",  function(event) {
+          var col = getCol(squares, event);
+          if (game.openRows[col] < 6 && !game.isGameOver) {
+            squares.boardImg.style.cursor = "pointer";
           }
           else {
-            boardImg.style.cursor = "default";
+            squares.boardImg.style.cursor = "default";
           }
         });
 
-        // Update gameStats, send gameStats to server, and flip timer when a valid move is made.
-        boardImg.addEventListener("click", function(event) {
-          var col = getCol(boardImg, event);
-          if (gameStats.openRows[col] < 6 && !gameStats.isGameOver) {
-            if (gameStats.history == "") start();
-            else flip();
-            updateGameStats(gameStats, col);
-            socket.emit('stats', gameStats);
-          }
+        // When start is clicked, send start request.
+        timer.startBtn.addEventListener("click", function() {
+          socket.emit('start request');
         });
 
-        // Update board and gameStats when server broadcasts stats.
-        socket.on('stats', function(newGameStats) {
-          gameStats = newGameStats;
-          createBoard(boardImg, boardCanvas, gameStats);
-          createCounter(counterImg, counterCanvas, gameStats);
-          if (gameStats.isGameOver) {
-            var winner = "Red";
-            if (gameStats.history.slice(-3, -2) == "b") {
-              winner = "Blue";
-            }
-            document.getElementById("marquee").innerHTML = winner + " wins by connection!";
-          }
-          else {
-            document.getElementById("marquee").innerHTML = "Thue-Morse Connect Four";
-          }
-        });
-
-        // Reset game when reset is clicked.
-        document.getElementById("reset").addEventListener("click", function() {
-          stop();
-          resetGameStats(gameStats);
-          socket.emit('stats', gameStats);
+        // When reset is clicked, reset game and send reset request.
+        timer.resetBtn.addEventListener("click", function() {
+          resetGame(game);
+          socket.emit('reset request', game);
           console.log("reset!");
+        });
+
+        // When a valid move is made, update game and send move request.
+        squares.boardImg.addEventListener("click", function(event) {
+          var col = getCol(squares, event);
+          if (game.openRows[col] < 6 && !game.isGameOver) {
+            updateGame(game, col);
+            socket.emit('move request', game);
+          }
+        });
+
+        socket.on('game response', function(newGame) {
+          // Update game, make all the color squares look right.
+          game = newGame;
+          createBoard(squares, game);
+          createFuture(squares, game);
+        });
+
+        socket.on('reset response', function(newGame) {
+          stop(timer);
+          // Update game, make all the color squares look right.
+          game = newGame;
+          createBoard(squares, game);
+          createFuture(squares, game);
+        });
+
+        socket.on('start response', function() {
+          start(timer);
+        });
+
+        socket.on('move response', function(newGame) {
+          // Update game, make all the color squares look right.
+          game = newGame;
+          createBoard(squares, game);
+          createFuture(squares, game);
+          // Make the marquee look right.
+          var marquee;
+          if (game.isGameOver) {
+            if (game.history.slice(-3, -2) == "r") marquee = "Red wins by connection!";
+            else marquee = "Blue wins by connection!";
+          }
+          else {
+            marquee = "Thue-Morse Connect Four";
+          }
+          document.getElementById("marquee").innerHTML = marquee;
+          // Flip the timer if necessary.
+          if (game.history == '') stop(timer);
+          else if (game.history.slice(-3, -2) != game.future[0]) flip(timer);
         });
         
       });

@@ -37,24 +37,36 @@ var server = app.listen(8000, function() {
 // mount socket.io onto our server
 var io = require('socket.io')(server);
 
-// Handle websocket connections.
+// Handle websocket connections. Requests go from client to server, responses go from server to client.
 io.on('connection', function(socket) {
 
   // Connection check.
   console.log('a user connected!');
 
-  socket.on('stats request', function() {
+  socket.on('game request', function() {
     db.any('SELECT * FROM testgame LIMIT 1').then(function(data) {
-      io.emit('stats', data[0]);
-      console.log('stats sent to client!');
+      io.emit('game response', data[0]);
+      console.log('game sent to client!');
     });
   });
 
-  socket.on('stats', function(gameStats) {
+  socket.on('move request', function(game) {
     db.none('UPDATE testgame SET "history" = $1, "openRows" = $2, "currentTurn" = $3, "future" = $4, "firstTurn" = $5, "isGameOver" = $6',
-    [gameStats.history, gameStats.openRows, gameStats.currentTurn, gameStats.future, gameStats.firstTurn, gameStats.isGameOver]);
-    io.emit('stats', gameStats);
-    console.log('stats sent to client!');
+    [game.history, game.openRows, game.currentTurn, game.future, game.firstTurn, game.isGameOver]);
+    io.emit('move response', game);
+    console.log('move recorded, game sent to client!');
+  });
+
+  socket.on('reset request', function(game) {
+    db.none('UPDATE testgame SET "history" = $1, "openRows" = $2, "currentTurn" = $3, "future" = $4, "firstTurn" = $5, "isGameOver" = $6',
+    [game.history, game.openRows, game.currentTurn, game.future, game.firstTurn, game.isGameOver]);
+    io.emit('reset response', game);
+    console.log('reset recorded, game sent to client!');
+  });
+
+  socket.on('start request', function() {
+    io.emit('start response');
+    console.log('start recorded, games started!');
   });
 
   // disconnection check
