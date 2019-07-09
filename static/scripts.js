@@ -6,45 +6,50 @@
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
 
-  // Make a blank game.
-  var game = {id: sessionStorage.id};
-  logic.reset(game);
-
-  // Establish a websocket connection, send the blank game to the database, join the right room, display the game id.
+  // Establish a websocket connection.
   var socket = io();
-  socket.emit('new game request', game);
+
+  // Create a new game or join an existing game.
+  var game = {};
+  if (sessionStorage.id == null) {
+    sessionStorage.id = Math.random().toString(36).substr(6);
+    game.id = sessionStorage.id;
+    logic.reset(game);
+    socket.emit('new game request', game);
+  }
+  else {
+    game.id = sessionStorage.id;
+    socket.emit('join game request', game.id); 
+  }
   document.getElementById("id").innerHTML = game.id;
 
-  function attachListeners() {
-    // Change cursor style when appropriate.
-    boardImg.addEventListener("mousemove",  function(event) {
-      var col = squares.getCol(event);
-      if (game.openRows[col] < 6 && !game.isOver) {
-        boardImg.style.cursor = "pointer";
-      }
-      else {
-        boardImg.style.cursor = "default";
-      }
-    });
-    // When a valid move is made, update game and send move request.
-    boardImg.addEventListener("click", function(event) {
-      var col = squares.getCol(event);
-      if (game.openRows[col] < 6 && !game.isOver) {
-        logic.update(game, col);
-        socket.emit('move request', game);
-      }
-    });
-    // When start is clicked, send start request.
-    startBtn.addEventListener("click", function() {
-      socket.emit('start request');
-    });
-    // When reset is clicked, reset game and send reset request.
-    resetBtn.addEventListener("click", function() {
-      logic.reset(game);
-      socket.emit('reset request', game);
-    });
-  }
+  // Change cursor style when appropriate.
+  boardImg.addEventListener("mousemove",  function(event) {
+    var col = squares.getCol(event);
+    if (game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
+    else boardImg.style.cursor = "default";
+  });
 
+  // When a valid move is made, update game and send move request.
+  boardImg.addEventListener("click", function(event) {
+    var col = squares.getCol(event);
+    if (game.openRows[col] < 6 && !game.isOver) {
+      logic.update(game, col);
+      socket.emit('update game request', game);
+    }
+  });
+
+  // When start is clicked, send start request.
+  startBtn.addEventListener("click", function() {
+    socket.emit('start request');
+  });
+
+  // When reset is clicked, reset game and send reset request.
+  resetBtn.addEventListener("click", function() {
+    logic.reset(game);
+    socket.emit('reset request', game);
+  });
+  
   socket.on('reset response', function(newGame) {
     timer.stop();
     console.log("timer stopped!");
@@ -70,7 +75,7 @@
     popDiv.innerHTML = "Room contains " + n + ".";
   });
 
-  socket.on('move response', function(newGame) {
+  socket.on('game response', function(newGame) {
     // Update game, make all the color squares look right.
     game = newGame;
     squares.createBoard(game);

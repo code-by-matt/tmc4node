@@ -14,13 +14,6 @@ var cn = {
 var db = pgp(cn);
 module.exports = db; // Not sure what this line does tbh...
 
-// Test query.
-db.any('SELECT * FROM testgame LIMIT 1').then(function(data) {
-  console.log(data[0]);
-}).catch(function(error) {
-  console.log("problem!");
-});
-
 // Middleware?
 app.use(express.static('static'));
 
@@ -69,18 +62,26 @@ io.on('connection', function(socket) {
     socket.join(game.id);
     db.none('INSERT INTO games ("id", "history", "future", "openRows", "firstTurn", "currentTurn", "isOver") VALUES ($1, $2, $3, $4, $5, $6, $7)',
     [game.id, game.history, game.future, game.openRows, game.firstTurn, game.currentTurn, game.isOver]);
+    io.to(game.id).emit('game response', game);
     console.log('game ' + game.id + ' created!');
   });
 
-  // socket.on('join request', function(id) {
-  //   socket.join('ROOM');
-  //   db.any('SELECT * FROM testgame LIMIT 1').then(function(data) {
-  //     io.to(id).emit('join response', data[0]);
-  //     console.log('someone joined the room!');
-  //   });
-  //   io.emit('population response', io.sockets.adapter.rooms['ROOM'].length);
-  //   console.log('population: ' + io.sockets.adapter.rooms['ROOM'].length);
-  // });
+  socket.on('join game request', function(id) {
+    if (io.sockets.adapter.rooms[id].length == 1) {
+      socket.join(id);
+      db.any('SELECT * FROM games WHERE "id" = $1', [id]).then(function(data) {
+        io.to(id).emit('game response', data[0]);
+        console.log('joined game ' + id + '!');
+      });
+    }
+  });
+
+  socket.on('update game request', function(game) {
+    db.none('UPDATE games SET "history" = $1, "future" = $2, "openRows" = $3, "firstTurn" = $4, "currentTurn" = $5, "isOver" = $6',
+    [game.history, game.future, game.openRows, game.firstTurn, game.currentTurn, game.isGameOver]);
+    io.to(game.id).emit('game response', game);
+    console.log('game ' + game.id + ' updated!');
+  });
 
   // disconnection check
   socket.on('disconnect', function() {
