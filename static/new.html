@@ -7,17 +7,19 @@
     <!-- My own CSS, favicon, title. -->
     <link rel="stylesheet" type="text/css" href='style.css'>
     <link rel="icon" type="image/png" href='logo.svg'>
-    <title>TMC4 | Welcome!</title>
+    <title>TMC4 | New Game</title>
   </head>
   <body>
     <div class="container">
-      <div class="row border flex justify-content-center">
-        <div class="m4">Welcome to Thue-Morse Connect Four!</div>
-      </div>
-      <div class="row border flex justify-content-between">
-        <a href="new.html" class="m4">New Game</a>
-        <a href="test.html" class="m4">Join Game</a>
-      </div>
+      <form class="row border flex justify-content-between" action="play.html">
+        <div class="m4">
+          <input id="name" type="text" placeholder="Player Name" required>
+        </div>
+        <div class="m4">
+          <input id="new" type="submit" value="Submit">
+        </div>
+      </form>
     </div>
+    <script type="text/javascript" src='new.js'></script>
   </body>
 </html>

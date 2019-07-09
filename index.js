@@ -26,7 +26,10 @@ app.use(express.static('static'));
 
 // Routes.
 app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/index.html');
+  response.sendFile(__dirname + '/static/index.html');
+});
+app.get('/test/', function(request, response) {
+  response.sendFile(__dirname + '/static/test.html');
 });
 
 // Start up a server listening on port 8000.
@@ -59,18 +62,23 @@ io.on('connection', function(socket) {
 
   socket.on('start request', function() {
     io.emit('start response');
-    console.log('start recorded, games started!');
+    console.log('start response sent!');
   });
 
   socket.on('join request', function(id) {
-    socket.join('ROOM');
-    db.any('SELECT * FROM testgame LIMIT 1').then(function(data) {
-      io.to(id).emit('join response', data[0]);
-      console.log('someone joined the room!');
-    });
-    io.emit('population response', io.sockets.adapter.rooms['ROOM'].length);
-    console.log('population: ' + io.sockets.adapter.rooms['ROOM'].length);
+    socket.join(id);
+    console.log('joined game ' + id + '!');
   });
+
+  // socket.on('join request', function(id) {
+  //   socket.join('ROOM');
+  //   db.any('SELECT * FROM testgame LIMIT 1').then(function(data) {
+  //     io.to(id).emit('join response', data[0]);
+  //     console.log('someone joined the room!');
+  //   });
+  //   io.emit('population response', io.sockets.adapter.rooms['ROOM'].length);
+  //   console.log('population: ' + io.sockets.adapter.rooms['ROOM'].length);
+  // });
 
   // disconnection check
   socket.on('disconnect', function() {

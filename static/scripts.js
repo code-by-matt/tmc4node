@@ -3,23 +3,16 @@
 
   // Grab lots of document elements.
   var boardImg = document.getElementById("board-img");
-  var startBtn = document.getElementById("start"); // Timer start and reset buttons, duh.
+  var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
-  var joinBtn = document.getElementById("join");
-  var statDiv = document.getElementById("status");
-  var popDiv = document.getElementById("pop");
 
-  // Establish a websocket connection and join the room. Requests go from client to server, responses go from server to client.
+  // Establish a websocket connection, join the room with the proper id, display that id.
   var socket = io();
+  socket.emit('join request', sessionStorage.id);
+  document.getElementById("id").innerHTML = sessionStorage.id;
 
   // The game data gets updated when the client receives a join response.
   var game = null;
-
-  // When the join button is clicked, send a join request along with this socket's id.
-  // This is the only event listener that is attached before a client joins the room.
-  joinBtn.addEventListener("click", function() {
-    socket.emit('join request', socket.id);
-  });
 
   function attachListeners() {
     // Change cursor style when appropriate.
@@ -64,13 +57,13 @@
     timer.start();
   });
 
-  socket.on('join response', function(newGame) {
-    statDiv.innerHTML = "You ARE in the room."
-    game = newGame;
-    squares.createBoard(game);
-    squares.createFuture(game);
-    attachListeners();
-  });
+  // socket.on('join response', function(newGame) {
+  //   statDiv.innerHTML = "You ARE in the room."
+  //   game = newGame;
+  //   squares.createBoard(game);
+  //   squares.createFuture(game);
+  //   attachListeners();
+  // });
 
   socket.on('population response', function(n) {
     popDiv.innerHTML = "Room contains " + n + ".";
