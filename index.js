@@ -17,13 +17,10 @@ module.exports = db; // Not sure what this line does tbh...
 // Middleware?
 app.use(express.static('static'));
 
-// Routes.
-app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/static/index.html');
-});
-app.get('/test/', function(request, response) {
-  response.sendFile(__dirname + '/static/test.html');
-});
+// Routes. LOL THESE ARE UNNECESSARY.
+// app.get('/', function(request, response) {
+//   response.sendFile(__dirname + '/static/index.html');
+// });
 
 // Start up a server listening on port 8000.
 var server = app.listen(8000, function() {
