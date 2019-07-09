@@ -19,7 +19,7 @@
     // Change cursor style when appropriate.
     boardImg.addEventListener("mousemove",  function(event) {
       var col = squares.getCol(event);
-      if (game.openRows[col] < 6 && !game.isGameOver) {
+      if (game.openRows[col] < 6 && !game.isOver) {
         boardImg.style.cursor = "pointer";
       }
       else {
@@ -29,7 +29,7 @@
     // When a valid move is made, update game and send move request.
     boardImg.addEventListener("click", function(event) {
       var col = squares.getCol(event);
-      if (game.openRows[col] < 6 && !game.isGameOver) {
+      if (game.openRows[col] < 6 && !game.isOver) {
         logic.update(game, col);
         socket.emit('move request', game);
       }
@@ -77,7 +77,7 @@
     squares.createFuture(game);
     // Make the marquee look right.
     var marquee;
-    if (game.isGameOver) {
+    if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee = "Red wins by connection!";
       else marquee = "Blue wins by connection!";
     }
