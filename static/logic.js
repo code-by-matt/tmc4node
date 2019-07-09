@@ -50,7 +50,7 @@ var logic = (function() {
     // game.firstTurn = 0;
     game.currentTurn = game.firstTurn;
     game.future = '';
-    game.isGameOver = false;
+    game.isOver = false;
     for (let i = 0; i < 8; i++) {
       // XORing with thueMorse(game.firstTurn) ensures that the first player is always red.
       if (thueMorse(game.firstTurn) ^ thueMorse(game.currentTurn + i) == 0) {
@@ -72,7 +72,7 @@ var logic = (function() {
       if (thueMorse(game.firstTurn) ^ thueMorse(game.currentTurn + i) == 0) game.future += "r";
       else game.future += "b";
     }
-    game.isGameOver = isWin(game);
+    game.isOver = isWin(game);
   }
 
   return {

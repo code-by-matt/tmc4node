@@ -65,9 +65,11 @@ io.on('connection', function(socket) {
     console.log('start response sent!');
   });
 
-  socket.on('join request', function(id) {
-    socket.join(id);
-    console.log('joined game ' + id + '!');
+  socket.on('new game request', function(game) {
+    socket.join(game.id);
+    db.none('INSERT INTO games ("id", "history", "future", "openRows", "firstTurn", "currentTurn", "isOver") VALUES ($1, $2, $3, $4, $5, $6, $7)',
+    [game.id, game.history, game.future, game.openRows, game.firstTurn, game.currentTurn, game.isOver]);
+    console.log('game ' + game.id + ' created!');
   });
 
   // socket.on('join request', function(id) {

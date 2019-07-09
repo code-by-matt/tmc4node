@@ -6,13 +6,14 @@
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
 
-  // Establish a websocket connection, join the room with the proper id, display that id.
-  var socket = io();
-  socket.emit('join request', sessionStorage.id);
-  document.getElementById("id").innerHTML = sessionStorage.id;
+  // Make a blank game.
+  var game = {id: sessionStorage.id};
+  logic.reset(game);
 
-  // The game data gets updated when the client receives a join response.
-  var game = null;
+  // Establish a websocket connection, send the blank game to the database, join the right room, display the game id.
+  var socket = io();
+  socket.emit('new game request', game);
+  document.getElementById("id").innerHTML = game.id;
 
   function attachListeners() {
     // Change cursor style when appropriate.
