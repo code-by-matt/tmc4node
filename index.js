@@ -52,13 +52,11 @@ io.on('connection', function(socket) {
   });
 
   socket.on('join game request', function(id) {
-    if (io.sockets.adapter.rooms[id].length == 1) {
-      socket.join(id);
-      db.any('SELECT * FROM games WHERE "id" = $1', [id]).then(function(data) {
-        io.to(id).emit('game response', data[0]);
-        console.log('joined game ' + id + '!');
-      });
-    }
+    socket.join(id);
+    db.any('SELECT * FROM games WHERE "id" = $1', [id]).then(function(data) {
+      io.to(id).emit('game response', data[0]);
+      console.log('joined game ' + id + '!');
+    });
   });
 
   socket.on('update game request', function(game) {

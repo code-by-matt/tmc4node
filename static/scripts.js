@@ -3,9 +3,10 @@
 
   // Grab lots of document elements.
   var boardImg = document.getElementById("board-img");
+  var marquee = document.getElementById("marquee");
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
-
+  
   // Establish a websocket connection.
   var socket = io();
 
@@ -16,6 +17,7 @@
     game.id = sessionStorage.id;
     logic.reset(game);
     socket.emit('new game request', game);
+    marquee.innerHTML = sessionStorage.name + " waiting for second player...";
   }
   else {
     game.id = sessionStorage.id;
@@ -73,18 +75,14 @@
     squares.createBoard(game);
     squares.createFuture(game);
     // Make the marquee look right.
-    var marquee;
     if (game.isOver) {
-      if (game.history.slice(-3, -2) == "r") marquee = "Red wins by connection!";
-      else marquee = "Blue wins by connection!";
+      if (game.history.slice(-3, -2) == "r") marquee.innerHTML = "Red wins by connection!";
+      else marquee.innerHTML = "Blue wins by connection!";
       timer.stop();
     }
-    else {
-      marquee = "Thue-Morse Connect Four";
-    }
-    document.getElementById("marquee").innerHTML = marquee;
     // Flip the timer if necessary.
     if (game.history == '') timer.stop();
     else if (game.history.slice(-3, -2) != game.future[0]) timer.flip();
+    console.log(socket.id);
   });
 })();
