@@ -26,14 +26,14 @@
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
     var col = squares.getCol(event);
-    if (game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
+    if (timer.isRunning() && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
     else boardImg.style.cursor = "default";
   });
 
-  // When a valid move is made, update game and send move request.
+  // When a valid move is made, update game and send update game request.
   boardImg.addEventListener("click", function(event) {
     var col = squares.getCol(event);
-    if (game.openRows[col] < 6 && !game.isOver) {
+    if (timer.isRunning() && game.openRows[col] < 6 && !game.isOver) {
       logic.update(game, col);
       socket.emit('update game request', game);
     }
@@ -63,14 +63,6 @@
     timer.start();
   });
 
-  // socket.on('join response', function(newGame) {
-  //   statDiv.innerHTML = "You ARE in the room."
-  //   game = newGame;
-  //   squares.createBoard(game);
-  //   squares.createFuture(game);
-  //   attachListeners();
-  // });
-
   socket.on('population response', function(n) {
     popDiv.innerHTML = "Room contains " + n + ".";
   });
@@ -85,6 +77,7 @@
     if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee = "Red wins by connection!";
       else marquee = "Blue wins by connection!";
+      timer.stop();
     }
     else {
       marquee = "Thue-Morse Connect Four";

@@ -17,11 +17,6 @@ module.exports = db; // Not sure what this line does tbh...
 // Middleware?
 app.use(express.static('static'));
 
-// Routes. LOL THESE ARE UNNECESSARY.
-// app.get('/', function(request, response) {
-//   response.sendFile(__dirname + '/static/index.html');
-// });
-
 // Start up a server listening on port 8000.
 var server = app.listen(8000, function() {
   console.log("listening on port 8000!");
@@ -35,13 +30,6 @@ io.on('connection', function(socket) {
 
   // Connection check.
   console.log('a user connected!');
-
-  socket.on('move request', function(game) {
-    db.none('UPDATE testgame SET "history" = $1, "openRows" = $2, "currentTurn" = $3, "future" = $4, "firstTurn" = $5, "isGameOver" = $6',
-    [game.history, game.openRows, game.currentTurn, game.future, game.firstTurn, game.isGameOver]);
-    io.emit('move response', game);
-    console.log('move recorded, game sent to client!');
-  });
 
   socket.on('reset request', function(game) {
     db.none('UPDATE testgame SET "history" = $1, "openRows" = $2, "currentTurn" = $3, "future" = $4, "firstTurn" = $5, "isGameOver" = $6',

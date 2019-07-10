@@ -79,9 +79,14 @@ var timer = (function() {
     bluDiv.innerHTML = "00:00";
   }
 
+  function isRunning() {
+    return handle != 0;
+  }
+
   return {
     start: start,
     flip: flip,
     stop: stop,
+    isRunning: isRunning,
   }
 })();
