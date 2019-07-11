@@ -7,7 +7,7 @@ var logic = (function() {
     var col = parseInt(game.history.slice(-2, -1));
     var row = parseInt(game.history.slice(-1));
     var count = 0;
-    var move = color + col + row
+    var move = color + col + row;
     while (game.history.includes(move)) {
       col += right;
       row += up;
@@ -35,7 +35,7 @@ var logic = (function() {
 
   // "Private" function that calculates the nth Thue-Morse number, helps with reset() and update().
   function thueMorse(n) {
-    var count = 0
+    var count = 0;
     while (n != 0) {
       n = n & (n - 1);
       count++;
@@ -78,5 +78,5 @@ var logic = (function() {
   return {
     reset: reset,
     update: update,
-  }
+  };
 })();

@@ -17,6 +17,16 @@ module.exports = db; // Not sure what this line does tbh...
 // Middleware?
 app.use(express.static('static'));
 
+app.get('/play', function(request, response) {
+  response.sendFile(__dirname + '/static/play.html');
+  response.send(request.query);
+  console.log(request.query);
+});
+
+app.get('/new', function(request, response) {
+  response.sendFile(__dirname + '/static/new.html');
+});
+
 // Start up a server listening on port 8000.
 var server = app.listen(8000, function() {
   console.log("listening on port 8000!");
@@ -57,6 +67,24 @@ io.on('connection', function(socket) {
       io.to(id).emit('game response', data[0]);
       console.log('joined game ' + id + '!');
     });
+  });
+
+  socket.on('join room', function(id) {
+    if (io.sockets.adapter.rooms == undefined) { // First connection ever.
+      socket.join(id);
+      console.log('joined game ' + id);
+    }
+    else if (io.sockets.adapter.rooms[id] == undefined) { // First to join this room.
+      socket.join(id);
+      console.log('first to join game ' + id);
+    }
+    else if (io.sockets.adapter.rooms[id].length == 1) { // Second to join this room.
+      socket.join(id);
+      console.log('second to join game ' + id);
+    }
+    else { // Third connection cannot join!
+      console.log('cannot join game ' + id + ', it is full!');
+    }
   });
 
   socket.on('update game request', function(game) {
