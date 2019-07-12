@@ -1,0 +1,14 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-widdth, initial-scale=1, shrink-to-fit=no")
+    link(rel="stylesheet" type="text/css" href="style.css")
+    title TMC4 | New Game
+  body
+    div(class="container")
+      form(action="play" method="GET" class="row border flex justify-content-between")
+        div(class="m4")
+          input(name="name" type="text" placeholder="Enter a name." required)
+        div(class="m4")
+          input(type="submit" value="New Game")

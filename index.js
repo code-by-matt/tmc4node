@@ -21,8 +21,21 @@ app.set('view engine', 'pug');
 // Allow Express to access static files.
 app.use(express.static('static'));
 
+// Routing.
 app.get('/', function(request, response) {
   response.render('index');
+});
+app.get('/new', function(request, response) {
+  response.render('new');
+});
+app.get('/join', function(request, response) {
+  response.render('join');
+});
+app.get('/play', function(request, response) {
+  response.render('play', {
+    name: request.query.name,
+    id: request.query.id,
+  });
 });
 
 // Start up a server listening on port 8000.
