@@ -38,5 +38,7 @@ html(lang="en")
     script(src="/logic.js")
     script(src="/squares.js")
     script(src="/timer.js")
+    //(Pug passes us the game object)
+    script var game = {name: "#{name}"};
     //Gives us the main script.
     script(src="/main.js")

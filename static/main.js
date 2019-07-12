@@ -10,20 +10,24 @@
   // Establish a websocket connection.
   var socket = io();
 
+  if (game != undefined) {
+    marquee.innerHTML = "game not null!";
+  }
+
   // Create a new game or join an existing game.
-  var game = {};
-  if (sessionStorage.id == null) {
-    sessionStorage.id = Math.random().toString(36).substr(6);
-    game.id = sessionStorage.id;
-    logic.reset(game);
-    socket.emit('new game request', game);
-    marquee.innerHTML = sessionStorage.name + " waiting for second player...";
-  }
-  else {
-    game.id = sessionStorage.id;
-    socket.emit('join game request', game.id); 
-  }
-  document.getElementById("id").innerHTML = game.id;
+  // var game = {};
+  // if (sessionStorage.id == null) {
+  //   sessionStorage.id = Math.random().toString(36).substr(6);
+  //   game.id = sessionStorage.id;
+  //   logic.reset(game);
+  //   socket.emit('new game request', game);
+  //   marquee.innerHTML = sessionStorage.name + " waiting for second player...";
+  // }
+  // else {
+  //   game.id = sessionStorage.id;
+  //   socket.emit('join game request', game.id); 
+  // }
+  // document.getElementById("id").innerHTML = game.id;
 
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {

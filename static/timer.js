@@ -88,5 +88,5 @@ var timer = (function() {
     flip: flip,
     stop: stop,
     isRunning: isRunning,
-  }
+  };
 })();
