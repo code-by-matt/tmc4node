@@ -30,7 +30,7 @@ html(lang="en")
           div(id="red-div" class="m4 vct") 00:00
           div(id="blu-div" class="m4 vct") 00:00
         div(class="flex")
-          div(class="m4 vct rat player") Player 2
+          div(id="opponent" class="m4 vct rat player")= opponent
           img(class="m4" width="20" height="20" style="background-color: #007BFF")
     //Gives us the socket.io framework.
     script(src="/socket.io/socket.io.js")
@@ -39,6 +39,6 @@ html(lang="en")
     script(src="/squares.js")
     script(src="/timer.js")
     //(Pug passes us the game object)
-    script var game = {name: "#{name}"};
+    script var game = {id: "#{id}"};
     //Gives us the main script.
     script(src="/main.js")
