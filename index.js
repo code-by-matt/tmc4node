@@ -14,8 +14,16 @@ var cn = {
 var db = pgp(cn);
 module.exports = db; // Not sure what this line does tbh...
 
-// Middleware?
+// Use Pug for templates.
+app.set('views', './views');
+app.set('view engine', 'pug');
+
+// Allow Express to access static files.
 app.use(express.static('static'));
+
+app.get('/', function(request, response) {
+  response.render('index');
+});
 
 // Start up a server listening on port 8000.
 var server = app.listen(8000, function() {
