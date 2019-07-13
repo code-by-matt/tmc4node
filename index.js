@@ -44,12 +44,16 @@ function createGame(request, response, next) {
     next();
   }
   else {
-    request.body.id = Math.random().toString(36).substr(6);
-    db.none('INSERT INTO games ("id", "red") VALUES ($1, $2)',
-    [request.body.id, request.body.name]).catch(function(error) {
+    db.one('INSERT INTO games ("id", "red") VALUES ($1, $2) RETURNING "id"',
+    [Math.random().toString(36).substr(6), request.body.name]).then(function(data) {
+      response.render('play', {
+        id: data.id,
+        red: request.body.name,
+        firstTurn: -1,
+      });
+    }).catch(function(error) {
       console.log(error);
     });
-    next();
   }
 }
 
@@ -57,41 +61,35 @@ function createGame(request, response, next) {
 // at the database. If the data lands in a row, then that game exists. If the data
 // lands nowhere, redirect to an error page.
 function joinGame(request, response, next) {
-  if (request.body.id == null) {
-    next();
-  }
-  else {
-    db.oneOrNone('UPDATE games SET "blue" = $1, "firstTurn" = $2 WHERE "id" = $3 RETURNING "id"',
-    [request.body.name, Math.floor(Math.random() * 5000) * 2, request.body.id]).then(function(data) {
-      if (data == null) {
-        response.redirect('/game-not-found');
-      }
-      else {
-        next();
-      }
-    }).catch(function(error) {
-      console.log(error);
-    });
-  }
-}
-
-// Show a game page with none of the info filled in. That info is sent
-// through a socket connection.
-function renderPlay(request, response, next) {
-  response.render('play', {id: request.body.id});
-  next();
+  db.oneOrNone('UPDATE games SET "blue" = $1, "firstTurn" = $2 WHERE "id" = $3 RETURNING "red", "firstTurn"',
+  [request.body.name, Math.floor(Math.random() * 5000) * 2, request.body.id]).then(function(data) {
+    if (data == null) {
+      response.redirect('/game-not-found');
+    }
+    else {
+      response.render('play', {
+        id: request.body.id,
+        red: data.red,
+        blu: request.body.name,
+        firstTurn: data.firstTurn,
+      });
+      next();
+    }
+  }).catch(function(error) {
+    console.log(error);
+  });
 }
 
 // Emit the initial game data (or however much of it is currently available)
-// to all players in the right room.
-function emitData(request, response, next) {
+// to all players in the right room, though it realy only affects
+// the player who created the room.
+function emitData(request, response) {
   db.one('SELECT "red", "blue", "firstTurn" FROM games WHERE "id" = $1', [request.body.id]).then(function(data) {
-    io.to(request.body.id).emit('introductions', data);
+    io.to(request.body.id).emit('sync', data);
     console.log('this works!');
   }).catch(function(error) {
     console.log(error);
   });
-  next();
 }
 
 // ROUTING –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -108,7 +106,7 @@ app.get('/join', function(request, response) {
 app.get('/play', function(request, response) {
   response.render('play');
 });
-app.post('/play', [joinGame, createGame, renderPlay, emitData]); // We have joinGame before createGame so that renderPlay receives the correct id.
+app.post('/play', [createGame, joinGame, emitData]);
 app.get('/game-not-found', function(request, response) {
   response.render('game-not-found');
 });

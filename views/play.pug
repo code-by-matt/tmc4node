@@ -11,7 +11,7 @@ html(lang="en")
         div(class="flex")
           img(class="m4" height="20" src="logo.svg")
           div(id="marquee" class="m4 vct") Thue-Morse Connect Four
-        div(id="id" class="m4 vct")=id
+        div(id="id" class="m4 vct")= id
       canvas(id="board-canvas" width="1400" height="1200")
       //Inline styling of this image is needed to prevent border wiggle in Chrome.
       img(id="board-img" class="row" style="border-style: solid")
@@ -25,12 +25,12 @@ html(lang="en")
       div(class="row border flex justify-content-between")
         div(class="flex")
           img(class="m4" width="20" height="20" style="background-color: #DC3545")
-          div(id="red-name" class="m4 vct lat player")
+          div(id="red-name" class="m4 vct lat player")= red
         div(class="flex")
           div(id="red-div" class="m4 vct") 00:00
           div(id="blu-div" class="m4 vct") 00:00
         div(class="flex")
-          div(id="blu-name" class="m4 vct rat player")
+          div(id="blu-name" class="m4 vct rat player")= blu
           img(class="m4" width="20" height="20" style="background-color: #007BFF")
     //Gives us the socket.io framework.
     script(src="/socket.io/socket.io.js")
@@ -39,6 +39,11 @@ html(lang="en")
     script(src="/squares.js")
     script(src="/timer.js")
     //(Pug passes us the game object)
-    script var game = {id: "#{id}"};
+    script.
+      var game = {};
+      game.id = "#{id}";
+      game.red = "#{red}";
+      game.blu = "#{blu}";
+      game.firstTurn = #{firstTurn};
     //Gives us the main script.
     script(src="/main.js")

@@ -57,9 +57,10 @@
     timer.start();
   });
 
-  socket.on('introductions', function(data) {
+  socket.on('sync', function(data) {
     game.red = data.red;
     game.blu = data.blue;
+    game.firstTurn = data.firstTurn;
     redName.innerHTML = game.red;
     bluName.innerHTML = game.blu;
   });

@@ -87,5 +87,5 @@ var squares = (function() {
     getCol: getCol,
     createFuture: createFuture,
     createBoard: createBoard,
-  }
+  };
 })();
