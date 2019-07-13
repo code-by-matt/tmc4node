@@ -29,21 +29,6 @@ module.exports = db; // Not sure what this line does tbh...
 // Allow Express to access static files.
 app.use(express.static('static'));
 
-<<<<<<< HEAD
-app.get('/play', function(request, response) {
-  response.sendFile(__dirname + '/static/play.html');
-  response.send(request.query);
-  console.log(request.query);
-});
-
-app.get('/new', function(request, response) {
-  response.sendFile(__dirname + '/static/new.html');
-});
-
-// Start up a server listening on port 8000.
-var server = app.listen(8000, function() {
-  console.log("listening on port 8000!");
-=======
 // Allow Express to parse POST requests.
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -122,7 +107,6 @@ app.get('/play', function(request, response) {
 app.post('/play', [createGame, joinGame]);
 app.get('/game-not-found', function(request, response) {
   response.render('game-not-found');
->>>>>>> dev
 });
 
 // HANDLING SOCKETS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
