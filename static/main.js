@@ -6,15 +6,25 @@
   var marquee = document.getElementById("marquee");
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
-  var redName = document.getElementById("red-name");
-  var bluName = document.getElementById("blu-name");
+  var playerImg = document.getElementById("player-square");
+  var opponentImg = document.getElementById("opponent-square");
+  var opponentDiv = document.getElementById("opponent");
   
   // Establish a websocket connection and join the right room.
   var socket = io();
   socket.emit('join room', game.id);
 
-  if (game != undefined) {
-    marquee.innerHTML = "game not null!";
+  if (opponent != "") {
+    if (player == game.red) {
+      playerImg.style.backgroundColor = "#DC3545";
+      opponentImg.style.backgroundColor = "#007BFF";
+      opponentDiv.innerHTML = game.blu;
+    }
+    else {
+      playerImg.style.backgroundColor = "#007BFF";
+      opponentImg.style.backgroundColor = "#DC3545";
+      opponentDiv.innerHTML = game.red;
+    }
   }
 
   // Change cursor style when appropriate.
@@ -59,10 +69,18 @@
 
   socket.on('sync', function(data) {
     game.red = data.red;
-    game.blu = data.blue;
+    game.blu = data.blu;
     game.firstTurn = data.firstTurn;
-    redName.innerHTML = game.red;
-    bluName.innerHTML = game.blu;
+    if (player == game.red) {
+      playerImg.style.backgroundColor = "#DC3545";
+      opponentImg.style.backgroundColor = "#007BFF";
+      opponentDiv.innerHTML = game.blu;
+    }
+    else {
+      playerImg.style.backgroundColor = "#007BFF";
+      opponentImg.style.backgroundColor = "#DC3545";
+      opponentDiv.innerHTML = game.red;
+    }
   });
 
   socket.on('game response', function(newGame) {

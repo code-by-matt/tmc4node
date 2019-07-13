@@ -24,14 +24,14 @@ html(lang="en")
           button(id="reset" class="m4") Reset
       div(class="row border flex justify-content-between")
         div(class="flex")
-          img(class="m4" width="20" height="20" style="background-color: #DC3545")
-          div(id="red-name" class="m4 vct lat player")= red
+          img(id="player-square" class="m4" width="20" height="20" style="background-color: #D8D8D8")
+          div(class="m4 vct lat player")= player
         div(class="flex")
           div(id="red-div" class="m4 vct") 00:00
           div(id="blu-div" class="m4 vct") 00:00
         div(class="flex")
-          div(id="blu-name" class="m4 vct rat player")= blu
-          img(class="m4" width="20" height="20" style="background-color: #007BFF")
+          div(id="opponent" class="m4 vct rat player")= opponent
+          img(id="opponent-square" class="m4" width="20" height="20" style="background-color: #D8D8D8")
     //Gives us the socket.io framework.
     script(src="/socket.io/socket.io.js")
     //Gives us methods that the main script uses.
@@ -40,6 +40,8 @@ html(lang="en")
     script(src="/timer.js")
     //(Pug passes us the game object)
     script.
+      var player = "#{player}";
+      var opponent = "#{opponent}";
       var game = {};
       game.id = "#{id}";
       game.red = "#{red}";

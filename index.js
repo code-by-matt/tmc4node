@@ -48,7 +48,7 @@ function createGame(request, response, next) {
     [Math.random().toString(36).substr(6), request.body.name]).then(function(data) {
       response.render('play', {
         id: data.id,
-        red: request.body.name,
+        player: request.body.name,
         firstTurn: -1,
       });
     }).catch(function(error) {
@@ -60,33 +60,31 @@ function createGame(request, response, next) {
 // When a player tries to joins a game, throw the rest of the initial game state
 // at the database. If the data lands in a row, then that game exists. If the data
 // lands nowhere, redirect to an error page.
-function joinGame(request, response, next) {
-  db.oneOrNone('UPDATE games SET "blue" = $1, "firstTurn" = $2 WHERE "id" = $3 RETURNING "red", "firstTurn"',
+function joinGame(request, response) {
+  db.oneOrNone('UPDATE games SET "blu" = $1, "firstTurn" = $2 WHERE "id" = $3 RETURNING "red", "blu", "firstTurn"',
   [request.body.name, Math.floor(Math.random() * 5000) * 2, request.body.id]).then(function(data) {
     if (data == null) {
       response.redirect('/game-not-found');
     }
     else {
+      var opponent = data.red;
+      // Maybe swap red and blu. This means that the database's red and blu might be wrong,
+      // but this is fixed once the game ends and the database updates.
+      if (Math.random() > 0.5) {
+        var temp = data.red;
+        data.red = data.blu;
+        data.blu = temp;
+      }
+      io.to(request.body.id).emit('sync', data); // This gives data to the player who created the game.
       response.render('play', {
         id: request.body.id,
+        player: request.body.name,
+        opponent: opponent,
         red: data.red,
-        blu: request.body.name,
+        blu: data.blu,
         firstTurn: data.firstTurn,
       });
-      next();
     }
-  }).catch(function(error) {
-    console.log(error);
-  });
-}
-
-// Emit the initial game data (or however much of it is currently available)
-// to all players in the right room, though it realy only affects
-// the player who created the room.
-function emitData(request, response) {
-  db.one('SELECT "red", "blue", "firstTurn" FROM games WHERE "id" = $1', [request.body.id]).then(function(data) {
-    io.to(request.body.id).emit('sync', data);
-    console.log('this works!');
   }).catch(function(error) {
     console.log(error);
   });
@@ -106,7 +104,7 @@ app.get('/join', function(request, response) {
 app.get('/play', function(request, response) {
   response.render('play');
 });
-app.post('/play', [createGame, joinGame, emitData]);
+app.post('/play', [createGame, joinGame]);
 app.get('/game-not-found', function(request, response) {
   response.render('game-not-found');
 });
