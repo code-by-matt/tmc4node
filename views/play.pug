@@ -1,0 +1,50 @@
+extends base
+
+block title
+  title TMC4 | Play!
+
+block content
+  div(class="row border flex justify-content-between")
+    div(class="flex")
+      img(class="m4" height="20" src="logo.svg")
+      div(id="marquee" class="m4 vct") Thue-Morse Connect Four
+    div(id="id" class="m4 vct")= id
+  canvas(id="board-canvas" width="1400" height="1200")
+  //Inline styling of this image is needed to prevent border wiggle in Chrome.
+  img(id="board-img" class="row" style="border-style: solid")
+  div(class="row border flex justify-content-between")
+    div(class="flex")
+      canvas(id="future-canvas" width="1600" height="200")
+      img(id="future-img" class="m4" width="160" height="20")
+    div(class="flex")
+      button(id="start" class="m4") Start
+      button(id="reset" class="m4") Reset
+  div(class="row border flex justify-content-between")
+    div(class="flex")
+      img(id="player-square" class="m4" width="20" height="20" style="background-color: #D8D8D8")
+      div(class="m4 vct lat player")= player
+    div(class="flex")
+      div(id="red-div" class="m4 vct") 00:00
+      div(id="blu-div" class="m4 vct") 00:00
+    div(class="flex")
+      div(id="opponent" class="m4 vct rat player")= opponent
+      img(id="opponent-square" class="m4" width="20" height="20" style="background-color: #D8D8D8")
+
+block scripts
+  //Gives us the socket.io framework.
+  script(src="/socket.io/socket.io.js")
+  //Gives us methods that the main script uses.
+  script(src="/logic.js")
+  script(src="/squares.js")
+  script(src="/timer.js")
+  //(Pug passes us the game object)
+  script.
+    var player = "#{player}";
+    var opponent = "#{opponent}";
+    var game = {};
+    game.id = "#{id}";
+    game.red = "#{red}";
+    game.blu = "#{blu}";
+    game.firstTurn = #{firstTurn};
+  //Gives us the main script.
+  script(src="/main.js")

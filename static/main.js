@@ -6,24 +6,26 @@
   var marquee = document.getElementById("marquee");
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
+  var playerImg = document.getElementById("player-square");
+  var opponentImg = document.getElementById("opponent-square");
+  var opponentDiv = document.getElementById("opponent");
   
-  // Establish a websocket connection.
+  // Establish a websocket connection and join the right room.
   var socket = io();
+  socket.emit('join room', game.id);
 
-  // Create a new game or join an existing game.
-  var game = {};
-  if (sessionStorage.id == null) {
-    sessionStorage.id = Math.random().toString(36).substr(6);
-    game.id = sessionStorage.id;
-    logic.reset(game);
-    socket.emit('new game request', game);
-    marquee.innerHTML = sessionStorage.name + " waiting for second player...";
+  if (opponent != "") {
+    if (player == game.red) {
+      playerImg.style.backgroundColor = "#DC3545";
+      opponentImg.style.backgroundColor = "#007BFF";
+      opponentDiv.innerHTML = game.blu;
+    }
+    else {
+      playerImg.style.backgroundColor = "#007BFF";
+      opponentImg.style.backgroundColor = "#DC3545";
+      opponentDiv.innerHTML = game.red;
+    }
   }
-  else {
-    game.id = sessionStorage.id;
-    socket.emit('join game request', game.id); 
-  }
-  document.getElementById("id").innerHTML = game.id;
 
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
@@ -65,8 +67,20 @@
     timer.start();
   });
 
-  socket.on('population response', function(n) {
-    popDiv.innerHTML = "Room contains " + n + ".";
+  socket.on('sync', function(data) {
+    game.red = data.red;
+    game.blu = data.blu;
+    game.firstTurn = data.firstTurn;
+    if (player == game.red) {
+      playerImg.style.backgroundColor = "#DC3545";
+      opponentImg.style.backgroundColor = "#007BFF";
+      opponentDiv.innerHTML = game.blu;
+    }
+    else {
+      playerImg.style.backgroundColor = "#007BFF";
+      opponentImg.style.backgroundColor = "#DC3545";
+      opponentDiv.innerHTML = game.red;
+    }
   });
 
   socket.on('game response', function(newGame) {

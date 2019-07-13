@@ -1,0 +1,11 @@
+extends base
+
+block title
+  title TMC4 | New Game
+
+block content
+  form(method="POST" action="/play" class="row border flex justify-content-between")
+    div(class="m4")
+      input(name="name" type="text" placeholder="Enter a name." required)
+    div(class="m4")
+      input(type="submit" value="New Game")

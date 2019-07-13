@@ -1,6 +1,16 @@
+// SETUP –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 // Express is a module, app is an INSTANCE of that module.
 var express = require('express');
 var app = express();
+
+// Start up a server listening on port 8000.
+var server = app.listen(8000, function() {
+  console.log("listening on port 8000!");
+});
+
+// Mount socket.io onto our server.
+var io = require('socket.io')(server);
 
 // Connect to the database.
 var pgp = require('pg-promise')();
@@ -9,14 +19,17 @@ var cn = {
   port: 5432,
   database: 'tmc4node',
   user: 'postgres',
-  password: 'carpedm'
+  password: 'carpedm',
 };
 var db = pgp(cn);
 module.exports = db; // Not sure what this line does tbh...
 
-// Middleware?
+// MIDDLEWARE ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// Allow Express to access static files.
 app.use(express.static('static'));
 
+<<<<<<< HEAD
 app.get('/play', function(request, response) {
   response.sendFile(__dirname + '/static/play.html');
   response.send(request.query);
@@ -30,12 +43,90 @@ app.get('/new', function(request, response) {
 // Start up a server listening on port 8000.
 var server = app.listen(8000, function() {
   console.log("listening on port 8000!");
+=======
+// Allow Express to parse POST requests.
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
+// Use Pug as our template engine.
+app.set('views', './views');
+app.set('view engine', 'pug');
+
+// When a player creates a game, create a row in the database with
+// as little information as possible, cuz a second player may never show up.
+function createGame(request, response, next) {
+  if (request.body.id != null) {
+    next();
+  }
+  else {
+    db.one('INSERT INTO games ("id", "red") VALUES ($1, $2) RETURNING "id"',
+    [Math.random().toString(36).substr(6), request.body.name]).then(function(data) {
+      response.render('play', {
+        id: data.id,
+        player: request.body.name,
+        firstTurn: -1,
+      });
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
+}
+
+// When a player tries to joins a game, throw the rest of the initial game state
+// at the database. If the data lands in a row, then that game exists. If the data
+// lands nowhere, redirect to an error page.
+function joinGame(request, response) {
+  db.oneOrNone('UPDATE games SET "blu" = $1, "firstTurn" = $2 WHERE "id" = $3 RETURNING "red", "blu", "firstTurn"',
+  [request.body.name, Math.floor(Math.random() * 5000) * 2, request.body.id]).then(function(data) {
+    if (data == null) {
+      response.redirect('/game-not-found');
+    }
+    else {
+      var opponent = data.red;
+      // Maybe swap red and blu. This means that the database's red and blu might be wrong,
+      // but this is fixed once the game ends and the database updates.
+      if (Math.random() > 0.5) {
+        var temp = data.red;
+        data.red = data.blu;
+        data.blu = temp;
+      }
+      io.to(request.body.id).emit('sync', data); // This gives data to the player who created the game.
+      response.render('play', {
+        id: request.body.id,
+        player: request.body.name,
+        opponent: opponent,
+        red: data.red,
+        blu: data.blu,
+        firstTurn: data.firstTurn,
+      });
+    }
+  }).catch(function(error) {
+    console.log(error);
+  });
+}
+
+// ROUTING –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+app.get('/', function(request, response) {
+  response.render('index');
+});
+app.get('/new', function(request, response) {
+  response.render('new');
+});
+app.get('/join', function(request, response) {
+  response.render('join');
+});
+app.get('/play', function(request, response) {
+  response.render('play');
+});
+app.post('/play', [createGame, joinGame]);
+app.get('/game-not-found', function(request, response) {
+  response.render('game-not-found');
+>>>>>>> dev
 });
 
-// mount socket.io onto our server
-var io = require('socket.io')(server);
+// HANDLING SOCKETS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-// Handle websocket connections. Requests go from client to server, responses go from server to client.
 io.on('connection', function(socket) {
 
   // Connection check.
@@ -48,25 +139,9 @@ io.on('connection', function(socket) {
     console.log('reset recorded, game sent to client!');
   });
 
-  socket.on('start request', function() {
-    io.emit('start response');
-    console.log('start response sent!');
-  });
-
-  socket.on('new game request', function(game) {
-    socket.join(game.id);
-    db.none('INSERT INTO games ("id", "history", "future", "openRows", "firstTurn", "currentTurn", "isOver") VALUES ($1, $2, $3, $4, $5, $6, $7)',
-    [game.id, game.history, game.future, game.openRows, game.firstTurn, game.currentTurn, game.isOver]);
-    io.to(game.id).emit('game response', game);
-    console.log('game ' + game.id + ' created!');
-  });
-
-  socket.on('join game request', function(id) {
+  socket.on('join room', function(id) {
     socket.join(id);
-    db.any('SELECT * FROM games WHERE "id" = $1', [id]).then(function(data) {
-      io.to(id).emit('game response', data[0]);
-      console.log('joined game ' + id + '!');
-    });
+    console.log('player joined room ' + id);
   });
 
   socket.on('join room', function(id) {
