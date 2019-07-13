@@ -6,6 +6,8 @@
   var marquee = document.getElementById("marquee");
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
+  var redName = document.getElementById("red-name");
+  var bluName = document.getElementById("blu-name");
   
   // Establish a websocket connection and join the right room.
   var socket = io();
@@ -55,8 +57,11 @@
     timer.start();
   });
 
-  socket.on('population response', function(n) {
-    popDiv.innerHTML = "Room contains " + n + ".";
+  socket.on('introductions', function(data) {
+    game.red = data.red;
+    game.blu = data.blue;
+    redName.innerHTML = game.red;
+    bluName.innerHTML = game.blu;
   });
 
   socket.on('game response', function(newGame) {

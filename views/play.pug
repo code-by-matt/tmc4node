@@ -25,12 +25,12 @@ html(lang="en")
       div(class="row border flex justify-content-between")
         div(class="flex")
           img(class="m4" width="20" height="20" style="background-color: #DC3545")
-          div(class="m4 vct lat player")= name
+          div(id="red-name" class="m4 vct lat player")
         div(class="flex")
           div(id="red-div" class="m4 vct") 00:00
           div(id="blu-div" class="m4 vct") 00:00
         div(class="flex")
-          div(id="opponent" class="m4 vct rat player")= opponent
+          div(id="blu-name" class="m4 vct rat player")
           img(class="m4" width="20" height="20" style="background-color: #007BFF")
     //Gives us the socket.io framework.
     script(src="/socket.io/socket.io.js")

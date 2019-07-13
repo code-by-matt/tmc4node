@@ -1,11 +1,16 @@
+// SETUP –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 // Express is a module, app is an INSTANCE of that module.
 var express = require('express');
 var app = express();
 
-// Middleware.
-app.use(express.static('static'));
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+// Start up a server listening on port 8000.
+var server = app.listen(8000, function() {
+  console.log("listening on port 8000!");
+});
+
+// Mount socket.io onto our server.
+var io = require('socket.io')(server);
 
 // Connect to the database.
 var pgp = require('pg-promise')();
@@ -19,14 +24,78 @@ var cn = {
 var db = pgp(cn);
 module.exports = db; // Not sure what this line does tbh...
 
-// Use Pug for templates.
+// MIDDLEWARE ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// Allow Express to access static files.
+app.use(express.static('static'));
+
+// Allow Express to parse POST requests.
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
+// Use Pug as our template engine.
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-// Mount socket.io onto our server.
-var io = require('socket.io')(server);
+// When a player creates a game, create a row in the database with
+// as little information as possible, cuz a second player may never show up.
+function createGame(request, response, next) {
+  if (request.body.id != null) {
+    next();
+  }
+  else {
+    request.body.id = Math.random().toString(36).substr(6);
+    db.none('INSERT INTO games ("id", "red") VALUES ($1, $2)',
+    [request.body.id, request.body.name]).catch(function(error) {
+      console.log(error);
+    });
+    next();
+  }
+}
 
-// Routing.
+// When a player tries to joins a game, throw the rest of the initial game state
+// at the database. If the data lands in a row, then that game exists. If the data
+// lands nowhere, redirect to an error page.
+function joinGame(request, response, next) {
+  if (request.body.id == null) {
+    next();
+  }
+  else {
+    db.oneOrNone('UPDATE games SET "blue" = $1, "firstTurn" = $2 WHERE "id" = $3 RETURNING "id"',
+    [request.body.name, Math.floor(Math.random() * 5000) * 2, request.body.id]).then(function(data) {
+      if (data == null) {
+        response.redirect('/game-not-found');
+      }
+      else {
+        next();
+      }
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
+}
+
+// Show a game page with none of the info filled in. That info is sent
+// through a socket connection.
+function renderPlay(request, response, next) {
+  response.render('play', {id: request.body.id});
+  next();
+}
+
+// Emit the initial game data (or however much of it is currently available)
+// to all players in the right room.
+function emitData(request, response, next) {
+  db.one('SELECT "red", "blue", "firstTurn" FROM games WHERE "id" = $1', [request.body.id]).then(function(data) {
+    io.to(request.body.id).emit('introductions', data);
+    console.log('this works!');
+  }).catch(function(error) {
+    console.log(error);
+  });
+  next();
+}
+
+// ROUTING –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 app.get('/', function(request, response) {
   response.render('index');
 });
@@ -36,50 +105,16 @@ app.get('/new', function(request, response) {
 app.get('/join', function(request, response) {
   response.render('join');
 });
-app.post('/play', function(request, response) {
-  if (request.body.id == null) { // Creating a new game.
-    id = Math.random().toString(36).substr(6);
-    db.none('INSERT INTO games ("id", "red") VALUES ($1, $2)', [id, request.body.name]).then(function() {
-      response.render('play', {
-        name: request.body.name,
-        opponent: "???",
-        id: id,
-      });
-    }).catch(function(error) {
-      console.log(error);
-    });
-  }
-  else { // Joining an existing game.
-    db.any('SELECT * FROM games WHERE "id" = $1', [request.body.id]).then(function(data) {
-      if (data.length == 0) {
-        response.redirect('/game-not-found');
-      }
-      else {
-        db.none('UPDATE games SET "blue" = $1 WHERE "id" = $2', [request.body.name, request.body.id]).then(function() {
-          response.render('play', {
-            name: request.body.name,
-            opponent: data[0].red,
-            id: request.body.id,
-          });
-        }).catch(function(error) {
-          console.log(error);
-        });
-      }
-    }).catch(function(error) {
-      console.log(error);
-    });
-  }
+app.get('/play', function(request, response) {
+  response.render('play');
 });
+app.post('/play', [joinGame, createGame, renderPlay, emitData]); // We have joinGame before createGame so that renderPlay receives the correct id.
 app.get('/game-not-found', function(request, response) {
   response.render('game-not-found');
 });
 
-// Start up a server listening on port 8000.
-var server = app.listen(8000, function() {
-  console.log("listening on port 8000!");
-});
+// HANDLING SOCKETS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-// Handle websocket connections. Requests go from client to server, responses go from server to client.
 io.on('connection', function(socket) {
 
   // Connection check.
