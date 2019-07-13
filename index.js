@@ -37,59 +37,6 @@ app.use(express.json());
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-// When a player creates a game, create a row in the database with
-// as little information as possible, cuz a second player may never show up.
-function createGame(request, response, next) {
-  if (request.body.id != null) {
-    next();
-  }
-  else {
-    db.one('INSERT INTO games ("id", "red") VALUES ($1, $2) RETURNING "id"',
-    [Math.random().toString(36).substr(6), request.body.name]).then(function(data) {
-      response.render('play', {
-        id: data.id,
-        player: request.body.name,
-        firstTurn: -1,
-      });
-    }).catch(function(error) {
-      console.log(error);
-    });
-  }
-}
-
-// When a player tries to joins a game, throw the rest of the initial game state
-// at the database. If the data lands in a row, then that game exists. If the data
-// lands nowhere, redirect to an error page.
-function joinGame(request, response) {
-  db.oneOrNone('UPDATE games SET "blu" = $1, "firstTurn" = $2 WHERE "id" = $3 RETURNING "red", "blu", "firstTurn"',
-  [request.body.name, Math.floor(Math.random() * 5000) * 2, request.body.id]).then(function(data) {
-    if (data == null) {
-      response.redirect('/game-not-found');
-    }
-    else {
-      var opponent = data.red;
-      // Maybe swap red and blu. This means that the database's red and blu might be wrong,
-      // but this is fixed once the game ends and the database updates.
-      if (Math.random() > 0.5) {
-        var temp = data.red;
-        data.red = data.blu;
-        data.blu = temp;
-      }
-      io.to(request.body.id).emit('sync', data); // This gives data to the player who created the game.
-      response.render('play', {
-        id: request.body.id,
-        player: request.body.name,
-        opponent: opponent,
-        red: data.red,
-        blu: data.blu,
-        firstTurn: data.firstTurn,
-      });
-    }
-  }).catch(function(error) {
-    console.log(error);
-  });
-}
-
 // ROUTING –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 app.get('/', function(request, response) {
