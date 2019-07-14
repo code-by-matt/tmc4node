@@ -9,23 +9,29 @@
   var playerImg = document.getElementById("player-square");
   var opponentImg = document.getElementById("opponent-square");
   var opponentDiv = document.getElementById("opponent");
+  var nameInput = document.getElementById("name-input");
   
   // Establish a websocket connection and join the right room.
   var socket = io();
   socket.emit('join room', game.id);
 
-  if (opponent != "") {
-    if (player == game.red) {
-      playerImg.style.backgroundColor = "#DC3545";
-      opponentImg.style.backgroundColor = "#007BFF";
-      opponentDiv.innerHTML = game.blu;
-    }
-    else {
-      playerImg.style.backgroundColor = "#007BFF";
-      opponentImg.style.backgroundColor = "#DC3545";
-      opponentDiv.innerHTML = game.red;
-    }
-  }
+  // if (opponent != "") {
+  //   if (player == game.red) {
+  //     playerImg.style.backgroundColor = "#DC3545";
+  //     opponentImg.style.backgroundColor = "#007BFF";
+  //     opponentDiv.innerHTML = game.blu;
+  //   }
+  //   else {
+  //     playerImg.style.backgroundColor = "#007BFF";
+  //     opponentImg.style.backgroundColor = "#DC3545";
+  //     opponentDiv.innerHTML = game.red;
+  //   }
+  // }
+
+  // Emit "my name" event when enter is pressed within the name input.
+  nameInput.addEventListener("keyup", function(event) {
+    console.log(event.key);
+  });
 
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
