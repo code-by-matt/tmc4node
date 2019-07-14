@@ -11,8 +11,12 @@ canvas {
   display: none;
 }
 
+input {
+  border-style: solid;
+}
+
 img {
-  background-size: cover;
+  background-color: gray;
 }
 
 .m4 {
