@@ -29,7 +29,7 @@ module.exports = db; // Not sure what this line does tbh...
 // Allow Express to access static files.
 app.use(express.static('static'));
 
-// Allow Express to parse POST requests.
+// Allow Express to parse POST requests. Not necessary???
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
@@ -48,10 +48,10 @@ app.get('/new', function(request, response) {
 app.get('/join', function(request, response) {
   response.render('join');
 });
-app.get('/play', function(request, response) {
-  response.render('play');
+app.get('/game', function(request, response) {
+  console.log(request.query.id);
+  response.render('game', {id: request.query.id});
 });
-app.post('/play', [createGame, joinGame]);
 app.get('/game-not-found', function(request, response) {
   response.render('game-not-found');
 });

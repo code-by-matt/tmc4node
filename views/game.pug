@@ -8,7 +8,7 @@ block content
     div(class="flex")
       img(class="m4" height="20" src="logo.svg")
       div(id="marquee" class="m4 vct") Thue-Morse Connect Four
-    div(id="id" class="m4 vct")= id
+    div(id="id" class="m4 vct") maybe something?
   canvas(id="board-canvas" width="1400" height="1200")
   //Inline styling of this image is needed to prevent border wiggle in Chrome.
   img(id="board-img" class="row" style="border-style: solid")
@@ -22,12 +22,12 @@ block content
   div(class="row border flex justify-content-between")
     div(class="flex")
       img(id="player-square" class="m4" width="20" height="20" style="background-color: #D8D8D8")
-      div(class="m4 vct lat player")= player
+      div(class="m4 vct lat player")
     div(class="flex")
       div(id="red-div" class="m4 vct") 00:00
       div(id="blu-div" class="m4 vct") 00:00
     div(class="flex")
-      div(id="opponent" class="m4 vct rat player")= opponent
+      div(id="opponent" class="m4 vct rat player")
       img(id="opponent-square" class="m4" width="20" height="20" style="background-color: #D8D8D8")
 
 block scripts
@@ -39,12 +39,7 @@ block scripts
   script(src="/timer.js")
   //(Pug passes us the game object)
   script.
-    var player = "#{player}";
-    var opponent = "#{opponent}";
     var game = {};
     game.id = "#{id}";
-    game.red = "#{red}";
-    game.blu = "#{blu}";
-    game.firstTurn = #{firstTurn};
   //Gives us the main script.
   script(src="/main.js")
