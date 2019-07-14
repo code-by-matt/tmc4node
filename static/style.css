@@ -11,6 +11,10 @@ canvas {
   display: none;
 }
 
+img {
+  background-size: cover;
+}
+
 .m4 {
   margin: 4px;
 }
@@ -79,4 +83,10 @@ canvas {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100px;
+}
+
+.sq {
+  width: 20px;
+  height: 20px;
+  background-color: gray;
 }
