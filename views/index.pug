@@ -6,6 +6,8 @@ block title
 block content
   div(class="row border flex justify-content-center")
     div(class="m4") Welcome to Thue-Morse Connect Four!
-  div(class="row border flex justify-content-between")
-    a(href="/new" class="m4") New Game
-    a(href="/join" class="m4") Join Game
+  form(method="GET" class="row border flex justify-content-center")
+    div(class="m4")
+      input(id="id" name="id" type="hidden" readonly)
+    div(class="m4")
+      input(type="submit" value="New Game")
