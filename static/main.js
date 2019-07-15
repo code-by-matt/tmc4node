@@ -13,7 +13,7 @@
   
   // Establish a websocket connection and join the right room.
   var socket = io();
-  socket.emit('join room', game.id);
+  socket.emit("join room", game.id);
 
   // if (opponent != "") {
   //   if (player == game.red) {
@@ -30,7 +30,9 @@
 
   // Emit "my name" event when enter is pressed within the name input.
   nameInput.addEventListener("keyup", function(event) {
-    console.log(event.key);
+    if (event.key == "Enter") {
+      socket.emit("my name", nameInput.value);
+    }
   });
 
   // Change cursor style when appropriate.
@@ -45,22 +47,22 @@
     var col = squares.getCol(event);
     if (timer.isRunning() && game.openRows[col] < 6 && !game.isOver) {
       logic.update(game, col);
-      socket.emit('update game request', game);
+      socket.emit("update game request", game);
     }
   });
 
   // When start is clicked, send start request.
   startBtn.addEventListener("click", function() {
-    socket.emit('start request');
+    socket.emit("start request");
   });
 
   // When reset is clicked, reset game and send reset request.
   resetBtn.addEventListener("click", function() {
     logic.reset(game);
-    socket.emit('reset request', game);
+    socket.emit("reset request", game);
   });
   
-  socket.on('reset response', function(newGame) {
+  socket.on("reset response", function(newGame) {
     timer.stop();
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
@@ -69,11 +71,11 @@
     squares.createFuture(game);
   });
 
-  socket.on('start response', function() {
+  socket.on("start response", function() {
     timer.start();
   });
 
-  socket.on('sync', function(data) {
+  socket.on("sync", function(data) {
     game.red = data.red;
     game.blu = data.blu;
     game.firstTurn = data.firstTurn;
@@ -89,7 +91,7 @@
     }
   });
 
-  socket.on('game response', function(newGame) {
+  socket.on("game response", function(newGame) {
     // Update game, make all the color squares look right.
     game = newGame;
     squares.createBoard(game);
@@ -101,7 +103,7 @@
       timer.stop();
     }
     // Flip the timer if necessary.
-    if (game.history == '') timer.stop();
+    if (game.history == "") timer.stop();
     else if (game.history.slice(-3, -2) != game.future[0]) timer.flip();
     console.log(socket.id);
   });
