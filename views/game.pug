@@ -21,14 +21,15 @@ block content
       button(id="reset" class="m4") Reset
   div(class="row border flex justify-content-between")
     div(class="flex")
-      div(id="player-square" class="m4 sq")
-      input(id="name-input" class="m4 player" type="text" placeholder="enter a name")
+      div(id="my-color" class="m4 sq")
+      div(id="my-name" class="m4 vct lat player" style="display: none")
+      input(id="my-name-input" class="m4 player" type="text" placeholder="enter a name")
     div(class="flex")
       div(id="red-div" class="m4 vct") 00:00
       div(id="blu-div" class="m4 vct") 00:00
     div(class="flex")
-      div(id="opponent-name" class="m4 vct rat player")
-      div(id="opponent-square" class="m4 sq")
+      div(id="their-name" class="m4 vct rat player")
+      div(id="their-color" class="m4 sq")
 
 block scripts
   //Gives us the socket.io framework.

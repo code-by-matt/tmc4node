@@ -6,14 +6,11 @@
   var marquee = document.getElementById("marquee");
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
-  var playerImg = document.getElementById("player-square");
-  var opponentSq = document.getElementById("opponent-square");
-  var opponentName = document.getElementById("opponent-name");
-  var nameInput = document.getElementById("name-input");
-
-  // Variables for names.
-  var myName;
-  var theirName;
+  var myColor = document.getElementById("my-color");
+  var myName = document.getElementById("my-name");
+  var myNameInput = document.getElementById("my-name-input");
+  var theirName = document.getElementById("their-name");
+  var theirColor = document.getElementById("their-color");
   
   // Establish a websocket connection and join the right room.
   var socket = io();
@@ -33,14 +30,12 @@
   // }
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
-  nameInput.addEventListener("keyup", function(event) {
+  myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter") {
-      myName = nameInput.value;
-      var nameDiv = document.createElement("div");
-      nameDiv.className = "m4 player";
-      nameDiv.innerHTML = nameInput.value;
-      nameInput.parentNode.replaceChild(nameDiv, nameInput);
-      socket.emit("my name", game.id, nameInput.value);
+      myName.innerHTML = myNameInput.value;
+      myName.style.display = "inline";
+      myNameInput.style.display = "none";
+      socket.emit("my name", game.id, myNameInput.value);
     }
   });
 
@@ -72,8 +67,7 @@
   });
 
   socket.on("their name", function(name) {
-    theirName = name;
-    opponentName.innerHTML = name;
+    theirName.innerHTML = name;
   });
   
   socket.on("reset response", function(newGame) {
