@@ -32,7 +32,7 @@
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
-    if (event.key == "Enter") {
+    if (event.key == "Enter" && myNameInput.value != "") {
       myName.innerHTML = myNameInput.value;
       myName.style.display = "flex";
       myNameInput.style.display = "none";
