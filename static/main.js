@@ -12,9 +12,10 @@
   var theirName = document.getElementById("their-name");
   var theirColor = document.getElementById("their-color");
   
-  // Establish a websocket connection and join the right room.
+  // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", game.id);
+  socket.emit("sync pls", game.id);
 
   // if (opponent != "") {
   //   if (player == game.red) {
@@ -67,6 +68,16 @@
   });
 
   socket.on("their name", function(name) {
+    theirName.innerHTML = name;
+  });
+
+  // This handler is triggered when your opponent is requesting a sync.
+  socket.on("sync pls", function(id) {
+    socket.emit("here ya go", id, myName.innerHTML);
+  });
+
+  // This handler is triggered when you receive a sync from your opponent.
+  socket.on("here ya go", function(name) {
     theirName.innerHTML = name;
   });
   

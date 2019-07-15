@@ -87,6 +87,14 @@ io.on('connection', function(socket) {
     socket.broadcast.to(id).emit("their name", name);
   });
 
+  socket.on("sync pls", function(id) {
+    socket.broadcast.to(id).emit("sync pls", id);
+  });
+
+  socket.on("here ya go", function(id, name) {
+    socket.broadcast.to(id).emit("here ya go", name);
+  });
+
   socket.on('update game request', function(game) {
     db.none('UPDATE games SET "history" = $1, "future" = $2, "openRows" = $3, "firstTurn" = $4, "currentTurn" = $5, "isOver" = $6',
     [game.history, game.future, game.openRows, game.firstTurn, game.currentTurn, game.isGameOver]);
