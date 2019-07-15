@@ -7,8 +7,8 @@
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
   var playerImg = document.getElementById("player-square");
-  var opponentImg = document.getElementById("opponent-square");
-  var opponentDiv = document.getElementById("opponent");
+  var opponentSq = document.getElementById("opponent-square");
+  var opponentName = document.getElementById("opponent-name");
   var nameInput = document.getElementById("name-input");
 
   // Variables for names.
@@ -32,10 +32,14 @@
   //   }
   // }
 
-  // Emit "my name" event when enter is pressed within the name input.
+  // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   nameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter") {
       myName = nameInput.value;
+      var nameDiv = document.createElement("div");
+      nameDiv.className = "m4 player";
+      nameDiv.innerHTML = nameInput.value;
+      nameInput.parentNode.replaceChild(nameDiv, nameInput);
       socket.emit("my name", game.id, nameInput.value);
     }
   });
@@ -69,6 +73,7 @@
 
   socket.on("their name", function(name) {
     theirName = name;
+    opponentName.innerHTML = name;
   });
   
   socket.on("reset response", function(newGame) {
@@ -84,21 +89,21 @@
     timer.start();
   });
 
-  socket.on("sync", function(data) {
-    game.red = data.red;
-    game.blu = data.blu;
-    game.firstTurn = data.firstTurn;
-    if (player == game.red) {
-      playerImg.style.backgroundColor = "#DC3545";
-      opponentImg.style.backgroundColor = "#007BFF";
-      opponentDiv.innerHTML = game.blu;
-    }
-    else {
-      playerImg.style.backgroundColor = "#007BFF";
-      opponentImg.style.backgroundColor = "#DC3545";
-      opponentDiv.innerHTML = game.red;
-    }
-  });
+  // socket.on("sync", function(data) {
+  //   game.red = data.red;
+  //   game.blu = data.blu;
+  //   game.firstTurn = data.firstTurn;
+  //   if (player == game.red) {
+  //     playerImg.style.backgroundColor = "#DC3545";
+  //     opponentImg.style.backgroundColor = "#007BFF";
+  //     opponentDiv.innerHTML = game.blu;
+  //   }
+  //   else {
+  //     playerImg.style.backgroundColor = "#007BFF";
+  //     opponentImg.style.backgroundColor = "#DC3545";
+  //     opponentDiv.innerHTML = game.red;
+  //   }
+  // });
 
   socket.on("game response", function(newGame) {
     // Update game, make all the color squares look right.
