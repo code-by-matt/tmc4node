@@ -16,7 +16,7 @@ input {
 }
 
 img {
-  background-color: gray;
+  background-color: #D8D8D8;
 }
 
 .m4 {
@@ -92,5 +92,5 @@ img {
 .sq {
   width: 20px;
   height: 20px;
-  background-color: gray;
+  background-color: #D8D8D8;
 }
