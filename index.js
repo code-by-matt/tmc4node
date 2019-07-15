@@ -12,26 +12,10 @@ var server = app.listen(8000, function() {
 // Mount socket.io onto our server.
 var io = require("socket.io")(server);
 
-// Connect to the database.
-var pgp = require("pg-promise")();
-var cn = {
-  host: "127.0.0.1",
-  port: 5432,
-  database: "tmc4node",
-  user: "postgres",
-  password: "carpedm",
-};
-var db = pgp(cn);
-module.exports = db; // Not sure what this line does tbh...
-
 // MIDDLEWARE ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 // Allow Express to access static files.
 app.use(express.static("static"));
-
-// Allow Express to parse POST requests. Not necessary???
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
 
 // Use Pug as our template engine.
 app.set("views", "./views");
