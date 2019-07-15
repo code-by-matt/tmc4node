@@ -49,8 +49,23 @@ app.get('/join', function(request, response) {
   response.render('join');
 });
 app.get('/game', function(request, response) {
-  console.log(request.query.id);
-  response.render('game', {id: request.query.id});
+  if (request.query.id.length > 16) { // Security check, prevent people from sending requests with crazy long ids.
+    response.render("game-not-found");
+  }
+  else {
+    if (io.sockets.adapter.rooms[request.query.id] == undefined) { // First to join this room.
+      console.log("first to join this room");
+      response.render('game', {id: request.query.id});
+    }
+    else if (io.sockets.adapter.rooms[request.query.id].length == 1) { // Second to join this room.
+      console.log("second to join this room");
+      response.render('game', {id: request.query.id});
+    }
+    else { // Third connection cannot join!
+      console.log("cannot join game, it is full!");
+      response.render("game-not-found");
+    }
+  }
 });
 app.get('/game-not-found', function(request, response) {
   response.render('game-not-found');
@@ -64,21 +79,8 @@ io.on('connection', function(socket) {
   console.log('a user connected!');
 
   socket.on('join room', function(id) {
-    if (io.sockets.adapter.rooms == undefined) { // First connection ever.
-      socket.join(id);
-      console.log('joined game ' + id);
-    }
-    else if (io.sockets.adapter.rooms[id] == undefined) { // First to join this room.
-      socket.join(id);
-      console.log('first to join game ' + id);
-    }
-    else if (io.sockets.adapter.rooms[id].length == 1) { // Second to join this room.
-      socket.join(id);
-      console.log('second to join game ' + id);
-    }
-    else { // Third connection cannot join!
-      console.log('cannot join game ' + id + ', it is full!');
-    }
+    socket.join(id);
+    console.log('joined game ' + id);
   });
 
   socket.on("my name", function(id, name) {
