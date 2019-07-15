@@ -44,12 +44,12 @@ var logic = (function() {
   }
 
   function reset(game) {
-    game.history = '';
+    game.history = "";
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
     game.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
     // game.firstTurn = 0;
     game.currentTurn = game.firstTurn;
-    game.future = '';
+    game.future = "";
     game.isOver = false;
     for (let i = 0; i < 8; i++) {
       // XORing with thueMorse(game.firstTurn) ensures that the first player is always red.
@@ -67,7 +67,7 @@ var logic = (function() {
     game.history += game.future[0] + col + row;
     game.openRows[col] += 1;
     game.currentTurn += 1;
-    game.future = '';
+    game.future = "";
     for (let i = 0; i < 8; i++) {
       if (thueMorse(game.firstTurn) ^ thueMorse(game.currentTurn + i) == 0) game.future += "r";
       else game.future += "b";
