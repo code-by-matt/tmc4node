@@ -33,7 +33,7 @@
   myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter") {
       myName.innerHTML = myNameInput.value;
-      myName.style.display = "inline";
+      myName.style.display = "flex";
       myNameInput.style.display = "none";
       socket.emit("my name", game.id, myNameInput.value);
     }

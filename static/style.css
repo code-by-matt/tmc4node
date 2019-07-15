@@ -82,11 +82,34 @@ img {
   margin-bottom: -2px;
 }
 
-.player {
+#my-name-input {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 94px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#my-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100px;
+  display: none; /* changes to flex when name is entered by client */
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#their-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .sq {
