@@ -10,6 +10,10 @@
   var opponentImg = document.getElementById("opponent-square");
   var opponentDiv = document.getElementById("opponent");
   var nameInput = document.getElementById("name-input");
+
+  // Variables for names.
+  var myName;
+  var theirName;
   
   // Establish a websocket connection and join the right room.
   var socket = io();
@@ -31,7 +35,8 @@
   // Emit "my name" event when enter is pressed within the name input.
   nameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter") {
-      socket.emit("my name", nameInput.value);
+      myName = nameInput.value;
+      socket.emit("my name", game.id, nameInput.value);
     }
   });
 
@@ -60,6 +65,10 @@
   resetBtn.addEventListener("click", function() {
     logic.reset(game);
     socket.emit("reset request", game);
+  });
+
+  socket.on("their name", function(name) {
+    theirName = name;
   });
   
   socket.on("reset response", function(newGame) {

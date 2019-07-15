@@ -63,18 +63,6 @@ io.on('connection', function(socket) {
   // Connection check.
   console.log('a user connected!');
 
-  socket.on('reset request', function(game) {
-    db.none('UPDATE testgame SET "history" = $1, "openRows" = $2, "currentTurn" = $3, "future" = $4, "firstTurn" = $5, "isGameOver" = $6',
-    [game.history, game.openRows, game.currentTurn, game.future, game.firstTurn, game.isGameOver]);
-    io.emit('reset response', game);
-    console.log('reset recorded, game sent to client!');
-  });
-
-  socket.on('join room', function(id) {
-    socket.join(id);
-    console.log('player joined room ' + id);
-  });
-
   socket.on('join room', function(id) {
     if (io.sockets.adapter.rooms == undefined) { // First connection ever.
       socket.join(id);
@@ -91,6 +79,10 @@ io.on('connection', function(socket) {
     else { // Third connection cannot join!
       console.log('cannot join game ' + id + ', it is full!');
     }
+  });
+
+  socket.on("my name", function(id, name) {
+    socket.broadcast.to(id).emit("their name", name);
   });
 
   socket.on('update game request', function(game) {
