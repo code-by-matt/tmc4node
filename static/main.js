@@ -34,9 +34,7 @@
       }
       logic.init(game);
       socket.emit("my game", game.id, game);
-      squares.drawBoard(game);
-      squares.drawColors(game);
-      squares.drawFuture(game);
+      squares.draw(game);
     }
   });
 
@@ -73,9 +71,7 @@
 
   socket.on("their game", function(newGame) {
     game = newGame;
-    squares.drawBoard(game);
-    squares.drawColors(game);
-    squares.drawFuture(game);
+    squares.draw(game);
   });
 
   // This handler is triggered when your opponent is requesting a sync.
@@ -98,8 +94,7 @@
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
     game = newGame;
-    squares.drawBoard(game);
-    squares.drawFuture(game);
+    squares.draw(game);
   });
 
   socket.on("start response", function() {
@@ -109,8 +104,7 @@
   socket.on("game response", function(newGame) {
     // Update game, make all the color squares look right.
     game = newGame;
-    squares.drawBoard(game);
-    squares.drawFuture(game);
+    squares.draw(game);
     // Make the marquee look right.
     if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";

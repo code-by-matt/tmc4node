@@ -98,10 +98,14 @@ var squares = (function() {
     boardImg.src = boardCan.toDataURL();
   }
 
+  function draw(game) {
+    drawColors(game);
+    drawFuture(game);
+    drawBoard(game);
+  }
+
   return {
     getCol: getCol,
-    drawColors: drawColors,
-    drawFuture: drawFuture,
-    drawBoard: drawBoard,
+    draw: draw,
   };
 })();
