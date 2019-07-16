@@ -7,8 +7,8 @@ block content
   div(class="row border flex justify-content-center")
     div(class="m4") Welcome to Thue-Morse Connect Four!
   form(method="GET" action="/game" class="row border flex justify-content-center")
-    div(class="m4")
-      - var id = Math.random().toString(36).substr(6);
-      input(name="id" type="hidden" value=id)
-    div(class="m4")
-      input(type="submit" value="New Game")
+    input(name="id" type="hidden")
+    button(class="m4" type="button") New Game
+
+block scripts
+  script(src="/new.js")
