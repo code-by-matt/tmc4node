@@ -21,19 +21,19 @@
   //   if (player == game.red) {
   //     playerImg.style.backgroundColor = "#DC3545";
   //     opponentImg.style.backgroundColor = "#007BFF";
-  //     opponentDiv.innerHTML = game.blu;
+  //     opponentDiv.textContent = game.blu;
   //   }
   //   else {
   //     playerImg.style.backgroundColor = "#007BFF";
   //     opponentImg.style.backgroundColor = "#DC3545";
-  //     opponentDiv.innerHTML = game.red;
+  //     opponentDiv.textContent = game.red;
   //   }
   // }
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter" && myNameInput.value != "") {
-      myName.innerHTML = myNameInput.value;
+      myName.textContent = myNameInput.value;
       myName.style.display = "flex";
       myNameInput.style.display = "none";
       socket.emit("my name", game.id, myNameInput.value);
@@ -68,17 +68,17 @@
   });
 
   socket.on("their name", function(name) {
-    theirName.innerHTML = name;
+    theirName.textContent = name;
   });
 
   // This handler is triggered when your opponent is requesting a sync.
   socket.on("sync pls", function(id) {
-    socket.emit("here ya go", id, myName.innerHTML);
+    socket.emit("here ya go", id, myName.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.
   socket.on("here ya go", function(name) {
-    theirName.innerHTML = name;
+    theirName.textContent = name;
   });
   
   socket.on("reset response", function(newGame) {
@@ -101,12 +101,12 @@
   //   if (player == game.red) {
   //     playerImg.style.backgroundColor = "#DC3545";
   //     opponentImg.style.backgroundColor = "#007BFF";
-  //     opponentDiv.innerHTML = game.blu;
+  //     opponentDiv.textContent = game.blu;
   //   }
   //   else {
   //     playerImg.style.backgroundColor = "#007BFF";
   //     opponentImg.style.backgroundColor = "#DC3545";
-  //     opponentDiv.innerHTML = game.red;
+  //     opponentDiv.textContent = game.red;
   //   }
   // });
 
@@ -117,8 +117,8 @@
     squares.createFuture(game);
     // Make the marquee look right.
     if (game.isOver) {
-      if (game.history.slice(-3, -2) == "r") marquee.innerHTML = "Red wins by connection!";
-      else marquee.innerHTML = "Blue wins by connection!";
+      if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";
+      else marquee.textContent = "Blue wins by connection!";
       timer.stop();
     }
     // Flip the timer if necessary.
