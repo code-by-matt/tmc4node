@@ -8,8 +8,8 @@ var squares = (function() {
   var boardImg = document.getElementById("board-img");
   var myColor = document.getElementById("my-color");
   var theirColor = document.getElementById("their-color");
-  var myName = document.getElementById("my-name").textContent;
-  var theirName = document.getElementById("their-name").textContent;
+  var myName = document.getElementById("my-name");
+  var theirName = document.getElementById("their-name");
 
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
@@ -17,7 +17,7 @@ var squares = (function() {
   }
 
   function drawColors(game) {
-    if (game.red == myName) {
+    if (game.red == myName.textContent) {
       myColor.style.backgroundColor = "#DC3545";
       theirColor.style.backgroundColor = "#007BFF";
     }
