@@ -7,7 +7,7 @@
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
   var myColor = document.getElementById("my-color");
-  var myName = document.getElementById("my-name");
+  var myNameDiv = document.getElementById("my-name");
   var myNameInput = document.getElementById("my-name-input");
   var theirName = document.getElementById("their-name");
   var theirColor = document.getElementById("their-color");
@@ -17,24 +17,11 @@
   socket.emit("join room", game.id);
   socket.emit("sync pls", game.id);
 
-  // if (opponent != "") {
-  //   if (player == game.red) {
-  //     playerImg.style.backgroundColor = "#DC3545";
-  //     opponentImg.style.backgroundColor = "#007BFF";
-  //     opponentDiv.textContent = game.blu;
-  //   }
-  //   else {
-  //     playerImg.style.backgroundColor = "#007BFF";
-  //     opponentImg.style.backgroundColor = "#DC3545";
-  //     opponentDiv.textContent = game.red;
-  //   }
-  // }
-
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter" && myNameInput.value != "") {
-      myName.textContent = myNameInput.value;
-      myName.style.display = "flex";
+      myNameDiv.textContent = myNameInput.value;
+      myNameDiv.style.display = "flex";
       myNameInput.style.display = "none";
       socket.emit("my name", game.id, myNameInput.value);
     }
@@ -73,15 +60,15 @@
 
   // This handler is triggered when your opponent is requesting a sync.
   socket.on("sync pls", function(id) {
-    socket.emit("here ya go", id, myName.textContent, theirName.textContent);
+    socket.emit("here ya go", id, myNameDiv.textContent, theirName.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.
   socket.on("here ya go", function(senderName, receiverName) {
     theirName.textContent = senderName;
     if (receiverName != "") {
-      myName.textContent = receiverName;
-      myName.style.display = "flex";
+      myNameDiv.textContent = receiverName;
+      myNameDiv.style.display = "flex";
       myNameInput.style.display = "none";
     }
   });
@@ -98,22 +85,6 @@
   socket.on("start response", function() {
     timer.start();
   });
-
-  // socket.on("sync", function(data) {
-  //   game.red = data.red;
-  //   game.blu = data.blu;
-  //   game.firstTurn = data.firstTurn;
-  //   if (player == game.red) {
-  //     playerImg.style.backgroundColor = "#DC3545";
-  //     opponentImg.style.backgroundColor = "#007BFF";
-  //     opponentDiv.textContent = game.blu;
-  //   }
-  //   else {
-  //     playerImg.style.backgroundColor = "#007BFF";
-  //     opponentImg.style.backgroundColor = "#DC3545";
-  //     opponentDiv.textContent = game.red;
-  //   }
-  // });
 
   socket.on("game response", function(newGame) {
     // Update game, make all the color squares look right.
