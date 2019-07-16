@@ -9,7 +9,7 @@
   var myColor = document.getElementById("my-color");
   var myNameDiv = document.getElementById("my-name");
   var myNameInput = document.getElementById("my-name-input");
-  var theirName = document.getElementById("their-name");
+  var theirNameDiv = document.getElementById("their-name");
   var theirColor = document.getElementById("their-color");
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
@@ -55,17 +55,17 @@
   });
 
   socket.on("their name", function(name) {
-    theirName.textContent = name;
+    theirNameDiv.textContent = name;
   });
 
   // This handler is triggered when your opponent is requesting a sync.
   socket.on("sync pls", function(id) {
-    socket.emit("here ya go", id, myNameDiv.textContent, theirName.textContent);
+    socket.emit("here ya go", id, myNameDiv.textContent, theirNameDiv.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.
   socket.on("here ya go", function(senderName, receiverName) {
-    theirName.textContent = senderName;
+    theirNameDiv.textContent = senderName;
     if (receiverName != "") {
       myNameDiv.textContent = receiverName;
       myNameDiv.style.display = "flex";
