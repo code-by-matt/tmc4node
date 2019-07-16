@@ -75,8 +75,8 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("sync pls", id);
   });
 
-  socket.on("here ya go", function(id, name) {
-    socket.broadcast.to(id).emit("here ya go", name);
+  socket.on("here ya go", function(id, senderName, receiverName) {
+    socket.broadcast.to(id).emit("here ya go", senderName, receiverName);
   });
 
   socket.on("update game request", function(game) {
