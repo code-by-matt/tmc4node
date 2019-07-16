@@ -6,11 +6,9 @@
   var marquee = document.getElementById("marquee");
   var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
-  var myColor = document.getElementById("my-color");
   var myNameDiv = document.getElementById("my-name");
   var myNameInput = document.getElementById("my-name-input");
   var theirNameDiv = document.getElementById("their-name");
-  var theirColor = document.getElementById("their-color");
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
@@ -24,6 +22,21 @@
       myNameDiv.style.display = "flex";
       myNameInput.style.display = "none";
       socket.emit("my name", game.id, myNameInput.value);
+    }
+    if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
+      if (Math.random() > 0.5) {
+        game.red = myNameDiv.textContent;
+        game.blu = theirNameDiv.textContent;
+      }
+      else {
+        game.red = theirNameDiv.textContent;
+        game.blu = myNameDiv.textContent;
+      }
+      logic.init(game);
+      socket.emit("my game", game.id, game);
+      squares.drawBoard(game);
+      squares.drawColors(game);
+      squares.drawFuture(game);
     }
   });
 
@@ -56,6 +69,13 @@
 
   socket.on("their name", function(name) {
     theirNameDiv.textContent = name;
+  });
+
+  socket.on("their game", function(newGame) {
+    game = newGame;
+    squares.drawBoard(game);
+    squares.drawColors(game);
+    squares.drawFuture(game);
   });
 
   // This handler is triggered when your opponent is requesting a sync.

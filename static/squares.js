@@ -6,10 +6,25 @@ var squares = (function() {
   var boardCan = document.getElementById("board-canvas");
   var futureImg = document.getElementById("future-img"); // ...then they are displayed in these image elements.
   var boardImg = document.getElementById("board-img");
+  var myColor = document.getElementById("my-color");
+  var theirColor = document.getElementById("their-color");
+  var myName = document.getElementById("my-name").textContent;
+  var theirName = document.getElementById("their-name").textContent;
 
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
     return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
+  }
+
+  function drawColors(game) {
+    if (game.red == myName) {
+      myColor.style.backgroundColor = "#DC3545";
+      theirColor.style.backgroundColor = "#007BFF";
+    }
+    else {
+      myColor.style.backgroundColor = "#007BFF";
+      theirColor.style.backgroundColor = "#DC3545";
+    }
   }
 
   function drawFuture(game) {
@@ -85,6 +100,7 @@ var squares = (function() {
 
   return {
     getCol: getCol,
+    drawColors: drawColors,
     drawFuture: drawFuture,
     drawBoard: drawBoard,
   };

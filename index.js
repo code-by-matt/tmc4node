@@ -71,6 +71,10 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("their name", name);
   });
 
+  socket.on("my game", function(id, game) {
+    socket.broadcast.to(id).emit("their game", game);
+  });
+
   socket.on("sync pls", function(id) {
     socket.broadcast.to(id).emit("sync pls", id);
   });
