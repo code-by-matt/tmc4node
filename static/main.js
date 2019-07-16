@@ -50,7 +50,7 @@
 
   // When reset is clicked, reset game and send reset request.
   resetBtn.addEventListener("click", function() {
-    logic.reset(game);
+    logic.init(game);
     socket.emit("reset request", game);
   });
 
