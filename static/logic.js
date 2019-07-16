@@ -43,6 +43,23 @@ var logic = (function() {
     return count % 2;
   }
 
+  function init(game) {
+    game.history = "";
+    game.openRows = [0, 0, 0, 0, 0, 0, 0];
+    game.currentTurn = game.firstTurn;
+    game.future = "";
+    game.isOver = false;
+    for (let i = 0; i < 8; i++) {
+      // XORing with thueMorse(game.firstTurn) ensures that the first player is always red.
+      if (thueMorse(game.firstTurn) ^ thueMorse(game.currentTurn + i) == 0) {
+        game.future += "r";
+      }
+      else {
+        game.future += "b";
+      }
+    }
+  }
+
   function reset(game) {
     game.history = "";
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
@@ -76,6 +93,7 @@ var logic = (function() {
   }
 
   return {
+    init: init,
     reset: reset,
     update: update,
   };
