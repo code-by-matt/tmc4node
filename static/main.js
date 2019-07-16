@@ -78,8 +78,8 @@
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
     game = newGame;
-    squares.createBoard(game);
-    squares.createFuture(game);
+    squares.drawBoard(game);
+    squares.drawFuture(game);
   });
 
   socket.on("start response", function() {
@@ -89,8 +89,8 @@
   socket.on("game response", function(newGame) {
     // Update game, make all the color squares look right.
     game = newGame;
-    squares.createBoard(game);
-    squares.createFuture(game);
+    squares.drawBoard(game);
+    squares.drawFuture(game);
     // Make the marquee look right.
     if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";

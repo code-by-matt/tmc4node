@@ -12,7 +12,7 @@ var squares = (function() {
     return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
   }
 
-  function createFuture(game) {
+  function drawFuture(game) {
     var ctx = futureCan.getContext("2d");
     // // Wipe out the previous future.
     // ctx.fillStyle = "#000000";
@@ -32,7 +32,7 @@ var squares = (function() {
     futureImg.src = futureCan.toDataURL();
   }
 
-  function createBoard(game) {
+  function drawBoard(game) {
     var ctx = boardCan.getContext("2d");
     // Wipe out the previous board.
     ctx.fillStyle = "#FFFFFF";
@@ -85,7 +85,7 @@ var squares = (function() {
 
   return {
     getCol: getCol,
-    createFuture: createFuture,
-    createBoard: createBoard,
+    drawFuture: drawFuture,
+    drawBoard: drawBoard,
   };
 })();
