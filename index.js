@@ -26,12 +26,6 @@ app.set("view engine", "pug");
 app.get("/", function(request, response) {
   response.render("index");
 });
-app.get("/new", function(request, response) {
-  response.render("new");
-});
-app.get("/join", function(request, response) {
-  response.render("join");
-});
 app.get("/game", function(request, response) {
   if (request.query.id.length > 16) { // Security check, prevent people from sending requests with crazy long ids.
     response.render("game-not-found");
@@ -50,9 +44,6 @@ app.get("/game", function(request, response) {
       response.render("game-not-found");
     }
   }
-});
-app.get("/game-not-found", function(request, response) {
-  response.render("game-not-found");
 });
 
 // HANDLING SOCKETS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
