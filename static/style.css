@@ -1,8 +1,3 @@
-* {
-  border-width: 2px;
-  border-color: gray;
-}
-
 body {
   margin: 0px;
 }
@@ -17,6 +12,12 @@ input {
 
 img {
   background-color: #D8D8D8;
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
 }
 
 .m4 {
@@ -38,10 +39,6 @@ img {
   justify-content: flex-end;
 }
 
-.border {
-  border-style: solid;
-}
-
 .flex {
   display: flex;
 }
@@ -58,12 +55,22 @@ img {
   .container {
     padding-top: 88px;
   }
+  #board-img {
+    height: 343px;
+    width: 400px;
+    display: block;
+  }
   .row {
   width: 400px;
   }
 }
 
 @media (max-width: 576px) {
+  #board-img {
+    height: 85vw;
+    width: 99vw;
+    display: block;
+  }
   .row {
   width: 99vw;
   }
@@ -76,10 +83,6 @@ img {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-}
-
-.row {
-  margin-bottom: -2px;
 }
 
 #my-name-input {
