@@ -2,6 +2,39 @@ body {
   margin: 0px;
 }
 
+.universe {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@media (min-width: 576px) {
+  .box {
+    margin-top: 88px;
+    width: 400px;
+  }
+}
+
+@media (max-width: 576px) {
+  .box {
+    width: 99vw;
+  }
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+}
+
+#board-img {
+  display: block;
+  width: 100%;
+}
+
 canvas {
   display: none;
 }
@@ -12,12 +45,6 @@ input {
 
 img {
   background-color: #D8D8D8;
-}
-
-.b1 {
-  border-style: solid;
-  border-width: 1px;
-  border-color: gray;
 }
 
 .m4 {
@@ -49,40 +76,6 @@ img {
 
 .justify-content-between {
   justify-content: space-between;
-}
-
-@media (min-width: 576px) {
-  .container {
-    padding-top: 88px;
-  }
-  #board-img {
-    height: 343px;
-    width: 400px;
-    display: block;
-  }
-  .row {
-  width: 400px;
-  }
-}
-
-@media (max-width: 576px) {
-  #board-img {
-    height: 85vw;
-    width: 99vw;
-    display: block;
-  }
-  .row {
-  width: 99vw;
-  }
-}
-
-.container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
 }
 
 #my-name-input {
