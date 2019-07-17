@@ -74,13 +74,6 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("here ya go", senderName, receiverName);
   });
 
-  socket.on("update game request", function(game) {
-    db.none("UPDATE games SET 'history' = $1, 'future' = $2, 'openRows' = $3, 'firstTurn' = $4, 'currentTurn' = $5, 'isOver' = $6",
-    [game.history, game.future, game.openRows, game.firstTurn, game.currentTurn, game.isGameOver]);
-    io.to(game.id).emit("game response", game);
-    console.log("game " + game.id + " updated!");
-  });
-
   // disconnection check
   socket.on("disconnect", function() {
     console.log("a user disconnected!");
