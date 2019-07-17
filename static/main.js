@@ -21,7 +21,7 @@
       myNameDiv.textContent = myNameInput.value;
       myNameDiv.style.display = "flex";
       myNameInput.style.display = "none";
-      socket.emit("my name", game.id, myNameInput.value);
+      socket.emit("my name", game, myNameInput.value);
     }
     if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
       if (Math.random() > 0.5) {
@@ -33,7 +33,7 @@
         game.blu = myNameDiv.textContent;
       }
       logic.init(game);
-      socket.emit("my game", game.id, game);
+      socket.emit("my game", game);
       squares.draw(game);
     }
   });
@@ -65,22 +65,22 @@
     socket.emit("reset request", game);
   });
 
-  socket.on("their name", function(name) {
-    theirNameDiv.textContent = name;
+  socket.on("their name", function(senderName) {
+    theirNameDiv.textContent = senderName;
   });
 
-  socket.on("their game", function(newGame) {
-    game = newGame;
+  socket.on("their game", function(senderGame) {
+    game = senderGame;
     squares.draw(game);
   });
 
   // This handler is triggered when your opponent is requesting a sync.
   socket.on("sync pls", function(id) {
-    socket.emit("here ya go", id, myNameDiv.textContent, theirNameDiv.textContent, game);
+    socket.emit("here ya go", game, myNameDiv.textContent, theirNameDiv.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.
-  socket.on("here ya go", function(senderName, receiverName, senderGame) {
+  socket.on("here ya go", function(senderGame, senderName, receiverName) {
     theirNameDiv.textContent = senderName;
     if (receiverName != "") {
       myNameDiv.textContent = receiverName;

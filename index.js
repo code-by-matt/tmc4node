@@ -58,20 +58,20 @@ io.on("connection", function(socket) {
     console.log("joined game " + id);
   });
 
-  socket.on("my name", function(id, name) {
-    socket.broadcast.to(id).emit("their name", name);
+  socket.on("my name", function(senderGame, senderName) {
+    socket.broadcast.to(senderGame.id).emit("their name", senderName);
   });
 
-  socket.on("my game", function(id, game) {
-    socket.broadcast.to(id).emit("their game", game);
+  socket.on("my game", function(senderGame) {
+    socket.broadcast.to(senderGame.id).emit("their game", senderGame);
   });
 
   socket.on("sync pls", function(id) {
     socket.broadcast.to(id).emit("sync pls", id);
   });
 
-  socket.on("here ya go", function(id, senderName, receiverName, game) {
-    socket.broadcast.to(id).emit("here ya go", senderName, receiverName, game);
+  socket.on("here ya go", function(senderGame, senderName, receiverName) {
+    socket.broadcast.to(senderGame.id).emit("here ya go", senderGame, senderName, receiverName);
   });
 
   // disconnection check
