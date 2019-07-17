@@ -76,17 +76,19 @@
 
   // This handler is triggered when your opponent is requesting a sync.
   socket.on("sync pls", function(id) {
-    socket.emit("here ya go", id, myNameDiv.textContent, theirNameDiv.textContent);
+    socket.emit("here ya go", id, myNameDiv.textContent, theirNameDiv.textContent, game);
   });
 
   // This handler is triggered when you receive a sync from your opponent.
-  socket.on("here ya go", function(senderName, receiverName) {
+  socket.on("here ya go", function(senderName, receiverName, senderGame) {
     theirNameDiv.textContent = senderName;
     if (receiverName != "") {
       myNameDiv.textContent = receiverName;
       myNameDiv.style.display = "flex";
       myNameInput.style.display = "none";
     }
+    game = senderGame;
+    squares.draw(game);
   });
   
   socket.on("reset response", function(newGame) {
