@@ -14,6 +14,7 @@
   var socket = io();
   socket.emit("join room", game.id);
   socket.emit("sync pls", game.id);
+  squares.draw(game);
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
