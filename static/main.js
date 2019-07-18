@@ -13,7 +13,7 @@
   var socket = io();
   socket.emit("join room", game.id);
   socket.emit("sync pls", game.id);
-  squares.draw(game);
+  squares.tryDraw(game);
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
@@ -35,7 +35,7 @@
       logic.init(game);
       socket.emit("my game", game);
       setTimeout(function() {
-        squares.draw(game);
+        squares.tryDraw(game);
         wobbly.start(timer);
       }, 3000);
     }
@@ -75,7 +75,7 @@
   socket.on("their game", function(senderGame) {
     game = senderGame;
     setTimeout(function() {
-      squares.draw(game);
+      squares.tryDraw(game);
       wobbly.start(timer);
     }, 3000);
   });
@@ -94,7 +94,7 @@
       myNameInput.style.display = "none";
     }
     game = senderGame;
-    squares.draw(game);
+    squares.tryDraw(game);
   });
   
   socket.on("reset response", function(newGame) {
@@ -102,7 +102,7 @@
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
     game = newGame;
-    squares.draw(game);
+    squares.tryDraw(game);
   });
 
   socket.on("start response", function() {
@@ -112,7 +112,7 @@
   socket.on("game response", function(newGame) {
     // Update game, make all the color squares look right.
     game = newGame;
-    squares.draw(game);
+    squares.tryDraw(game);
     // Make the marquee look right.
     if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";
