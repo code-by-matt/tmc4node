@@ -37,7 +37,7 @@
       socket.emit("my game", game);
       setTimeout(function() {
         squares.draw(game);
-        timer.start();
+        wobbly.start(timer);
       }, 3000);
     }
   });
@@ -45,14 +45,14 @@
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
     var col = squares.getCol(event);
-    if (timer.isRunning() && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
+    if (wobbly.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
     else boardImg.style.cursor = "default";
   });
 
   // When a valid move is made, update game and send update game request.
   boardImg.addEventListener("click", function(event) {
     var col = squares.getCol(event);
-    if (timer.isRunning() && game.openRows[col] < 6 && !game.isOver) {
+    if (wobbly.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) {
       logic.update(game, col);
       socket.emit("update game request", game);
     }
@@ -82,7 +82,7 @@
     game = senderGame;
     setTimeout(function() {
       squares.draw(game);
-      timer.start();
+      wobbly.start(timer);
     }, 3000);
   });
 
@@ -104,7 +104,7 @@
   });
   
   socket.on("reset response", function(newGame) {
-    timer.stop();
+    wobbly.stop(timer);
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
     game = newGame;
@@ -112,7 +112,7 @@
   });
 
   socket.on("start response", function() {
-    timer.start();
+    wobbly.start(timer);
   });
 
   socket.on("game response", function(newGame) {
@@ -123,11 +123,11 @@
     if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";
       else marquee.textContent = "Blue wins by connection!";
-      timer.stop();
+      wobbly.stop(timer);
     }
     // Flip the timer if necessary.
-    if (game.history == "") timer.stop();
-    else if (game.history.slice(-3, -2) != game.future[0]) timer.flip();
+    if (game.history == "") wobbly.stop(timer);
+    else if (game.history.slice(-3, -2) != game.future[0]) wobbly.flip(timer);
     console.log(socket.id);
   });
 })();
