@@ -2,7 +2,6 @@
 var wobbly = (function() {
 
   // Grab some "private" document elements.
-  var startBtn = document.getElementById("start"); // Timer start and reset buttons, duh.
   var resetBtn = document.getElementById("reset");
   var redDiv = document.getElementById("red-div"); // Times are displayed in these two divs.
   var bluDiv = document.getElementById("blu-div");

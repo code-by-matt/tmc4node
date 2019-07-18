@@ -4,7 +4,6 @@
   // Grab lots of document elements.
   var boardImg = document.getElementById("board-img");
   var marquee = document.getElementById("marquee");
-  var startBtn = document.getElementById("start");
   var resetBtn = document.getElementById("reset");
   var myNameDiv = document.getElementById("my-name");
   var myNameInput = document.getElementById("my-name-input");
@@ -56,11 +55,6 @@
       logic.update(game, col);
       socket.emit("update game request", game);
     }
-  });
-
-  // When start is clicked, send start request.
-  startBtn.addEventListener("click", function() {
-    socket.emit("start request");
   });
 
   // When reset is clicked, reset game and send reset request.
