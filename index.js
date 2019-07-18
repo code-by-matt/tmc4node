@@ -32,15 +32,15 @@ app.get("/game", function(request, response) {
   }
   else {
     if (io.sockets.adapter.rooms[request.query.id] == undefined) { // First to join this room.
-      console.log("first to join this room");
+      console.log("first to join room " + request.query.id);
       response.render("game", {id: request.query.id});
     }
     else if (io.sockets.adapter.rooms[request.query.id].length == 1) { // Second to join this room.
-      console.log("second to join this room");
+      console.log("second to join room " + request.query.id);
       response.render("game", {id: request.query.id});
     }
     else { // Third connection cannot join!
-      console.log("cannot join game, it is full!");
+      console.log("cannot join room " + request.query.id + ", it is full!");
       response.render("game-not-found");
     }
   }
@@ -50,12 +50,12 @@ app.get("/game", function(request, response) {
 
 io.on("connection", function(socket) {
 
-  // Connection check.
-  console.log("a user connected!");
-
   socket.on("join room", function(id) {
     socket.join(id);
-    console.log("joined game " + id);
+  });
+
+  socket.on("leave room", function(id) {
+    socket.leave(id);
   });
 
   socket.on("my name", function(senderGame, senderName) {

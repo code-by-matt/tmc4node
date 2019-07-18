@@ -66,6 +66,11 @@
     socket.emit("reset request", game);
   });
 
+  // Disconnect before unload.
+  window.addEventListener("beforeunload", function() {
+    socket.emit("leave room", game.id);
+  });
+
   socket.on("their name", function(senderName) {
     theirNameDiv.textContent = senderName;
   });
