@@ -2,9 +2,11 @@
 var timer = (function() {
 
   // Initialize some "private" variables.
-  var redStart, bluStart = Number.NEGATIVE_INFINITY; // The start time (in ms) of each color's most recent move/pair of moves.
-  var redTime, bluTime = 0;              // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
-  var handle = 0;      // This is a reference to the repeating code that runs the timer. It is zero when the timer is stopped.
+  var redStart = Number.NEGATIVE_INFINITY;      // The start time (in ms) of each color's most recent move/pair of moves.
+  var bluStart = Number.NEGATIVE_INFINITY;
+  var redTime = 0;                  // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+  var bluTime = 0;
+  var handle = 0; // This is a reference to the repeating code that runs the timer. It is zero when the timer is stopped.
 
   // Grab some "private" document elements.
   var startBtn = document.getElementById("start"); // Timer start and reset buttons, duh.

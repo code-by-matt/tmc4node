@@ -35,7 +35,10 @@
       }
       logic.init(game);
       socket.emit("my game", game);
-      squares.draw(game);
+      setTimeout(function() {
+        squares.draw(game);
+        timer.start();
+      }, 3000);
     }
   });
 
@@ -77,7 +80,10 @@
 
   socket.on("their game", function(senderGame) {
     game = senderGame;
-    squares.draw(game);
+    setTimeout(function() {
+      squares.draw(game);
+      timer.start();
+    }, 3000);
   });
 
   // This handler is triggered when your opponent is requesting a sync.
