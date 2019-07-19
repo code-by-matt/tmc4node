@@ -93,7 +93,7 @@ img {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100px;
+  width: 70px;
   display: none; /* changes to flex when name is entered by client */
   justify-content: flex-start;
   align-items: center;
@@ -103,7 +103,7 @@ img {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100px;
+  width: 70px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
