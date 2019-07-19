@@ -31,6 +31,7 @@
         socket.emit("my game", game);
         squares.tryDraw(game);
         wobbly.start(timer);
+        socket.emit("my timer", game.id, timer);
       }, 3000);
     }
   });
@@ -74,16 +75,22 @@
   socket.on("their game", function(senderGame) {
     game = senderGame;
     squares.tryDraw(game);
-    wobbly.start(timer);
+  });
+
+  socket.on("their timer", function(senderTimer) {
+    timer = senderTimer;
+    if (wobbly.isRunning(timer)) {
+      wobbly.start(timer);
+    }
   });
 
   // This handler is triggered when your opponent is requesting a sync.
   socket.on("sync pls", function(id) {
-    socket.emit("here ya go", game, myNameDiv.textContent, theirNameDiv.textContent);
+    socket.emit("here ya go", game, timer, myNameDiv.textContent, theirNameDiv.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.
-  socket.on("here ya go", function(senderGame, senderName, receiverName) {
+  socket.on("here ya go", function(senderGame, senderTimer, senderName, receiverName) {
     theirNameDiv.textContent = senderName;
     if (receiverName != "") {
       myNameDiv.textContent = receiverName;
@@ -92,6 +99,10 @@
     }
     game = senderGame;
     squares.tryDraw(game);
+    timer = senderTimer;
+    if (wobbly.isRunning(timer)) {
+      wobbly.start(timer);
+    }
   });
   
   socket.on("reset response", function(newGame) {

@@ -20,8 +20,13 @@ var wobbly = (function() {
   function times(timer) {
     var redString, bluString;
     var currentTime = new Date().getTime();
+    // It is red's very first turn.
+    if (timer.bluStart == null) {
+      redString = convert(timer.redTime + currentTime - timer.redStart);
+      bluString = "00:00";
+    }
     // Red is in the middle of making a move.
-    if (timer.redStart > timer.bluStart) {
+    else if (timer.redStart > timer.bluStart) {
       redString = convert(timer.redTime + currentTime - timer.redStart);
       bluString = convert(timer.bluTime);
     }
@@ -47,8 +52,10 @@ var wobbly = (function() {
   }
 
   function start(timer) {
-    var currentTime = new Date().getTime();
-    timer.redStart = currentTime;
+    if (timer.redStart == null) {
+      var currentTime = new Date().getTime();
+      timer.redStart = currentTime;
+    }
     // –This block is the thing that constantly updates the page's timer display.–
     timer.handle = setInterval(function() {
       var yeet = times(timer);
