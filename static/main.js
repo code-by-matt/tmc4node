@@ -24,17 +24,17 @@
       socket.emit("my name", game, myNameInput.value);
     }
     if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
-      if (Math.random() > 0.5) {
-        game.red = myNameDiv.textContent;
-        game.blu = theirNameDiv.textContent;
-      }
-      else {
-        game.red = theirNameDiv.textContent;
-        game.blu = myNameDiv.textContent;
-      }
-      logic.init(game);
-      socket.emit("my game", game);
       setTimeout(function() {
+        if (Math.random() > 0.5) {
+          game.red = myNameDiv.textContent;
+          game.blu = theirNameDiv.textContent;
+        }
+        else {
+          game.red = theirNameDiv.textContent;
+          game.blu = myNameDiv.textContent;
+        }
+        logic.init(game);
+        socket.emit("my game", game);
         squares.tryDraw(game);
         wobbly.start(timer);
       }, 3000);
@@ -74,10 +74,8 @@
 
   socket.on("their game", function(senderGame) {
     game = senderGame;
-    setTimeout(function() {
-      squares.tryDraw(game);
-      wobbly.start(timer);
-    }, 3000);
+    squares.tryDraw(game);
+    wobbly.start(timer);
   });
 
   // This handler is triggered when your opponent is requesting a sync.
