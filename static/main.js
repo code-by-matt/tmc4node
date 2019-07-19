@@ -27,14 +27,6 @@
       socket.emit("my countdown", game.id);
       wobbly.countdown();
       setTimeout(function() {
-        if (Math.random() > 0.5) {
-          game.red = myNameDiv.textContent;
-          game.blu = theirNameDiv.textContent;
-        }
-        else {
-          game.red = theirNameDiv.textContent;
-          game.blu = myNameDiv.textContent;
-        }
         logic.init(game);
         socket.emit("my game", game);
         squares.tryDraw(game);

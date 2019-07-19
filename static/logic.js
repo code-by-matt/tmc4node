@@ -1,5 +1,8 @@
-// Here are the functions that operate purely on the game data, not on any document elements.
+// Here are the functions that deal with assigning properties to the game object.
 var logic = (function() {
+
+  var myNameDiv = document.getElementById("my-name");
+  var theirNameDiv = document.getElementById("their-name");
 
   // "Private" function that helps with isWin().
   function count(game, up, right) {
@@ -59,6 +62,14 @@ var logic = (function() {
       else {
         game.future += "b";
       }
+    }
+    if (Math.random() > 0.5) {
+      game.red = myNameDiv.textContent;
+      game.blu = theirNameDiv.textContent;
+    }
+    else {
+      game.red = theirNameDiv.textContent;
+      game.blu = myNameDiv.textContent;
     }
   }
 
