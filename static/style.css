@@ -93,20 +93,18 @@ img {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: left;
   width: 70px;
-  display: none; /* changes to flex when name is entered by client */
-  justify-content: flex-start;
-  align-items: center;
+  display: none; /* changes to block when name is entered by client */
 }
 
 #their-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: right;
   width: 70px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  display: block;
 }
 
 .timer {

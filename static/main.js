@@ -19,7 +19,7 @@
   myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter" && myNameInput.value != "") {
       myNameDiv.textContent = myNameInput.value;
-      myNameDiv.style.display = "flex";
+      myNameDiv.style.display = "block";
       myNameInput.style.display = "none";
       socket.emit("my name", game, myNameInput.value);
     }
@@ -95,7 +95,7 @@
     theirNameDiv.textContent = senderName;
     if (receiverName != "") {
       myNameDiv.textContent = receiverName;
-      myNameDiv.style.display = "flex";
+      myNameDiv.style.display = "block";
       myNameInput.style.display = "none";
     }
     game = senderGame;
