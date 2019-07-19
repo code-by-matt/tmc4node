@@ -55,7 +55,8 @@
     var col = squares.getCol(event);
     if (wobbly.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) {
       logic.update(game, col);
-      socket.emit("update game request", game);
+      socket.emit("my game", game);
+      squares.tryDraw(game);
     }
   });
 
