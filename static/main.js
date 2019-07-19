@@ -24,6 +24,8 @@
       socket.emit("my name", game, myNameInput.value);
     }
     if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
+      socket.emit("my countdown", game.id);
+      wobbly.countdown();
       setTimeout(function() {
         if (Math.random() > 0.5) {
           game.red = myNameDiv.textContent;
@@ -70,6 +72,10 @@
 
   socket.on("their name", function(senderName) {
     theirNameDiv.textContent = senderName;
+  });
+
+  socket.on("their countdown", function() {
+    wobbly.countdown();
   });
 
   socket.on("their game", function(senderGame) {

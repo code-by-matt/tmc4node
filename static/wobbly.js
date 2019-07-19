@@ -5,6 +5,7 @@ var wobbly = (function() {
   var resetBtn = document.getElementById("reset");
   var redDiv = document.getElementById("red-div"); // Times are displayed in these two divs.
   var bluDiv = document.getElementById("blu-div");
+  var marquee = document.getElementById("marquee"); // Game status displayed here.
 
   // "Private" function that helps with times().
   function convert(ms) {
@@ -30,6 +31,19 @@ var wobbly = (function() {
       bluString = convert(timer.bluTime + currentTime - timer.bluStart);
     }
     return [redString, bluString];
+  }
+
+  function countdown() {
+    marquee.textContent = "3... ";
+    setTimeout(function() {
+      marquee.textContent += "2... ";
+    }, 1000);
+    setTimeout(function() {
+      marquee.textContent += "1...";
+    }, 2000);
+    setTimeout(function() {
+      marquee.textContent = "Play!";
+    }, 3000);
   }
 
   function start(timer) {
@@ -78,6 +92,7 @@ var wobbly = (function() {
   }
 
   return {
+    countdown: countdown,
     start: start,
     flip: flip,
     stop: stop,
