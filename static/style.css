@@ -109,6 +109,11 @@ img {
   align-items: center;
 }
 
+.timer {
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 10pt;
+}
+
 .sq {
   width: 20px;
   height: 20px;
