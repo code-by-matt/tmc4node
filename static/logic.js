@@ -1,5 +1,5 @@
 // Here are the functions that deal with assigning properties to the game object.
-var logic = (function() {
+var logic = function() {
 
   var myNameDiv = document.getElementById("my-name");
   var theirNameDiv = document.getElementById("their-name");
@@ -90,4 +90,4 @@ var logic = (function() {
     init: init,
     update: update,
   };
-})();
+};

@@ -1,5 +1,5 @@
 // Here are the functions that deal with the timer.
-var wobbly = (function() {
+var wobbly = function() {
 
   // Grab some "private" document elements.
   var resetBtn = document.getElementById("reset");
@@ -105,4 +105,4 @@ var wobbly = (function() {
     stop: stop,
     isRunning: isRunning,
   };
-})();
+};

@@ -8,12 +8,17 @@
   var myNameDiv = document.getElementById("my-name");
   var myNameInput = document.getElementById("my-name-input");
   var theirNameDiv = document.getElementById("their-name");
+
+  // Load some modules.
+  var l = logic();
+  var w = wobbly();
+  var s = squares();
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", game.id);
   socket.emit("sync pls", game.id);
-  squares.tryDraw(game);
+  s.tryDraw(game);
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
@@ -25,12 +30,12 @@
     }
     if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
       socket.emit("my countdown", game.id);
-      wobbly.countdown();
+      w.countdown();
       setTimeout(function() {
-        logic.init(game);
+        l.init(game);
         socket.emit("my game", game);
-        squares.tryDraw(game);
-        wobbly.start(timer);
+        s.tryDraw(game);
+        w.start(timer);
         socket.emit("my timer", game.id, timer);
       }, 3000);
     }
@@ -38,24 +43,24 @@
 
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
-    var col = squares.getCol(event);
-    if (wobbly.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
+    var col = s.getCol(event);
+    if (w.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
     else boardImg.style.cursor = "default";
   });
 
   // When a valid move is made, update game and send update game request.
   boardImg.addEventListener("click", function(event) {
-    var col = squares.getCol(event);
-    if (wobbly.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) {
-      logic.update(game, col);
+    var col = s.getCol(event);
+    if (w.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) {
+      l.update(game, col);
       socket.emit("my game", game);
-      squares.tryDraw(game);
+      s.tryDraw(game);
     }
   });
 
   // When reset is clicked, reset game and send reset request.
   resetBtn.addEventListener("click", function() {
-    logic.init(game);
+    l.init(game);
     socket.emit("reset request", game);
   });
 
@@ -69,18 +74,18 @@
   });
 
   socket.on("their countdown", function() {
-    wobbly.countdown();
+    w.countdown();
   });
 
   socket.on("their game", function(senderGame) {
     game = senderGame;
-    squares.tryDraw(game);
+    s.tryDraw(game);
   });
 
   socket.on("their timer", function(senderTimer) {
     timer = senderTimer;
-    if (wobbly.isRunning(timer)) {
-      wobbly.start(timer);
+    if (w.isRunning(timer)) {
+      w.start(timer);
     }
   });
 
@@ -98,38 +103,38 @@
       myNameInput.style.display = "none";
     }
     game = senderGame;
-    squares.tryDraw(game);
+    s.tryDraw(game);
     timer = senderTimer;
-    if (wobbly.isRunning(timer)) {
-      wobbly.start(timer);
+    if (w.isRunning(timer)) {
+      w.start(timer);
     }
   });
   
   socket.on("reset response", function(newGame) {
-    wobbly.stop(timer);
+    w.stop(timer);
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
     game = newGame;
-    squares.tryDraw(game);
+    s.tryDraw(game);
   });
 
   socket.on("start response", function() {
-    wobbly.start(timer);
+    w.start(timer);
   });
 
   socket.on("game response", function(newGame) {
     // Update game, make all the color squares look right.
     game = newGame;
-    squares.tryDraw(game);
+    s.tryDraw(game);
     // Make the marquee look right.
     if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";
       else marquee.textContent = "Blue wins by connection!";
-      wobbly.stop(timer);
+      w.stop(timer);
     }
     // Flip the timer if necessary.
-    if (game.history == "") wobbly.stop(timer);
-    else if (game.history.slice(-3, -2) != game.future[0]) wobbly.flip(timer);
+    if (game.history == "") w.stop(timer);
+    else if (game.history.slice(-3, -2) != game.future[0]) w.flip(timer);
     console.log(socket.id);
   });
 })();

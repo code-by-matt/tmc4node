@@ -1,5 +1,5 @@
 // Here are the functions that interact with the squares on the page: getCol(), createFuture(), and createBoard().
-var squares = (function() {
+var squares = function() {
 
   // Grab some "private" document elements.
   var futureCan = document.getElementById("future-canvas"); // Future and board are drawn in these (invisbile) canvas elements...
@@ -108,4 +108,4 @@ var squares = (function() {
     getCol: getCol,
     tryDraw: tryDraw,
   };
-})();
+};
