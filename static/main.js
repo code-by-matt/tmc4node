@@ -12,25 +12,18 @@
   // Load some modules.
   var l = logic();
   var w = wobbly();
-  var s = squares();
+  var d = display();
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", game.id);
   socket.emit("sync pls", game.id);
-  s.tryDraw(game);
+  d.tryDraw(game);
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter" && myNameInput.value != "") {
-      if (myNameInput.value == theirNameDiv.textContent) {
-        myNameDiv.textContent = myNameInput.value + " 2";
-      }
-      else {
-        myNameDiv.textContent = myNameInput.value;
-      }
-      myNameDiv.style.display = "block";
-      myNameInput.style.display = "none";
+      d.writeMe();
       socket.emit("my name", game, myNameDiv.textContent);
     }
     if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
@@ -39,7 +32,7 @@
       setTimeout(function() {
         l.init(game);
         socket.emit("my game", game);
-        s.tryDraw(game);
+        d.tryDraw(game);
         w.start(timer);
         socket.emit("my timer", game.id, timer);
       }, 3000);
@@ -48,18 +41,18 @@
 
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
-    var col = s.getCol(event);
+    var col = d.getCol(event);
     if (w.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
     else boardImg.style.cursor = "default";
   });
 
   // When a valid move is made, update game and send update game request.
   boardImg.addEventListener("click", function(event) {
-    var col = s.getCol(event);
+    var col = d.getCol(event);
     if (w.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) {
       l.update(game, col);
       socket.emit("my game", game);
-      s.tryDraw(game);
+      d.tryDraw(game);
     }
   });
 
@@ -75,7 +68,7 @@
   });
 
   socket.on("their name", function(senderName) {
-    theirNameDiv.textContent = senderName;
+    d.writeThem(senderName);
   });
 
   socket.on("their countdown", function() {
@@ -84,7 +77,7 @@
 
   socket.on("their game", function(senderGame) {
     game = senderGame;
-    s.tryDraw(game);
+    d.tryDraw(game);
   });
 
   socket.on("their timer", function(senderTimer) {
@@ -108,7 +101,7 @@
       myNameInput.style.display = "none";
     }
     game = senderGame;
-    s.tryDraw(game);
+    d.tryDraw(game);
     timer = senderTimer;
     if (w.isRunning(timer)) {
       w.start(timer);
@@ -120,7 +113,7 @@
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
     game = newGame;
-    s.tryDraw(game);
+    d.tryDraw(game);
   });
 
   socket.on("start response", function() {
@@ -130,7 +123,7 @@
   socket.on("game response", function(newGame) {
     // Update game, make all the color squares look right.
     game = newGame;
-    s.tryDraw(game);
+    d.tryDraw(game);
     // Make the marquee look right.
     if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";

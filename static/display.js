@@ -1,5 +1,5 @@
-// Here are the functions that interact with the squares on the page: getCol(), createFuture(), and createBoard().
-var squares = function() {
+// Here are the functions that deal with displaying information.
+var display = function() {
 
   // Grab some "private" document elements.
   var futureCan = document.getElementById("future-canvas"); // Future and board are drawn in these (invisbile) canvas elements...
@@ -8,21 +8,39 @@ var squares = function() {
   var boardImg = document.getElementById("board-img");
   var myColor = document.getElementById("my-color");
   var theirColor = document.getElementById("their-color");
-  var myName = document.getElementById("my-name");
-  var theirName = document.getElementById("their-name");
+  var myNameDiv = document.getElementById("my-name");
+  var myNameInput = document.getElementById("my-name-input");
+  var theirNameDiv = document.getElementById("their-name");
 
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
     return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
   }
 
+  // Writes your own name.
+  function writeMe() {
+    if (myNameInput.value == theirNameDiv.textContent) {
+      myNameDiv.textContent = myNameInput.value + " 2";
+    }
+    else {
+      myNameDiv.textContent = myNameInput.value;
+    }
+    myNameDiv.style.display = "block";
+    myNameInput.style.display = "none";
+  }
+
+  // Writes your opponent's name.
+  function writeThem(name) {
+    theirNameDiv.textContent = name;
+  }
+
   // Assigns colors to the players.
   function drawColors(game) {
-    if (game.red == myName.textContent && game.blu == theirName.textContent) {
+    if (game.red == myNameDiv.textContent && game.blu == theirNameDiv.textContent) {
       myColor.style.backgroundColor = "#DC3545";
       theirColor.style.backgroundColor = "#007BFF";
     }
-    else if (game.blu == myName.textContent && game.red == theirName.textContent) {
+    else if (game.blu == myNameDiv.textContent && game.red == theirNameDiv.textContent) {
       myColor.style.backgroundColor = "#007BFF";
       theirColor.style.backgroundColor = "#DC3545";
     }
@@ -107,6 +125,8 @@ var squares = function() {
 
   return {
     getCol: getCol,
+    writeMe: writeMe,
+    writeThem: writeThem,
     tryDraw: tryDraw,
   };
 };
