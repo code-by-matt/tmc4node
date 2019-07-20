@@ -16,6 +16,7 @@ var squares = function() {
     return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
   }
 
+  // Assigns colors to the players.
   function drawColors(game) {
     if (game.red == myName.textContent && game.blu == theirName.textContent) {
       myColor.style.backgroundColor = "#DC3545";

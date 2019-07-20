@@ -23,10 +23,15 @@
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter" && myNameInput.value != "") {
-      myNameDiv.textContent = myNameInput.value;
+      if (myNameInput.value == theirNameDiv.textContent) {
+        myNameDiv.textContent = myNameInput.value + " 2";
+      }
+      else {
+        myNameDiv.textContent = myNameInput.value;
+      }
       myNameDiv.style.display = "block";
       myNameInput.style.display = "none";
-      socket.emit("my name", game, myNameInput.value);
+      socket.emit("my name", game, myNameDiv.textContent);
     }
     if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
       socket.emit("my countdown", game.id);
