@@ -25,17 +25,17 @@
     if (event.key == "Enter" && myNameInput.value != "") {
       d.writeMe();
       socket.emit("my name", game, myNameDiv.textContent);
-    }
-    if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
-      socket.emit("my countdown", game.id);
-      w.countdown();
-      setTimeout(function() {
-        l.init(game);
-        socket.emit("my game", game);
-        d.tryDraw(game);
-        w.start(timer);
-        socket.emit("my timer", game.id, timer);
-      }, 3000);
+      if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
+        socket.emit("my countdown", game.id);
+        w.countdown();
+        setTimeout(function() {
+          l.init(game);
+          socket.emit("my game", game);
+          d.tryDraw(game);
+          w.start(timer);
+          socket.emit("my timer", game.id, timer);
+        }, 3000);
+      }
     }
   });
 
