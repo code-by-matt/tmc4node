@@ -10,10 +10,6 @@ var logic = function() {
   // Game status displayed here.
   var marquee = document.getElementById("marquee");
 
-  // Player naames displayed here.
-  var myNameDiv = document.getElementById("my-name");
-  var theirNameDiv = document.getElementById("their-name");
-
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   
   // Converts a time in ms into a human-readable string.
@@ -148,7 +144,7 @@ var logic = function() {
   }
 
   // Initializes all game properties and immediately run its timer.
-  function init(game) {
+  function init(game, myName, theirName) {
     game.history = "";
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
     game.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
@@ -166,12 +162,12 @@ var logic = function() {
       }
     }
     if (Math.random() > 0.5) {
-      game.red = myNameDiv.textContent;
-      game.blu = theirNameDiv.textContent;
+      game.red = myName;
+      game.blu = theirName;
     }
     else {
-      game.red = theirNameDiv.textContent;
-      game.blu = myNameDiv.textContent;
+      game.red = theirName;
+      game.blu = myName;
     }
     game.redStart = new Date().getTime(); // The start time (in ms) of each color's most recent move/pair of moves.
     game.bluStart = null;

@@ -28,7 +28,7 @@
         socket.emit("my countdown", id);
         l.countdown();
         setTimeout(function() {
-          l.init(game);
+          l.init(game, myNameDiv.textContent, theirNameDiv.textContent);
           socket.emit("my game", id, game);
           d.tryDraw(game);
         }, 3000);
