@@ -11,7 +11,6 @@
 
   // Load some modules.
   var l = logic();
-  var w = wobbly();
   var d = display();
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
@@ -99,33 +98,5 @@
     if (l.isRunning(game)) {
       l.run(game);
     }
-  });
-  
-  socket.on("reset response", function(newGame) {
-    w.stop(game);
-    console.log("timer stopped!");
-    // Update game, make all the color squares look right.
-    game = newGame;
-    d.tryDraw(game);
-  });
-
-  socket.on("start response", function() {
-    l.run(game);
-  });
-
-  socket.on("game response", function(newGame) {
-    // Update game, make all the color squares look right.
-    game = newGame;
-    d.tryDraw(game);
-    // Make the marquee look right.
-    if (game.isOver) {
-      if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";
-      else marquee.textContent = "Blue wins by connection!";
-      w.stop(game);
-    }
-    // Flip the timer if necessary.
-    if (game.history == "") w.stop(game);
-    else if (game.history.slice(-3, -2) != game.future[0]) w.flip(game);
-    console.log(socket.id);
   });
 })();
