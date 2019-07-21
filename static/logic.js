@@ -7,9 +7,6 @@ var logic = function() {
   var redDiv = document.getElementById("red-div");
   var bluDiv = document.getElementById("blu-div");
 
-  // Game status displayed here.
-  var marquee = document.getElementById("marquee");
-
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   
   // Converts a time in ms into a human-readable string.
@@ -104,21 +101,7 @@ var logic = function() {
 
   // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-  // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
-  function countdown() {
-    marquee.textContent = "3... ";
-    setTimeout(function() {
-      marquee.textContent += "2... ";
-    }, 1000);
-    setTimeout(function() {
-      marquee.textContent += "1...";
-    }, 2000);
-    setTimeout(function() {
-      marquee.textContent = "Play!";
-    }, 3000);
-  }
-
-  // Public function that updates the timer display every tenth of a second.
+  // Updates the timer display every tenth of a second.
   function run(game) {
     game.handle = setInterval(function() {
       var yeet = times(game);
@@ -195,7 +178,6 @@ var logic = function() {
   }
 
   return {
-    countdown: countdown,
     init: init,
     run: run,
     isRunning: isRunning,

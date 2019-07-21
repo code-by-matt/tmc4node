@@ -11,6 +11,7 @@ var display = function() {
   var myNameDiv = document.getElementById("my-name");
   var myNameInput = document.getElementById("my-name-input");
   var theirNameDiv = document.getElementById("their-name");
+  var marquee = document.getElementById("marquee");
 
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
@@ -123,10 +124,25 @@ var display = function() {
     if (game.history != undefined) drawBoard(game);
   }
 
+  // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
+  function countdown() {
+    marquee.textContent = "3... ";
+    setTimeout(function() {
+      marquee.textContent += "2... ";
+    }, 1000);
+    setTimeout(function() {
+      marquee.textContent += "1...";
+    }, 2000);
+    setTimeout(function() {
+      marquee.textContent = "Play!";
+    }, 3000);
+  }
+
   return {
     getCol: getCol,
     writeMe: writeMe,
     writeThem: writeThem,
     tryDraw: tryDraw,
+    countdown: countdown,
   };
 };

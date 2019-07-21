@@ -26,7 +26,7 @@
       socket.emit("my name", id, myNameDiv.textContent);
       if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
         socket.emit("my countdown", id);
-        l.countdown();
+        d.countdown();
         setTimeout(function() {
           l.init(game, myNameDiv.textContent, theirNameDiv.textContent);
           socket.emit("my game", id, game);
@@ -69,7 +69,7 @@
   });
 
   socket.on("their countdown", function() {
-    l.countdown();
+    d.countdown();
   });
 
   socket.on("their game", function(senderGame) {
