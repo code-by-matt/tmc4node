@@ -41,11 +41,6 @@ block scripts
     var id = "#{id}";
     var game = {};
     game.history = "";
-    var timer = {};
-    timer.redStart = null;      // The start time (in ms) of each color's most recent move/pair of moves.
-    timer.bluStart = null;
-    timer.redTime = 0;                  // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
-    timer.bluTime = 0;
-    timer.handle = 0; // This is a reference to the repeating code that runs the timer. It is zero when the timer is stopped.
+    game.handle = 0;
   //Gives us the main script.
   script(src="/main.js")

@@ -70,16 +70,12 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("their game", senderGame);
   });
 
-  socket.on("my timer", function(id, senderTimer) {
-    socket.broadcast.to(id).emit("their timer", senderTimer);
-  });
-
   socket.on("sync pls", function(id) {
     socket.broadcast.to(id).emit("sync pls");
   });
 
-  socket.on("here ya go", function(id, senderGame, senderTimer, senderName, receiverName) {
-    socket.broadcast.to(id).emit("here ya go", senderGame, senderTimer, senderName, receiverName);
+  socket.on("here ya go", function(id, senderGame, senderName, receiverName) {
+    socket.broadcast.to(id).emit("here ya go", senderGame, senderName, receiverName);
   });
 
   // disconnection check

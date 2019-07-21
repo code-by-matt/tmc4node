@@ -1,10 +1,70 @@
 // Here are the functions that deal with assigning properties to the game object.
 var logic = function() {
 
+  // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  
+  // Player times displayed here.
+  var redDiv = document.getElementById("red-div");
+  var bluDiv = document.getElementById("blu-div");
+
+  // Game status displayed here.
+  var marquee = document.getElementById("marquee");
+
+  // Player naames displayed here.
   var myNameDiv = document.getElementById("my-name");
   var theirNameDiv = document.getElementById("their-name");
 
-  // "Private" function that helps with isWin().
+  // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  
+  // Converts a time in ms into a human-readable string.
+  function convert(ms) {
+    var min = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    var sec = Math.floor((ms % (1000 * 60)) / 1000);
+    if (min < 10) min = "0" + min;
+    if (sec < 10) sec = "0" + sec;
+    return min + ':' + sec;
+  }
+
+  // Returns human-readable strings of red's and blu's play time at the instant this function is called.
+  function times(game) {
+    var redString, bluString;
+    var currentTime = new Date().getTime();
+    // It is red's very first turn.
+    if (game.bluStart == null) {
+      redString = convert(game.redTime + currentTime - game.redStart);
+      bluString = "00:00";
+    }
+    // Red is in the middle of making a move.
+    else if (game.redStart > game.bluStart) {
+      redString = convert(game.redTime + currentTime - game.redStart);
+      bluString = convert(game.bluTime);
+    }
+    // Blu is in the middle of making a move.
+    else {
+      redString = convert(game.redTime);
+      bluString = convert(game.bluTime + currentTime - game.bluStart);
+    }
+    return [redString, bluString];
+  }
+
+  // Flips the timer.
+  function flip(game) {
+    var currentTime = new Date().getTime();
+    // Red is completing its move.
+    if (game.redStart > game.bluStart) {
+      game.redTime += currentTime - game.redStart;
+      game.bluStart = currentTime;
+    }
+    // Blu is completing its move.
+    else if (game.redStart < game.bluStart) {
+      game.bluTime += currentTime - game.bluStart;
+      game.redStart = currentTime;
+    }
+    // Hopefully game.redStart and game.bluStart are never equal...
+    console.log("flip");
+  }
+
+  // Starts at the most recent move, then counts matching colors in the direction specified by up and right.
   function count(game, up, right) {
     var color = game.history.slice(-3, -2);
     var col = parseInt(game.history.slice(-2, -1));
@@ -20,7 +80,7 @@ var logic = function() {
     return count;
   }
 
-  // "Private" win-checker that helps with update().
+  // Returns whether or not someone has got four-in-a-row.
   function isWin(game) {
     var hori = count(game, 0, -1) + count(game, 0, 1) - 1;
     var vert = count(game, -1, 0) + count(game, 1, 0) - 1;
@@ -36,7 +96,7 @@ var logic = function() {
     else return false;
   }
 
-  // "Private" function that calculates the nth Thue-Morse number, helps with reset() and update().
+  // Calculates the nth Thue-Morse number.
   function thueMorse(n) {
     var count = 0;
     while (n != 0) {
@@ -46,6 +106,48 @@ var logic = function() {
     return count % 2;
   }
 
+  // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
+  function countdown() {
+    marquee.textContent = "3... ";
+    setTimeout(function() {
+      marquee.textContent += "2... ";
+    }, 1000);
+    setTimeout(function() {
+      marquee.textContent += "1...";
+    }, 2000);
+    setTimeout(function() {
+      marquee.textContent = "Play!";
+    }, 3000);
+  }
+
+  // Public function that updates the timer display every tenth of a second.
+  function run(game) {
+    game.handle = setInterval(function() {
+      var yeet = times(game);
+      redDiv.innerHTML = yeet[0];
+      bluDiv.innerHTML = yeet[1];
+      console.log("running");
+    }, 100);
+  }
+
+  function stop(game) {
+    clearInterval(game.handle);
+    game.handle = 0;
+    game.redStart = Number.NEGATIVE_INFINITY;
+    game.bluStart = Number.NEGATIVE_INFINITY;
+    game.redTime = 0;
+    game.bluTime = 0;
+    redDiv.innerHTML = "00:00";
+    bluDiv.innerHTML = "00:00";
+  }
+
+  function isRunning(game) {
+    return game.handle != 0;
+  }
+
+  // Initializes all game properties and immediately run its timer.
   function init(game) {
     game.history = "";
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
@@ -71,8 +173,15 @@ var logic = function() {
       game.red = theirNameDiv.textContent;
       game.blu = myNameDiv.textContent;
     }
+    game.redStart = new Date().getTime(); // The start time (in ms) of each color's most recent move/pair of moves.
+    game.bluStart = null;
+    game.redTime = 0;         // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+    game.bluTime = 0;
+    game.handle = 0; // This is a reference to the repeating code that runs the game. It is zero when the timer is stopped.
+    run(game);
   }
 
+  // Records a move in the given column, flipping the timer if necessary.
   function update(game, col) {
     var row = game.openRows[col];
     game.history += game.future[0] + col + row;
@@ -83,11 +192,17 @@ var logic = function() {
       if (thueMorse(game.firstTurn) ^ thueMorse(game.currentTurn + i) == 0) game.future += "r";
       else game.future += "b";
     }
+    if (game.history.slice(-3, -2) != game.future.slice(0, 1)) {
+      flip(game);
+    }
     game.isOver = isWin(game);
   }
 
   return {
+    countdown: countdown,
     init: init,
+    run: run,
+    isRunning: isRunning,
     update: update,
   };
 };

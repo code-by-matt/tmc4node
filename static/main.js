@@ -27,13 +27,11 @@
       socket.emit("my name", id, myNameDiv.textContent);
       if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
         socket.emit("my countdown", id);
-        w.countdown();
+        l.countdown();
         setTimeout(function() {
           l.init(game);
           socket.emit("my game", id, game);
           d.tryDraw(game);
-          w.start(timer);
-          socket.emit("my timer", id, timer);
         }, 3000);
       }
     }
@@ -42,14 +40,14 @@
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
     var col = d.getCol(event);
-    if (w.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
+    if (l.isRunning(game) && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
     else boardImg.style.cursor = "default";
   });
 
   // When a valid move is made, update game and send update game request.
   boardImg.addEventListener("click", function(event) {
     var col = d.getCol(event);
-    if (w.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) {
+    if (l.isRunning(game) && game.openRows[col] < 6 && !game.isOver) {
       l.update(game, col);
       socket.emit("my game", id, game);
       d.tryDraw(game);
@@ -72,28 +70,24 @@
   });
 
   socket.on("their countdown", function() {
-    w.countdown();
+    l.countdown();
   });
 
   socket.on("their game", function(senderGame) {
     game = senderGame;
     d.tryDraw(game);
-  });
-
-  socket.on("their timer", function(senderTimer) {
-    timer = senderTimer;
-    if (w.isRunning(timer)) {
-      w.start(timer);
+    if (l.isRunning(game)) {
+      l.run(game);
     }
   });
 
   // This handler is triggered when your opponent is requesting a sync.
   socket.on("sync pls", function() {
-    socket.emit("here ya go", id, game, timer, myNameDiv.textContent, theirNameDiv.textContent);
+    socket.emit("here ya go", id, game, myNameDiv.textContent, theirNameDiv.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.
-  socket.on("here ya go", function(senderGame, senderTimer, senderName, receiverName) {
+  socket.on("here ya go", function(senderGame, senderName, receiverName) {
     theirNameDiv.textContent = senderName;
     if (receiverName != "") {
       myNameDiv.textContent = receiverName;
@@ -102,14 +96,13 @@
     }
     game = senderGame;
     d.tryDraw(game);
-    timer = senderTimer;
-    if (w.isRunning(timer)) {
-      w.start(timer);
+    if (l.isRunning(game)) {
+      l.run(game);
     }
   });
   
   socket.on("reset response", function(newGame) {
-    w.stop(timer);
+    w.stop(game);
     console.log("timer stopped!");
     // Update game, make all the color squares look right.
     game = newGame;
@@ -117,7 +110,7 @@
   });
 
   socket.on("start response", function() {
-    w.start(timer);
+    l.run(game);
   });
 
   socket.on("game response", function(newGame) {
@@ -128,11 +121,11 @@
     if (game.isOver) {
       if (game.history.slice(-3, -2) == "r") marquee.textContent = "Red wins by connection!";
       else marquee.textContent = "Blue wins by connection!";
-      w.stop(timer);
+      w.stop(game);
     }
     // Flip the timer if necessary.
-    if (game.history == "") w.stop(timer);
-    else if (game.history.slice(-3, -2) != game.future[0]) w.flip(timer);
+    if (game.history == "") w.stop(game);
+    else if (game.history.slice(-3, -2) != game.future[0]) w.flip(game);
     console.log(socket.id);
   });
 })();
