@@ -16,24 +16,24 @@
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
-  socket.emit("join room", game.id);
-  socket.emit("sync pls", game.id);
+  socket.emit("join room", id);
+  socket.emit("sync pls", id);
   d.tryDraw(game);
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter" && myNameInput.value != "") {
       d.writeMe();
-      socket.emit("my name", game, myNameDiv.textContent);
+      socket.emit("my name", id, myNameDiv.textContent);
       if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
-        socket.emit("my countdown", game.id);
+        socket.emit("my countdown", id);
         w.countdown();
         setTimeout(function() {
           l.init(game);
-          socket.emit("my game", game);
+          socket.emit("my game", id, game);
           d.tryDraw(game);
           w.start(timer);
-          socket.emit("my timer", game.id, timer);
+          socket.emit("my timer", id, timer);
         }, 3000);
       }
     }
@@ -51,7 +51,7 @@
     var col = d.getCol(event);
     if (w.isRunning(timer) && game.openRows[col] < 6 && !game.isOver) {
       l.update(game, col);
-      socket.emit("my game", game);
+      socket.emit("my game", id, game);
       d.tryDraw(game);
     }
   });
@@ -64,7 +64,7 @@
 
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
-    socket.emit("leave room", game.id);
+    socket.emit("leave room", id);
   });
 
   socket.on("their name", function(senderName) {
@@ -88,8 +88,8 @@
   });
 
   // This handler is triggered when your opponent is requesting a sync.
-  socket.on("sync pls", function(id) {
-    socket.emit("here ya go", game, timer, myNameDiv.textContent, theirNameDiv.textContent);
+  socket.on("sync pls", function() {
+    socket.emit("here ya go", id, game, timer, myNameDiv.textContent, theirNameDiv.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.

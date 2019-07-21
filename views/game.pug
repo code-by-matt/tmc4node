@@ -38,8 +38,8 @@ block scripts
   script(src="/wobbly.js")
   //(Pug passes us the game object)
   script.
+    var id = "#{id}";
     var game = {};
-    game.id = "#{id}";
     game.history = "";
     var timer = {};
     timer.redStart = null;      // The start time (in ms) of each color's most recent move/pair of moves.
