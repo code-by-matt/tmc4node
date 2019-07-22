@@ -17,18 +17,24 @@ body {
     margin-top: 88px;
     width: 400px;
   }
+  .b1 {
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+  }
 }
 
 @media (max-width: 576px) {
   .box {
-    width: 99vw;
+    width: 100vw;
   }
-}
-
-.b1 {
-  border-style: solid;
-  border-width: 1px;
-  border-color: gray;
+  .b1 {
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+    border-left: none;
+    border-right: none;
+  }
 }
 
 #board-img {
