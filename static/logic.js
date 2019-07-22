@@ -1,5 +1,5 @@
 // Here are the functions that deal with assigning properties to the game object.
-var logic = function() {
+const logic = function() {
 
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 

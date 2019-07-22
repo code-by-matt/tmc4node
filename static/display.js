@@ -1,5 +1,5 @@
 // Here are the functions that deal with displaying information.
-var display = function() {
+const display = function() {
 
   // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
