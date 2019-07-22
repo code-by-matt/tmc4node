@@ -22,7 +22,7 @@
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("keyup", function(event) {
     if (event.key == "Enter" && myNameInput.value != "") {
-      d.writeMe();
+      d.writeMe(myNameInput.value);
       socket.emit("my name", id, myNameDiv.textContent);
       if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
         socket.emit("my countdown", id);
@@ -84,12 +84,8 @@
 
   // This handler is triggered when you receive a sync from your opponent.
   socket.on("here ya go", function(senderGame, senderName, receiverName) {
-    theirNameDiv.textContent = senderName;
-    if (receiverName != "") {
-      myNameDiv.textContent = receiverName;
-      myNameDiv.style.display = "block";
-      myNameInput.style.display = "none";
-    }
+    d.writeThem(senderName);
+    d.writeMe(receiverName);
     game = senderGame;
     d.tryDraw(game);
   });

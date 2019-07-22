@@ -96,15 +96,17 @@ var display = function() {
   }
 
   // Writes your own name.
-  function writeMe() {
-    if (myNameInput.value == theirNameDiv.textContent) {
-      myNameDiv.textContent = myNameInput.value + " 2";
+  function writeMe(name) {
+    if (name != "") {
+      if (name == theirNameDiv.textContent) {
+        myNameDiv.textContent = name + " 2";
+      }
+      else {
+        myNameDiv.textContent = name;
+      }
+      myNameDiv.style.display = "block";
+      myNameInput.style.display = "none";
     }
-    else {
-      myNameDiv.textContent = myNameInput.value;
-    }
-    myNameDiv.style.display = "block";
-    myNameInput.style.display = "none";
   }
 
   // Writes your opponent's name.
