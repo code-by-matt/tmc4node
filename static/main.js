@@ -20,8 +20,8 @@
   d.tryDraw(game);
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
-  myNameInput.addEventListener("keyup", function(event) {
-    if (event.key == "Enter" && myNameInput.value != "") {
+  myNameInput.addEventListener("change", function(event) {
+    if (myNameInput.value != "") {
       d.writeMe(myNameInput.value);
       socket.emit("my name", id, myNameDiv.textContent);
       if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
