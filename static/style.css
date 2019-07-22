@@ -87,10 +87,8 @@ img {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 94px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  display: block;
+  flex: 1;
 }
 
 #my-name {
@@ -98,8 +96,12 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
-  width: 70px;
   display: none; /* changes to block when name is entered by client */
+  flex: 1;
+}
+
+.half {
+  width: 50%;
 }
 
 #their-name {
@@ -107,8 +109,8 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: right;
-  width: 70px;
   display: block;
+  flex: 1;
 }
 
 .timer {
