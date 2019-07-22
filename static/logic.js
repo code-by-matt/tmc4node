@@ -1,44 +1,7 @@
 // Here are the functions that deal with assigning properties to the game object.
 var logic = function() {
 
-  // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  
-  // Player times displayed here.
-  var redDiv = document.getElementById("red-div");
-  var bluDiv = document.getElementById("blu-div");
-
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  
-  // Converts a time in ms into a human-readable string.
-  function convert(ms) {
-    var min = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-    var sec = Math.floor((ms % (1000 * 60)) / 1000);
-    if (min < 10) min = "0" + min;
-    if (sec < 10) sec = "0" + sec;
-    return min + ':' + sec;
-  }
-
-  // Returns human-readable strings of red's and blu's play time at the instant this function is called.
-  function times(game) {
-    var redString, bluString;
-    var currentTime = new Date().getTime();
-    // It is red's very first turn.
-    if (game.bluStart == null) {
-      redString = convert(game.redTime + currentTime - game.redStart);
-      bluString = "00:00";
-    }
-    // Red is in the middle of making a move.
-    else if (game.redStart > game.bluStart) {
-      redString = convert(game.redTime + currentTime - game.redStart);
-      bluString = convert(game.bluTime);
-    }
-    // Blu is in the middle of making a move.
-    else {
-      redString = convert(game.redTime);
-      bluString = convert(game.bluTime + currentTime - game.bluStart);
-    }
-    return [redString, bluString];
-  }
 
   // Flips the timer.
   function flip(game) {
@@ -101,32 +64,7 @@ var logic = function() {
 
   // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-  // Updates the timer display every tenth of a second.
-  function run(game) {
-    game.handle = setInterval(function() {
-      var yeet = times(game);
-      redDiv.innerHTML = yeet[0];
-      bluDiv.innerHTML = yeet[1];
-      console.log("running");
-    }, 100);
-  }
-
-  function stop(game) {
-    clearInterval(game.handle);
-    game.handle = 0;
-    game.redStart = Number.NEGATIVE_INFINITY;
-    game.bluStart = Number.NEGATIVE_INFINITY;
-    game.redTime = 0;
-    game.bluTime = 0;
-    redDiv.innerHTML = "00:00";
-    bluDiv.innerHTML = "00:00";
-  }
-
-  function isRunning(game) {
-    return game.handle != 0;
-  }
-
-  // Initializes all game properties and immediately run its timer.
+  // Initializes all game properties.
   function init(game, myName, theirName) {
     game.history = "";
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
@@ -156,8 +94,6 @@ var logic = function() {
     game.bluStart = null;
     game.redTime = 0;         // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
     game.bluTime = 0;
-    game.handle = 0; // This is a reference to the repeating code that runs the game. It is zero when the timer is stopped.
-    run(game);
   }
 
   // Records a move in the given column, flipping the timer if necessary.
@@ -179,8 +115,6 @@ var logic = function() {
 
   return {
     init: init,
-    run: run,
-    isRunning: isRunning,
     update: update,
   };
 };

@@ -1,17 +1,94 @@
 // Here are the functions that deal with displaying information.
 var display = function() {
 
-  // Grab some "private" document elements.
-  var futureCan = document.getElementById("future-canvas"); // Future and board are drawn in these (invisbile) canvas elements...
+  // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  // Handle should ultimately go here? Nah.
+  
+  // Future and board are drawn in these (invisbile) canvas elements...
+  var futureCan = document.getElementById("future-canvas");
   var boardCan = document.getElementById("board-canvas");
-  var futureImg = document.getElementById("future-img"); // ...then they are displayed in these image elements.
+
+  // ...then they are displayed in these image elements.
+  var futureImg = document.getElementById("future-img");
   var boardImg = document.getElementById("board-img");
+
+  // These divs are where the players' colors are displayed.
   var myColor = document.getElementById("my-color");
   var theirColor = document.getElementById("their-color");
+
+  // These divs are where the players' names are displayed.
   var myNameDiv = document.getElementById("my-name");
-  var myNameInput = document.getElementById("my-name-input");
   var theirNameDiv = document.getElementById("their-name");
+
+  // This is where you type in your own name. It gets swapped with a (non-editable) div when you press enter.
+  var myNameInput = document.getElementById("my-name-input");
+
+  // Player times displayed here.
+  var redDiv = document.getElementById("red-div");
+  var bluDiv = document.getElementById("blu-div");
+  
+  // This is a div that tells you some useful info.
   var marquee = document.getElementById("marquee");
+
+  // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  // Converts a time in ms into a human-readable string.
+  function convert(ms) {
+    var min = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    var sec = Math.floor((ms % (1000 * 60)) / 1000);
+    if (min < 10) min = "0" + min;
+    if (sec < 10) sec = "0" + sec;
+    return min + ':' + sec;
+  }
+
+  // Returns human-readable strings of red's and blu's play time at the instant this function is called.
+  function times(game) {
+    var redString, bluString;
+    var currentTime = new Date().getTime();
+    // It is red's very first turn.
+    if (game.bluStart == null) {
+      redString = convert(game.redTime + currentTime - game.redStart);
+      bluString = "00:00";
+    }
+    // Red is in the middle of making a move.
+    else if (game.redStart > game.bluStart) {
+      redString = convert(game.redTime + currentTime - game.redStart);
+      bluString = convert(game.bluTime);
+    }
+    // Blu is in the middle of making a move.
+    else {
+      redString = convert(game.redTime);
+      bluString = convert(game.bluTime + currentTime - game.bluStart);
+    }
+    return [redString, bluString];
+  }
+
+  // Writes the player times every tenth of a second,
+  function displayTimes(game) {
+    if (handle != 0) {
+      clearInterval(handle);
+    }
+    handle = setInterval(function() {
+      var yeet = times(game);
+      redDiv.innerHTML = yeet[0];
+      bluDiv.innerHTML = yeet[1];
+      console.log("running");
+    }, 100);
+  }
+
+  // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  function stop(game, handle) {
+    clearInterval(handle);
+    handle = 0;
+    game.redStart = Number.NEGATIVE_INFINITY;
+    game.bluStart = Number.NEGATIVE_INFINITY;
+    game.redTime = 0;
+    game.bluTime = 0;
+    redDiv.innerHTML = "00:00";
+    bluDiv.innerHTML = "00:00";
+  }
 
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
@@ -122,6 +199,7 @@ var display = function() {
     if (game.red != undefined && game.blu != undefined) drawColors(game);
     if (game.future != undefined) drawFuture(game);
     if (game.history != undefined) drawBoard(game);
+    if (game.redStart != undefined) displayTimes(game);
   }
 
   // Public function that displays a "3-2-1-Play!"" countdown in the marquee.

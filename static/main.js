@@ -39,14 +39,14 @@
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
     var col = d.getCol(event);
-    if (l.isRunning(game) && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
+    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
     else boardImg.style.cursor = "default";
   });
 
   // When a valid move is made, update game and send update game request.
   boardImg.addEventListener("click", function(event) {
     var col = d.getCol(event);
-    if (l.isRunning(game) && game.openRows[col] < 6 && !game.isOver) {
+    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
       l.update(game, col);
       socket.emit("my game", id, game);
       d.tryDraw(game);
@@ -54,10 +54,10 @@
   });
 
   // When reset is clicked, reset game and send reset request.
-  resetBtn.addEventListener("click", function() {
-    l.init(game);
-    socket.emit("reset request", game);
-  });
+  // resetBtn.addEventListener("click", function() {
+  //   l.init(game);
+  //   socket.emit("reset request", game);
+  // });
 
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
@@ -75,9 +75,6 @@
   socket.on("their game", function(senderGame) {
     game = senderGame;
     d.tryDraw(game);
-    if (l.isRunning(game)) {
-      l.run(game);
-    }
   });
 
   // This handler is triggered when your opponent is requesting a sync.
@@ -95,8 +92,5 @@
     }
     game = senderGame;
     d.tryDraw(game);
-    if (l.isRunning(game)) {
-      l.run(game);
-    }
   });
 })();
