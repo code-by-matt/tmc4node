@@ -1,11 +1,15 @@
 const expect = require("chai").expect;
 const request = require("request");
+const jsdom = require("jsdom");
+const {JSDOM} = jsdom;
 
 describe("Routing.", function() {
-  it("Should be truthy.", function() {
-    request("http://localhost:8000", function(error, response, body) {
-      console.log(body);
+  it("Should display the welcome page.", function(done) {
+    request.get("http://localhost:8000", function(error, response, body) {
+      var dom = new JSDOM(body, {runScripts: "dangerously"});
+      var title = dom.window.document.querySelector("title").textContent;
+      expect(title).to.equal("TMC4 | Wecome!");
+      done();
     });
-    expect(true).to.equal(true);
   });
 });
