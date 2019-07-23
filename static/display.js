@@ -25,8 +25,8 @@ const display = function(game) {
   var myNameInput = document.getElementById("my-name-input");
 
   // Player times displayed here.
-  var redDiv = document.getElementById("red-div");
-  var bluDiv = document.getElementById("blu-div");
+  var myTimeDiv = document.getElementById("my-time");
+  var theirTimeDiv = document.getElementById("their-time");
   
   // This is a div that tells you some useful info.
   var marquee = document.getElementById("marquee");
@@ -71,8 +71,14 @@ const display = function(game) {
     }
     handle = setInterval(function() {
       var yeet = times();
-      redDiv.innerHTML = yeet[0];
-      bluDiv.innerHTML = yeet[1];
+      if (game.red == myNameDiv.textContent && game.blu == theirNameDiv.textContent) {
+        myTimeDiv.textContent = yeet[0];
+        theirTimeDiv.textContent = yeet[1];
+      }
+      else if (game.blu == myNameDiv.textContent && game.red == theirNameDiv.textContent) {
+        myTimeDiv.textContent = yeet[1];
+        theirTimeDiv.textContent = yeet[0];
+      }
       console.log("running");
     }, 100);
   }
@@ -86,8 +92,8 @@ const display = function(game) {
     game.bluStart = Number.NEGATIVE_INFINITY;
     game.redTime = 0;
     game.bluTime = 0;
-    redDiv.innerHTML = "00:00";
-    bluDiv.innerHTML = "00:00";
+    myTimeDiv.innerHTML = "00:00";
+    theirTimeDiv.innerHTML = "00:00";
   }
 
   // Calculates the column in which a player clicked (0 thru 6).
