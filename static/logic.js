@@ -1,10 +1,10 @@
 // Here are the functions that deal with assigning properties to the game object.
-const logic = function() {
+const logic = function(game) {
 
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
   // Flips the timer.
-  function flip(game) {
+  function flip() {
     var currentTime = new Date().getTime();
     // Red is completing its move.
     if (game.redStart > game.bluStart) {
@@ -21,7 +21,7 @@ const logic = function() {
   }
 
   // Starts at the most recent move, then counts matching colors in the direction specified by up and right.
-  function count(game, up, right) {
+  function count(up, right) {
     var color = game.history.slice(-3, -2);
     var col = parseInt(game.history.slice(-2, -1));
     var row = parseInt(game.history.slice(-1));
@@ -37,11 +37,11 @@ const logic = function() {
   }
 
   // Returns whether or not someone has got four-in-a-row.
-  function isWin(game) {
-    var hori = count(game, 0, -1) + count(game, 0, 1) - 1;
-    var vert = count(game, -1, 0) + count(game, 1, 0) - 1;
-    var diag = count(game, 1, -1) + count(game, -1, 1) - 1;
-    var antd = count(game, 1, 1) + count(game, -1, -1) - 1;
+  function isWin() {
+    var hori = count(0, -1) + count(0, 1) - 1;
+    var vert = count(-1, 0) + count(1, 0) - 1;
+    var diag = count(1, -1) + count(-1, 1) - 1;
+    var antd = count(1, 1) + count(-1, -1) - 1;
     // console.log("horizontal: " + hori);
     // console.log("vertical: " + vert);
     // console.log("diagonal: " + diag);
@@ -65,7 +65,7 @@ const logic = function() {
   // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
   // Initializes all game properties.
-  function init(game, myName, theirName) {
+  function init(myName, theirName) {
     game.history = "";
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
     game.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
@@ -97,7 +97,7 @@ const logic = function() {
   }
 
   // Records a move in the given column, flipping the timer if necessary.
-  function update(game, col) {
+  function update(col) {
     var row = game.openRows[col];
     game.history += game.future[0] + col + row;
     game.openRows[col] += 1;
@@ -108,9 +108,9 @@ const logic = function() {
       else game.future += "b";
     }
     if (game.history.slice(-3, -2) != game.future.slice(0, 1)) {
-      flip(game);
+      flip();
     }
-    game.isOver = isWin(game);
+    game.isOver = isWin();
   }
 
   return {

@@ -10,14 +10,14 @@
   var theirNameDiv = document.getElementById("their-name");
 
   // Load some modules.
-  var l = logic();
-  var d = display();
+  var l = logic(game);
+  var d = display(game);
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", id);
   socket.emit("sync pls", id);
-  d.tryDraw(game);
+  d.tryDraw();
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("change", function(event) {
@@ -28,9 +28,9 @@
         socket.emit("my countdown", id);
         d.countdown();
         setTimeout(function() {
-          l.init(game, myNameDiv.textContent, theirNameDiv.textContent);
+          l.init(myNameDiv.textContent, theirNameDiv.textContent);
           socket.emit("my game", id, game);
-          d.tryDraw(game);
+          d.tryDraw();
         }, 3000);
       }
     }
@@ -47,15 +47,15 @@
   boardImg.addEventListener("click", function(event) {
     var col = d.getCol(event);
     if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      l.update(game, col);
+      l.update(col);
       socket.emit("my game", id, game);
-      d.tryDraw(game);
+      d.tryDraw();
     }
   });
 
   // When reset is clicked, reset game and send reset request.
   // resetBtn.addEventListener("click", function() {
-  //   l.init(game);
+  //   l.init();
   //   socket.emit("reset request", game);
   // });
 
@@ -73,8 +73,8 @@
   });
 
   socket.on("their game", function(senderGame) {
-    game = senderGame;
-    d.tryDraw(game);
+    Object.assign(game, senderGame);
+    d.tryDraw();
   });
 
   // This handler is triggered when your opponent is requesting a sync.
@@ -86,7 +86,7 @@
   socket.on("here ya go", function(senderGame, senderName, receiverName) {
     d.writeThem(senderName);
     d.writeMe(receiverName);
-    game = senderGame;
-    d.tryDraw(game);
+    Object.assign(game, senderGame);
+    d.tryDraw();
   });
 })();

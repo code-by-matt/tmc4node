@@ -1,5 +1,5 @@
 // Here are the functions that deal with displaying information.
-const display = function() {
+const display = function(game) {
 
   // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -43,7 +43,7 @@ const display = function() {
   }
 
   // Returns human-readable strings of red's and blu's play time at the instant this function is called.
-  function times(game) {
+  function times() {
     var redString, bluString;
     var currentTime = new Date().getTime();
     // It is red's very first turn.
@@ -65,12 +65,12 @@ const display = function() {
   }
 
   // Writes the player times every tenth of a second,
-  function displayTimes(game) {
+  function displayTimes() {
     if (handle != 0) {
       clearInterval(handle);
     }
     handle = setInterval(function() {
-      var yeet = times(game);
+      var yeet = times();
       redDiv.innerHTML = yeet[0];
       bluDiv.innerHTML = yeet[1];
       console.log("running");
@@ -79,7 +79,7 @@ const display = function() {
 
   // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-  function stop(game, handle) {
+  function stop(handle) {
     clearInterval(handle);
     handle = 0;
     game.redStart = Number.NEGATIVE_INFINITY;
@@ -115,7 +115,7 @@ const display = function() {
   }
 
   // Assigns colors to the players.
-  function drawColors(game) {
+  function drawColors() {
     if (game.red == myNameDiv.textContent && game.blu == theirNameDiv.textContent) {
       myColor.style.backgroundColor = "#DC3545";
       theirColor.style.backgroundColor = "#007BFF";
@@ -126,7 +126,7 @@ const display = function() {
     }
   }
 
-  function drawFuture(game) {
+  function drawFuture() {
     var ctx = futureCan.getContext("2d");
     // // Wipe out the previous future.
     // ctx.fillStyle = "#000000";
@@ -146,7 +146,7 @@ const display = function() {
     futureImg.src = futureCan.toDataURL();
   }
 
-  function drawBoard(game) {
+  function drawBoard() {
     var ctx = boardCan.getContext("2d");
     // Wipe out the previous board.
     ctx.fillStyle = "#FFFFFF";
@@ -197,11 +197,11 @@ const display = function() {
     boardImg.src = boardCan.toDataURL();
   }
 
-  function tryDraw(game) {
-    if (game.red != undefined && game.blu != undefined) drawColors(game);
-    if (game.future != undefined) drawFuture(game);
-    if (game.history != undefined) drawBoard(game);
-    if (game.redStart != undefined) displayTimes(game);
+  function tryDraw() {
+    if (game.red != undefined && game.blu != undefined) drawColors();
+    if (game.future != undefined) drawFuture();
+    if (game.history != undefined) drawBoard();
+    if (game.redStart != undefined) displayTimes();
   }
 
   // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
