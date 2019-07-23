@@ -208,6 +208,18 @@ const display = function(game) {
     if (game.future != undefined) drawFuture();
     if (game.history != undefined) drawBoard();
     if (game.redStart != undefined) displayTimes();
+    if (game.isOver) {
+      marquee.textContent = "Game Over!";
+      clearInterval(handle);
+      if (game.red == myNameDiv.textContent && game.blu == theirNameDiv.textContent) {
+        myTimeDiv.textContent = convert(game.redTime);
+        theirTimeDiv.textContent = convert(game.bluTime);
+      }
+      else if (game.blu == myNameDiv.textContent && game.red == theirNameDiv.textContent) {
+        myTimeDiv.textContent = convert(game.bluTime);
+        theirTimeDiv.textContent = convert(game.redTime);
+      }
+    }
   }
 
   // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
