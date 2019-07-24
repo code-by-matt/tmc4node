@@ -8,7 +8,7 @@ describe("Routing.", function() {
     request.get("http://localhost:8000", function(error, response, body) {
       var dom = new JSDOM(body, {runScripts: "dangerously"});
       var title = dom.window.document.querySelector("title").textContent;
-      expect(title).to.equal("TMC4 | Wecome!");
+      expect(title).to.equal("TMC4 | Welcome!");
       done();
     });
   });
