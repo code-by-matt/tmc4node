@@ -45,7 +45,7 @@ describe("Routing.", function() {
       socket2.emit("join room", id);
       socket2.on("room joined", function() {
         request.get("http://localhost:8000/game?id=" + id, function(error, response, body) {
-          var dom = new JSDOM(body, {url: "http://localhost:8000", runScripts: "dangerously", resources: "usable"});
+          var dom = new JSDOM(body);
           var title = dom.window.document.querySelector("title").textContent;
           expect(title).to.equal("TMC4 | Game Not Found!");
           socket1.disconnect();
