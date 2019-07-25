@@ -56,3 +56,21 @@ describe("Routing.", function() {
     });
   });
 });
+
+describe("Names.", function() {
+  it("Should work in this order: first connect, first name, second connect, second name.", function(done) {
+    var id = Math.random().toString(36).substr(6);
+    request.get("http://localhost:8000/game?id=" + id, function(error, response, body) {
+      var dom = new JSDOM(body, {
+        url: "http://localhost:8000",
+        runScripts: "dangerously",
+        resources: "usable",
+      });
+      var name = dom.window.document.getElementById("my-name-input");
+      name.textContent = "test name";
+      expect(name.textContent).to.equal("test name");
+      dom.window.close();
+      done();
+    });
+  });
+});
