@@ -52,6 +52,7 @@ io.on("connection", function(socket) {
 
   socket.on("join room", function(id) {
     socket.join(id);
+    socket.emit("room joined");
   });
 
   socket.on("leave room", function(id) {
