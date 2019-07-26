@@ -92,7 +92,7 @@ describe("Routing.", function() {
 });
 
 describe("Names.", function() {
-  it("Should receive own name.", function(done) {
+  it("Should accept name input.", function(done) {
     var id = Math.random().toString(36).substr(6);
     request.get("http://localhost:8000/game?id=" + id, function(error, response, body) {
       var dom = new JSDOM(body, {
@@ -100,11 +100,17 @@ describe("Names.", function() {
         runScripts: "dangerously",
         resources: "usable",
       });
-      var name = dom.window.document.getElementById("my-name-input");
-      name.textContent = "test name";
-      expect(name.textContent).to.equal("test name");
-      dom.window.close();
-      done();
+      var myNameInput = dom.window.document.getElementById("my-name-input");
+      myNameInput.value = "BoJack";
+      setTimeout(function() {
+        myNameInput.dispatchEvent(new dom.window.Event("change"));
+      }, 10);
+      setTimeout(function() {
+        var myNameDiv = dom.window.document.getElementById("my-name");
+        expect(myNameDiv.textContent).to.equal("BoJack");
+        dom.window.close();
+        done();
+      }, 20);
     });
   });
 });
