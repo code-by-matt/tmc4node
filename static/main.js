@@ -60,9 +60,8 @@
   // });
 
   // Custom event to help with testing.
-  var joined = new Event("joined");
   socket.on("room joined", function() {
-    window.dispatchEvent(joined);
+    window.dispatchEvent(new Event("joined"));
   });
 
   // Disconnect before unload.

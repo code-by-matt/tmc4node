@@ -91,8 +91,9 @@ describe("Routing.", function() {
   });
 });
 
-describe("Names.", function() {
-  it("Should accept name input.", function(done) {
+describe("Player's own name.", function() {
+
+  it("Should display once written.", function(done) {
     var id = Math.random().toString(36).substr(6);
     request.get("http://localhost:8000/game?id=" + id, function(error, response, body) {
       var dom = new JSDOM(body, {
@@ -102,15 +103,15 @@ describe("Names.", function() {
       });
       var myNameInput = dom.window.document.getElementById("my-name-input");
       myNameInput.value = "BoJack";
-      setTimeout(function() {
+      setTimeout(function() { // For some reason we gotta pause a bit on this change event.
         myNameInput.dispatchEvent(new dom.window.Event("change"));
       }, 10);
-      setTimeout(function() {
+      dom.window.addEventListener("my name", function() {
         var myNameDiv = dom.window.document.getElementById("my-name");
         expect(myNameDiv.textContent).to.equal("BoJack");
         dom.window.close();
         done();
-      }, 20);
+      });
     });
   });
 });

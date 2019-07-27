@@ -113,6 +113,7 @@ const display = function(game) {
       myNameDiv.style.display = "block";
       myNameInput.style.display = "none";
     }
+    window.dispatchEvent(new Event("my name"));
   }
 
   // Writes your opponent's name.
