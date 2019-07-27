@@ -18,10 +18,10 @@ describe("Routing.", function() {
     var id = Math.random().toString(36).substr(6);
     var socket = io("http://localhost:8000");
     socket.emit("join room", id);
-    socket.on("room joined", function() {
+    
       cy.visit("http://localhost:8000/game?id=" + id);
       cy.get("title").should("have.text", "TMC4 | Play!");
-    });
+    
   });
 
   it("Should NOT display a game for the third player.", function() {
