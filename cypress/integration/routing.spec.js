@@ -23,4 +23,18 @@ describe("Routing.", function() {
       cy.get("title").should("have.text", "TMC4 | Play!");
     });
   });
+
+  it("Should NOT display a game for the third player.", function() {
+    var id = Math.random().toString(36).substr(6);
+    var socket1 = io("http://localhost:8000");
+    socket1.emit("join room", id);
+    socket1.on("room joined", function() {
+      var socket2 = io("http://localhost:8000");
+      socket2.emit("join room", id);
+      socket2.on("room joined", function() {
+        cy.visit("http://localhost:8000/game?id=" + id);
+        cy.get("title").should("have.text", "TMC4 | Game Not Found!");
+      });
+    });
+  });
 });
