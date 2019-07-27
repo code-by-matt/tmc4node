@@ -39,17 +39,31 @@
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
     var col = d.getCol(event);
-    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) boardImg.style.cursor = "pointer";
-    else boardImg.style.cursor = "default";
+    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
+      if (game.red == myNameDiv.textContent && game.future[0] == "r") {
+        boardImg.style.cursor = "pointer";
+      }
+      else if (game.blu == myNameDiv.textContent && game.future[0] == "b") {
+        boardImg.style.cursor = "pointer";
+      }
+      else boardImg.style.cursor = "default";
+    }
   });
 
   // When a valid move is made, update game and send update game request.
   boardImg.addEventListener("click", function(event) {
     var col = d.getCol(event);
     if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      l.update(col);
-      socket.emit("my game", id, game);
-      d.tryDraw();
+      if (game.red == myNameDiv.textContent && game.future[0] == "r") {
+        l.update(col);
+        socket.emit("my game", id, game);
+        d.tryDraw();
+      }
+      else if (game.blu == myNameDiv.textContent && game.future[0] == "b") {
+        l.update(col);
+        socket.emit("my game", id, game);
+        d.tryDraw();
+      }
     }
   });
 
