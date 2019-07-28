@@ -29,5 +29,12 @@ module.exports = (on, config) => {
         });
       });
     },
+
+    // Make a socket to emit "my name" with the given id.
+    name({id, name}) {
+      var socket = client("http://localhost:8000");
+      socket.emit("my name", id, name);
+      return null;
+    },
   });
 };

@@ -31,10 +31,12 @@ describe("Routing.", function() {
 
 describe("Names.", function() {
 
-  it("Should write my own name.", function() {
+  it("Should write my name and their name.", function() {
     var id = Math.random().toString(36).substr(6);
     cy.visit("http://localhost:8000/game?id=" + id);
-    cy.get('#my-name-input').type("BoJack{enter}");
-    cy.get('#my-name').should("have.text", "BoJack");
+    cy.get("#my-name-input").type("BoJack{enter}");
+    cy.get("#my-name").should("have.text", "BoJack");
+    cy.task("name", {id: id, name: "Princess Carolyn"});
+    cy.get("#their-name").should("have.text", "Princess Carolyn");
   });
 });
