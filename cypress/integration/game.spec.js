@@ -15,14 +15,15 @@ describe("Routing.", function() {
 
   it("Should display a game for the second player.", function() {
     var id = Math.random().toString(36).substr(6);
-    cy.task("one", id);
+    cy.task("socket", id);
     cy.visit("http://localhost:8000/game?id=" + id);
     cy.get("title").should("have.text", "TMC4 | Play!");
   });
 
   it("Should NOT display a game for the third player.", function() {
     var id = Math.random().toString(36).substr(6);
-    cy.task("two", id);
+    cy.task("socket", id);
+    cy.task("socket", id);
     cy.visit("http://localhost:8000/game?id=" + id);
     cy.get("title").should("have.text", "TMC4 | Game Not Found!");
   });

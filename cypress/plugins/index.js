@@ -19,8 +19,8 @@ module.exports = (on, config) => {
 
   on("task", {
 
-    // Add one socket to the room with the given id.
-    one(id) {
+    // Add a socket to the room with the given id.
+    socket(id) {
       return new Promise(function(resolve) {
         var socket = client("http://localhost:8000");
         socket.emit("join room", id);
@@ -29,20 +29,5 @@ module.exports = (on, config) => {
         });
       });
     },
-
-    // Add two sockets to the room with the given id.
-    two(id) {
-      return new Promise(function(resolve) {
-        var socket1 = client("http://localhost:8000");
-        socket1.emit("join room", id);
-        socket1.on("room joined", function() {
-          var socket2 = client("http://localhost:8000");
-          socket2.emit("join room", id);
-          socket2.on("room joined", function() {
-            resolve(null);
-          });
-        });
-      });
-    }
   });
 };
