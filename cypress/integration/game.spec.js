@@ -28,3 +28,13 @@ describe("Routing.", function() {
     cy.get("title").should("have.text", "TMC4 | Game Not Found!");
   });
 });
+
+describe("Names.", function() {
+
+  it("Should write my own name.", function() {
+    var id = Math.random().toString(36).substr(6);
+    cy.visit("http://localhost:8000/game?id=" + id);
+    cy.get('#my-name-input').type("BoJack{enter}");
+    cy.get('#my-name').should("have.text", "BoJack");
+  });
+});
