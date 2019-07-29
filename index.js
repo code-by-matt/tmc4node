@@ -60,14 +60,17 @@ io.on("connection", function(socket) {
   });
 
   socket.on("my name", function(id, senderName) {
+    console.log("my name");
     socket.broadcast.to(id).emit("their name", senderName);
   });
 
   socket.on("my countdown", function(id) {
+    console.log("my countdown");
     socket.broadcast.to(id).emit("their countdown");
   });
 
   socket.on("my game", function(id, senderGame) {
+    console.log("my game");
     socket.broadcast.to(id).emit("their game", senderGame);
   });
 
@@ -80,7 +83,7 @@ io.on("connection", function(socket) {
   });
 
   // disconnection check
-  socket.on("disconnect", function() {
-    console.log("a user disconnected!");
-  });
+  // socket.on("disconnect", function() {
+  //   console.log("a user disconnected!");
+  // });
 });
