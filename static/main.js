@@ -73,11 +73,6 @@
   //   socket.emit("reset request", game);
   // });
 
-  // Custom event to help with testing.
-  socket.on("room joined", function() {
-    window.dispatchEvent(new Event("joined"));
-  });
-
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
     socket.emit("leave room", id);
