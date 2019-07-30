@@ -225,12 +225,12 @@ const display = function(game) {
 
   // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
   function countdown() {
-    marquee.textContent = "3... ";
+    marquee.textContent = "3...";
     setTimeout(function() {
-      marquee.textContent += "2... ";
+      marquee.textContent += " 2...";
     }, 1000);
     setTimeout(function() {
-      marquee.textContent += "1...";
+      marquee.textContent += " 1...";
     }, 2000);
     setTimeout(function() {
       marquee.textContent = "Play!";

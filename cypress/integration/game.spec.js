@@ -33,7 +33,7 @@ describe("Routing.", function() {
   });
 });
 
-describe("Names.", function() {
+describe("Gameplay.", function() {
 
   it("Should write my name and their name.", function() {
     var id = Math.random().toString(36).substr(6);
@@ -47,5 +47,21 @@ describe("Names.", function() {
     cy.task("name", {id: id, name: "Princess Carolyn"});
     cy.get("#their-name")
       .should("have.text", "Princess Carolyn");
+  });
+
+  it("Should start a game.", function() {
+    var id = Math.random().toString(36).substr(6);
+    cy.visit("http://localhost:8000/game?id=" + id);
+    cy.task("name", {id: id, name: "Bertie"});
+    cy.get("#my-name-input")
+      .type("BoJack{enter}");
+    cy.get("#marquee")
+      .should("have.text", "3...");
+    cy.get("#marquee")
+      .should("have.text", "3... 2...");
+    cy.get("#marquee")
+      .should("have.text", "3... 2... 1...");
+    cy.get("#marquee")
+      .should("have.text", "Play!");
   });
 });
