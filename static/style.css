@@ -56,6 +56,10 @@ img {
   margin: 4px;
 }
 
+.m8 {
+  margin: 8px;
+}
+
 .vct {
   display: flex;
   align-items: center;

@@ -26,6 +26,9 @@ app.set("view engine", "pug");
 app.get("/", function(request, response) {
   response.render("index");
 });
+app.get("/about", function(request, response) {
+  response.render("about");
+});
 app.get("/game", function(request, response) {
   if (request.query.id.length > 16) { // Security check, prevent people from sending requests with crazy long ids.
     response.render("game-not-found");
