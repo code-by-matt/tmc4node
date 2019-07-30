@@ -48,6 +48,7 @@
       }
       else boardImg.style.cursor = "default";
     }
+    else boardImg.style.cursor = "default";
   });
 
   // When a valid move is made, update game and send update game request.
@@ -68,10 +69,17 @@
   });
 
   // When reset is clicked, reset game and send reset request.
-  // resetBtn.addEventListener("click", function() {
-  //   l.init();
-  //   socket.emit("reset request", game);
-  // });
+  resetBtn.addEventListener("click", function() {
+    if (game.isOver) {
+      socket.emit("my countdown", id);
+      d.countdown();
+      setTimeout(function() {
+        l.init(myNameDiv.textContent, theirNameDiv.textContent);
+        socket.emit("my game", id, game);
+        d.tryDraw();
+      }, 3000);
+    }
+  });
 
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
