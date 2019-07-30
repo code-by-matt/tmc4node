@@ -63,5 +63,14 @@ describe("Gameplay.", function() {
       .should("have.text", "3... 2... 1...");
     cy.get("#marquee")
       .should("have.text", "Play!");
+    cy.log("Check for 'my game' in server log!")
+      .pause();
+    var game = {
+      history: "r22r33r42b43b32b23",
+      future: "rrbbrrbb",
+    };
+    cy.task("game", {id: id, game: game});
+    cy.log("Check that game pattern is correct!")
+      .pause();
   });
 });
