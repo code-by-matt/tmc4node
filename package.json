@@ -15,6 +15,6 @@
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "cypress": "^3.4.0"
+    "cypress": "^3.4.1"
   }
 }
