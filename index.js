@@ -67,6 +67,11 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("their name", senderName);
   });
 
+  socket.on("i'm ready", function(id, senderName) {
+    console.log("i'm ready");
+    socket.broadcast.to(id).emit("they're ready", senderName);
+  });
+
   socket.on("my countdown", function(id) {
     console.log("my countdown");
     socket.broadcast.to(id).emit("their countdown");

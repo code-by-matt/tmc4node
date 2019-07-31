@@ -19,7 +19,7 @@
   socket.emit("sync pls", id);
   d.tryDraw();
 
-  var opponentIsReady = false;
+  var theyAreReady = false;
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
   myNameInput.addEventListener("change", function(event) {
@@ -72,7 +72,16 @@
 
   // When reset is clicked, reset game and send reset request.
   readyBtn.addEventListener("change", function() {
-    console.log("bruh");
+    socket.emit("i'm ready", id);
+    if (readyBtn.checked && theyAreReady) {
+      socket.emit("my countdown", id);
+      d.countdown();
+      setTimeout(function() {
+        l.init(myNameDiv.textContent, theirNameDiv.textContent);
+        socket.emit("my game", id, game);
+        d.tryDraw();
+      }, 3000);
+    }
     // if (game.isOver) {
     //   socket.emit("my countdown", id);
     //   d.countdown();
@@ -87,6 +96,10 @@
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
     socket.emit("leave room", id);
+  });
+
+  socket.on("they're ready", function() {
+    theyAreReady = !theyAreReady;
   });
 
   socket.on("their name", function(senderName) {
