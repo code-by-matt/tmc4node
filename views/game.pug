@@ -13,9 +13,17 @@ block content
     canvas(id="board-canvas" width="1400" height="1200")
     img(id="board-img")
     div(class="b2 inner-box")
-      div(class="m4") Player names.
-      div(class="m4") Time control.
-      div(class="m4") Ready buttons.
+      div(class="flex justify-content-between")
+        input(id="my-name-input" class="m4" type="text" placeholder="enter a name")
+        div(class="m4") vs.
+        div(id="their-name" class="m4")
+      div(class="flex justify-content-around")
+        button(class="m4 butt") 1 min.
+        button(class="m4 butt") 3 min.
+        button(class="m4 butt") 10 min.
+      div(class="flex justify-content-between")
+        button(class="m4 butt") I'm Ready
+        button(class="m4 butt") They're Ready
   div(class="b1")
     div(id="marquee" class="m4 vct") Waiting for another player...
   div(class="b1 flex justify-content-between")
@@ -29,7 +37,6 @@ block content
     div(class="flex half")
       div(id="my-color" class="m4 sq")
       div(id="my-name" class="m4")
-      input(id="my-name-input" class="m4" type="text" placeholder="enter a name")
       div(id="my-time" class="timer m4 vct") 00:00
     div(class="flex half")
       div(id="their-time" class="timer m4 vct") 00:00

@@ -18,7 +18,7 @@ body {
     width: 400px;
   }
   .inner-box {
-    width: 200px;
+    width: 300px;
     background-color: white;
     position: absolute;
   }
@@ -34,7 +34,7 @@ body {
     width: 100vw;
   }
   .inner-box {
-    width: 50vw;
+    width: 75vw;
     background-color: white;
     position: absolute;
   }
@@ -139,6 +139,10 @@ img {
   justify-content: space-between;
 }
 
+.justify-content-around {
+  justify-content: space-around;
+}
+
 #my-name-input {
   white-space: nowrap;
   overflow: hidden;
@@ -152,7 +156,7 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
-  display: none; /* changes to block when name is entered by client */
+  display: block;
   flex: 1;
 }
 
