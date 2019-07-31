@@ -13,18 +13,22 @@ block content
     canvas(id="board-canvas" width="1400" height="1200")
     img(id="board-img")
     div(class="b2 inner-box")
-      div(class="flex justify-content-between")
-        input(id="my-name-input" class="m4" type="text" placeholder="enter a name")
-        div(class="m4") vs.
-        div(id="their-name" class="m4")
       div(class="m4 flex justify-content-around")
-        button(class="butt") 1 min.
-        button(class="butt") 3 min.
-        button(class="butt") 10 min.
-        button(class="butt") ∞ min.
+        input(id="my-name-input" type="text" placeholder="enter a name")
+        div vs.
+        div(id="their-name")
       div(class="m4 flex justify-content-around")
-        button(class="butt") I'm Ready
-        button(class="butt") They're Ready
+        input(id="one-min" name="time" type="radio")
+        label(tabindex="0" for="one-min" class="butt") 1 min.
+        input(id="thr-min" name="time" type="radio")
+        label(tabindex="0" for="thr-min" class="butt") 3 min.
+        input(id="ten-min" name="time" type="radio")
+        label(tabindex="0" for="ten-min" class="butt") 10 min.
+        input(id="inf-min" name="time" type="radio")
+        label(tabindex="0" for="inf-min" class="butt") ∞ min.
+      div(class="m4 flex justify-content-center")
+        input(id="ready" type="checkbox")
+        label(tabindex="0" for="ready" class="butt") Ready
   div(class="b1")
     div(id="marquee" class="m4 vct") Waiting for another player...
   div(class="b1 flex justify-content-between")
