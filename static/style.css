@@ -147,6 +147,7 @@ img {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
   display: block;
   flex: 1;
 }
@@ -168,7 +169,7 @@ img {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: right;
+  text-align: center;
   display: block;
   flex: 1;
 }

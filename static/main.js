@@ -22,20 +22,21 @@
   var theyAreReady = false;
 
   // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
-  myNameInput.addEventListener("change", function(event) {
-    if (myNameInput.value != "") {
-      d.writeMe(myNameInput.value);
-      socket.emit("my name", id, myNameDiv.textContent);
-      if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
-        socket.emit("my countdown", id);
-        d.countdown();
-        setTimeout(function() {
-          l.init(myNameDiv.textContent, theirNameDiv.textContent);
-          socket.emit("my game", id, game);
-          d.tryDraw();
-        }, 3000);
-      }
-    }
+  myNameInput.addEventListener("input", function(event) {
+    socket.emit("my name", id, myNameInput.value);
+    // if (myNameInput.value != "") {
+    //   d.writeMe(myNameInput.value);
+    //   socket.emit("my name", id, myNameDiv.textContent);
+    //   if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
+    //     socket.emit("my countdown", id);
+    //     d.countdown();
+    //     setTimeout(function() {
+    //       l.init(myNameDiv.textContent, theirNameDiv.textContent);
+    //       socket.emit("my game", id, game);
+    //       d.tryDraw();
+    //     }, 3000);
+    //   }
+    // }
   });
 
   // Change cursor style when appropriate.
@@ -122,9 +123,9 @@
 
   // This handler is triggered when you receive a sync from your opponent.
   socket.on("here ya go", function(senderGame, senderName, receiverName) {
-    d.writeThem(senderName);
-    d.writeMe(receiverName);
-    Object.assign(game, senderGame);
-    d.tryDraw();
+    // d.writeThem(senderName);
+    // d.writeMe(receiverName);
+    // Object.assign(game, senderGame);
+    // d.tryDraw();
   });
 })();
