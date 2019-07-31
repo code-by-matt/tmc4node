@@ -72,7 +72,7 @@
 
   // When reset is clicked, reset game and send reset request.
   readyBtn.addEventListener("change", function() {
-    socket.emit("i'm ready", id);
+    socket.emit("my check", id);
     if (readyBtn.checked && theyAreReady) {
       socket.emit("my countdown", id);
       d.countdown();
@@ -98,7 +98,7 @@
     socket.emit("leave room", id);
   });
 
-  socket.on("they're ready", function() {
+  socket.on("their check", function() {
     theyAreReady = !theyAreReady;
   });
 
