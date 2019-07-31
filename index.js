@@ -72,9 +72,9 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("their check", senderName);
   });
 
-  socket.on("my countdown", function(id) {
-    console.log("my countdown");
-    socket.broadcast.to(id).emit("their countdown");
+  socket.on("countdown", function(id) {
+    console.log("countdown");
+    socket.broadcast.to(id).emit("countdown");
   });
 
   socket.on("my game", function(id, senderGame) {

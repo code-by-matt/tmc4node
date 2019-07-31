@@ -28,7 +28,7 @@
     //   d.writeMe(myNameInput.value);
     //   socket.emit("my name", id, myNameDiv.textContent);
     //   if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
-    //     socket.emit("my countdown", id);
+    //     socket.emit("countdown", id);
     //     d.countdown();
     //     setTimeout(function() {
     //       l.init(myNameDiv.textContent, theirNameDiv.textContent);
@@ -75,7 +75,7 @@
   readyBtn.addEventListener("change", function() {
     socket.emit("my check", id);
     if (readyBtn.checked && theyAreReady) {
-      socket.emit("my countdown", id);
+      socket.emit("countdown", id);
       d.countdown();
       setTimeout(function() {
         l.init(myNameDiv.textContent, theirNameDiv.textContent);
@@ -84,7 +84,7 @@
       }, 3000);
     }
     // if (game.isOver) {
-    //   socket.emit("my countdown", id);
+    //   socket.emit("countdown", id);
     //   d.countdown();
     //   setTimeout(function() {
     //     l.init(myNameDiv.textContent, theirNameDiv.textContent);
@@ -107,7 +107,7 @@
     d.writeThem(senderName);
   });
 
-  socket.on("their countdown", function() {
+  socket.on("countdown", function() {
     d.countdown();
   });
 
