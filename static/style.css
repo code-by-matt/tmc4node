@@ -87,7 +87,11 @@ input[type=radio], input[type=checkbox] {
   border: none;
 }
 
-.butt:hover, input[type=radio]:checked + label, input[type=checkbox]:checked + label {
+.butt:hover {
+  background-color: silver;
+}
+
+input[type=radio]:checked + label, input[type=checkbox]:checked + label {
   background-color: gray;
   cursor: pointer;
   color: white;
