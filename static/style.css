@@ -50,6 +50,14 @@ input {
   font-size: inherit;
 }
 
+input[type=checkbox] {
+  visibility: hidden;
+}
+
+input[type=checkbox]:checked + label {
+  background-color: red;
+}
+
 img {
   background-color: #D8D8D8;
 }
