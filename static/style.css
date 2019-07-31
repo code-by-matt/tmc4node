@@ -17,6 +17,11 @@ body {
     margin-top: 88px;
     width: 400px;
   }
+  .inner-box {
+    width: 200px;
+    background-color: white;
+    position: absolute;
+  }
   .b1 {
     border-style: solid;
     border-width: 1px;
@@ -28,6 +33,11 @@ body {
   .box {
     width: 100vw;
   }
+  .inner-box {
+    width: 50vw;
+    background-color: white;
+    position: absolute;
+  }
   .b1 {
     border-style: solid none;
     border-width: 1px;
@@ -35,9 +45,19 @@ body {
   }
 }
 
+.b2 {
+  border-style: solid;
+  border-width: 2px;
+  border-color: gray;
+}
+
 #board-img {
   display: block;
   width: 100%;
+}
+
+.board {
+  position: relative;
 }
 
 canvas {
