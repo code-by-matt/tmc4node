@@ -58,6 +58,28 @@ input[type=checkbox]:checked + label {
   background-color: red;
 }
 
+.butt, .butt:visited {
+  background-color: #D8D8D8;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 2px 7px;
+  text-align: center; 
+  text-decoration: none;
+  color: black;
+  border: none;
+}
+
+.butt:hover {
+  background-color: gray;
+  cursor: pointer;
+}
+
+.butt:focus {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: #007bff;
+}
+
 img {
   background-color: #D8D8D8;
 }
