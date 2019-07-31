@@ -45,7 +45,9 @@ canvas {
 }
 
 input {
-  border-style: solid;
+  border-style: none;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 img {

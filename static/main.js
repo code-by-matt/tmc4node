@@ -4,7 +4,7 @@
   // Grab lots of document elements.
   var boardImg = document.getElementById("board-img");
   var marquee = document.getElementById("marquee");
-  var resetBtn = document.getElementById("reset");
+  var readyBtn = document.getElementById("ready");
   var myNameDiv = document.getElementById("my-name");
   var myNameInput = document.getElementById("my-name-input");
   var theirNameDiv = document.getElementById("their-name");
@@ -69,7 +69,7 @@
   });
 
   // When reset is clicked, reset game and send reset request.
-  resetBtn.addEventListener("click", function() {
+  readyBtn.addEventListener("click", function() {
     if (game.isOver) {
       socket.emit("my countdown", id);
       d.countdown();
