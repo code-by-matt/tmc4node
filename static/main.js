@@ -42,15 +42,19 @@
   socket.on("message", function(msg) {
     if (msg == "one minute") {
       document.getElementById("one-min").click();
+      document.getElementById("ready").checked = false;
     }
     else if (msg == "three minutes") {
       document.getElementById("thr-min").click();
+      document.getElementById("ready").checked = false;
     }
     else if (msg == "ten minutes") {
       document.getElementById("ten-min").click();
+      document.getElementById("ready").checked = false;
     }
     else if (msg == "infinity minutes") {
       document.getElementById("inf-min").click();
+      document.getElementById("ready").checked = false;
     }
   });
 

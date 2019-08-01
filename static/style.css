@@ -72,10 +72,12 @@ input {
   font-size: inherit;
 }
 
+/* Hide native radio and checkbox elements. We use custom-styled labels instead. */
 input[type=radio], input[type=checkbox] {
   display: none;
 }
 
+/* Base style for anchors, radio labels, checkbox labels, and real buttons. Visited anchors don't look any different. */
 .butt, .butt:visited {
   background-color: #D8D8D8;
   font-family: inherit;
@@ -87,20 +89,23 @@ input[type=radio], input[type=checkbox] {
   border: none;
 }
 
+/* Focusing on a butt gives it a blue outline. */
+.butt:focus {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: #007bff;
+}
+
+ /* Hovering over a butt makes it a lil darker. */
 .butt:hover {
   background-color: silver;
   cursor: pointer;
 }
 
-input[type=radio]:checked + label, input[type=checkbox]:checked + label {
+/* Active butts, checked radio labels, and checked checkbox labels are even darker, with white text. */
+.butt:active, input[type=radio]:checked + label, input[type=checkbox]:checked + label {
   background-color: gray;
   color: white;
-}
-
-.butt:focus, .butt:active {
-  outline-style: solid;
-  outline-width: 2px;
-  outline-color: #007bff;
 }
 
 img {
