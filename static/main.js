@@ -25,36 +25,38 @@
       socket.emit("my", "name", event.target.value, id);
     }
     else if (event.target.id == "one-min") {
-      socket.emit("message", "one minute", id);
+      socket.emit("my", "message", "one minute", id);
     }
     else if (event.target.id == "thr-min") {
-      socket.emit("message", "three minutes", id);
+      socket.emit("my", "message", "three minutes", id);
     }
     else if (event.target.id == "ten-min") {
-      socket.emit("message", "ten minutes", id);
+      socket.emit("my", "message", "ten minutes", id);
     }
     else if (event.target.id == "inf-min") {
-      socket.emit("message", "infinity minutes", id);
+      socket.emit("my", "message", "infinity minutes", id);
     }
   });
 
   // Handle socket stuff that affects the two players' screens in the same way.
-  socket.on("message", function(msg) {
-    if (msg == "one minute") {
-      document.getElementById("one-min").click();
-      document.getElementById("ready").checked = false;
-    }
-    else if (msg == "three minutes") {
-      document.getElementById("thr-min").click();
-      document.getElementById("ready").checked = false;
-    }
-    else if (msg == "ten minutes") {
-      document.getElementById("ten-min").click();
-      document.getElementById("ready").checked = false;
-    }
-    else if (msg == "infinity minutes") {
-      document.getElementById("inf-min").click();
-      document.getElementById("ready").checked = false;
+  socket.on("their", function(type, thing) {
+    if (type == "message") {
+      if (thing == "one minute") {
+        document.getElementById("one-min").click();
+        document.getElementById("ready").checked = false;
+      }
+      else if (thing == "three minutes") {
+        document.getElementById("thr-min").click();
+        document.getElementById("ready").checked = false;
+      }
+      else if (thing == "ten minutes") {
+        document.getElementById("ten-min").click();
+        document.getElementById("ready").checked = false;
+      }
+      else if (thing == "infinity minutes") {
+        document.getElementById("inf-min").click();
+        document.getElementById("ready").checked = false;
+      }
     }
   });
 
