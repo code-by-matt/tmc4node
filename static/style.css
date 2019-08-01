@@ -89,11 +89,11 @@ input[type=radio], input[type=checkbox] {
 
 .butt:hover {
   background-color: silver;
+  cursor: pointer;
 }
 
 input[type=radio]:checked + label, input[type=checkbox]:checked + label {
   background-color: gray;
-  cursor: pointer;
   color: white;
 }
 
