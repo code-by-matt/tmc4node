@@ -3,11 +3,9 @@
 
   // Grab lots of document elements.
   var boardImg = document.getElementById("board-img");
-  var marquee = document.getElementById("marquee");
   var readyBtn = document.getElementById("ready");
-  var myNameDiv = document.getElementById("my-name");
-  var myNameInput = document.getElementById("my-name-input");
-  var theirNameDiv = document.getElementById("their-name");
+  var myNamePanel = document.getElementById("my-name-panel");
+  var theirNamePanel = document.getElementById("their-name-panel");
 
   // Load some modules.
   var l = logic(game);
@@ -16,28 +14,67 @@
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", id);
-  socket.emit("sync pls", id);
+  // socket.emit("sync pls", id);
   d.tryDraw();
 
   var theyAreReady = false;
 
-  // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
-  myNameInput.addEventListener("input", function(event) {
-    socket.emit("my name", id, myNameInput.value);
-    // if (myNameInput.value != "") {
-    //   d.writeMe(myNameInput.value);
-    //   socket.emit("my name", id, myNameDiv.textContent);
-    //   if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
-    //     socket.emit("countdown", id);
-    //     d.countdown();
-    //     setTimeout(function() {
-    //       l.init(myNameDiv.textContent, theirNameDiv.textContent);
-    //       socket.emit("my game", id, game);
-    //       d.tryDraw();
-    //     }, 3000);
-    //   }
-    // }
+  document.getElementById("inner-box").addEventListener("change", function(event) {
+    if (event.target.id == "my-name-panel") {
+      socket.emit("my", "name", event.target.value, id);
+    }
+    else if (event.target.id == "one-min") {
+      socket.emit("message", "one minute", id);
+    }
+    else if (event.target.id == "thr-min") {
+      socket.emit("message", "three minutes", id);
+    }
+    else if (event.target.id == "ten-min") {
+      socket.emit("message", "ten minutes", id);
+    }
+    else if (event.target.id == "inf-min") {
+      socket.emit("message", "infinity minutes", id);
+    }
   });
+
+  socket.on("message", function(msg) {
+    if (msg == "one minute") {
+      document.getElementById("one-min").click();
+    }
+    else if (msg == "three minutes") {
+      document.getElementById("thr-min").click();
+    }
+    else if (msg == "ten minutes") {
+      document.getElementById("ten-min").click();
+    }
+    else if (msg == "infinity minutes") {
+      document.getElementById("inf-min").click();
+    }
+  });
+
+  socket.on("their", function(type, thing) {
+    if (type == "name") {
+      document.getElementById("their-name-panel").textContent = thing;
+    }
+  });
+
+  // // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
+  // myNamePanel.addEventListener("input", function(event) {
+  //   socket.emit("my name", id, myNamePanel.value);
+  //   // if (myNameInput.value != "") {
+  //   //   d.writeMe(myNameInput.value);
+  //   //   socket.emit("my name", id, myNameDiv.textContent);
+  //   //   if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
+  //   //     socket.emit("countdown", id);
+  //   //     d.countdown();
+  //   //     setTimeout(function() {
+  //   //       l.init(myNameDiv.textContent, theirNameDiv.textContent);
+  //   //       socket.emit("my game", id, game);
+  //   //       d.tryDraw();
+  //   //     }, 3000);
+  //   //   }
+  //   // }
+  // });
 
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
@@ -118,14 +155,14 @@
 
   // This handler is triggered when your opponent is requesting a sync.
   socket.on("sync pls", function() {
-    socket.emit("here ya go", id, game, myNameDiv.textContent, theirNameDiv.textContent);
+    socket.emit("here ya go", id, game, myNamePanel.value, theirNamePanel.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.
-  socket.on("here ya go", function(senderGame, senderName, receiverName) {
-    // d.writeThem(senderName);
-    // d.writeMe(receiverName);
-    // Object.assign(game, senderGame);
-    // d.tryDraw();
-  });
+  // socket.on("here ya go", function(senderGame, senderName, receiverName) {
+  //   d.writeThem(senderName);
+  //   d.writeMe(receiverName);
+  //   // Object.assign(game, senderGame);
+  //   // d.tryDraw();
+  // });
 })();

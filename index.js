@@ -53,6 +53,16 @@ app.get("/game", function(request, response) {
 
 io.on("connection", function(socket) {
 
+  // For stuff that affects both player's screens in the same way.
+  socket.on("message", function(msg, id) {
+    socket.broadcast.to(id).emit("message", msg);
+  });
+
+  // For stuff that affects both player's screens differently.
+  socket.on("my", function(type, thing, id) {
+    socket.broadcast.to(id).emit("their", type, thing);
+  });
+
   socket.on("join room", function(id) {
     socket.join(id);
     socket.emit("room joined");
@@ -60,6 +70,15 @@ io.on("connection", function(socket) {
 
   socket.on("leave room", function(id) {
     socket.leave(id);
+  });
+
+  socket.on("countdown", function(id) {
+    console.log("countdown");
+    socket.broadcast.to(id).emit("countdown");
+  });
+
+  socket.on("one min", function(id) {
+    socket.broadcast.to(id).emit("one min");
   });
 
   socket.on("my name", function(id, senderName) {
@@ -72,23 +91,18 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("their check", senderName);
   });
 
-  socket.on("countdown", function(id) {
-    console.log("countdown");
-    socket.broadcast.to(id).emit("countdown");
-  });
-
   socket.on("my game", function(id, senderGame) {
     console.log("my game");
     socket.broadcast.to(id).emit("their game", senderGame);
   });
 
-  socket.on("sync pls", function(id) {
-    socket.broadcast.to(id).emit("sync pls");
-  });
+  // socket.on("sync pls", function(id) {
+  //   socket.broadcast.to(id).emit("sync pls");
+  // });
 
-  socket.on("here ya go", function(id, senderGame, senderName, receiverName) {
-    socket.broadcast.to(id).emit("here ya go", senderGame, senderName, receiverName);
-  });
+  // socket.on("here ya go", function(id, senderGame, senderName, receiverName) {
+  //   socket.broadcast.to(id).emit("here ya go", senderGame, senderName, receiverName);
+  // });
 
   // disconnection check
   // socket.on("disconnect", function() {

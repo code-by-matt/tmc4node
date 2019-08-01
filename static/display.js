@@ -17,19 +17,13 @@ const display = function(game) {
   var myColor = document.getElementById("my-color");
   var theirColor = document.getElementById("their-color");
 
-  // These divs are where the players' names are displayed.
-  var myNameDiv = document.getElementById("my-name");
-  var theirNameDiv = document.getElementById("their-name");
-
-  // This is where you type in your own name. It gets swapped with a (non-editable) div when you press enter.
-  var myNameInput = document.getElementById("my-name-input");
+  // These elements are where the players' names are displayed in the start panel.
+  var myNamePanel = document.getElementById("my-name-panel");
+  var theirNamePanel = document.getElementById("their-name-panel");
 
   // Player times displayed here.
   var myTimeDiv = document.getElementById("my-time");
   var theirTimeDiv = document.getElementById("their-time");
-  
-  // This is a div that tells you some useful info.
-  var marquee = document.getElementById("marquee");
 
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -71,11 +65,11 @@ const display = function(game) {
     }
     handle = setInterval(function() {
       var yeet = times();
-      if (game.red == myNameDiv.textContent && game.blu == theirNameDiv.textContent) {
+      if (game.red == myNameDiv.textContent && game.blu == theirNamePanel.textContent) {
         myTimeDiv.textContent = yeet[0];
         theirTimeDiv.textContent = yeet[1];
       }
-      else if (game.blu == myNameDiv.textContent && game.red == theirNameDiv.textContent) {
+      else if (game.blu == myNameDiv.textContent && game.red == theirNamePanel.textContent) {
         myTimeDiv.textContent = yeet[1];
         theirTimeDiv.textContent = yeet[0];
       }
@@ -101,33 +95,23 @@ const display = function(game) {
     return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
   }
 
-  // Writes your own name.
+  // Writes your name (on reload).
   function writeMe(name) {
-    if (name != "") {
-      if (name == theirNameDiv.textContent) {
-        myNameDiv.textContent = name + " 2";
-      }
-      else {
-        myNameDiv.textContent = name;
-      }
-      myNameDiv.style.display = "block";
-      myNameInput.style.display = "none";
-    }
-    window.dispatchEvent(new Event("my name"));
+    myNamePanel.value = name;
   }
 
   // Writes your opponent's name.
   function writeThem(name) {
-    theirNameDiv.textContent = name;
+    theirNamePanel.textContent = name;
   }
 
   // Assigns colors to the players.
   function drawColors() {
-    if (game.red == myNameDiv.textContent && game.blu == theirNameDiv.textContent) {
+    if (game.red == myNameDiv.textContent && game.blu == theirNamePanel.textContent) {
       myColor.style.backgroundColor = "#DC3545";
       theirColor.style.backgroundColor = "#007BFF";
     }
-    else if (game.blu == myNameDiv.textContent && game.red == theirNameDiv.textContent) {
+    else if (game.blu == myNameDiv.textContent && game.red == theirNamePanel.textContent) {
       myColor.style.backgroundColor = "#007BFF";
       theirColor.style.backgroundColor = "#DC3545";
     }
@@ -210,13 +194,12 @@ const display = function(game) {
     if (game.history != undefined) drawBoard();
     if (game.redStart != undefined) displayTimes();
     if (game.isOver) {
-      marquee.textContent = "Game Over!";
       clearInterval(handle);
-      if (game.red == myNameDiv.textContent && game.blu == theirNameDiv.textContent) {
+      if (game.red == myNameDiv.textContent && game.blu == theirNamePanel.textContent) {
         myTimeDiv.textContent = convert(game.redTime);
         theirTimeDiv.textContent = convert(game.bluTime);
       }
-      else if (game.blu == myNameDiv.textContent && game.red == theirNameDiv.textContent) {
+      else if (game.blu == myNameDiv.textContent && game.red == theirNamePanel.textContent) {
         myTimeDiv.textContent = convert(game.bluTime);
         theirTimeDiv.textContent = convert(game.redTime);
       }
@@ -225,16 +208,13 @@ const display = function(game) {
 
   // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
   function countdown() {
-    marquee.textContent = "3...";
     setTimeout(function() {
-      marquee.textContent += " 2...";
-    }, 1000);
-    setTimeout(function() {
-      marquee.textContent += " 1...";
-    }, 2000);
-    setTimeout(function() {
-      marquee.textContent = "Play!";
+      // marquee.textContent = "Play!";
     }, 3000);
+  }
+
+  function checkOne() {
+    oneMin.click();
   }
 
   return {
@@ -243,5 +223,6 @@ const display = function(game) {
     writeThem: writeThem,
     tryDraw: tryDraw,
     countdown: countdown,
+    checkOne: checkOne,
   };
 };
