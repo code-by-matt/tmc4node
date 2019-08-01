@@ -53,12 +53,12 @@ app.get("/game", function(request, response) {
 
 io.on("connection", function(socket) {
 
-  // For stuff that affects both player's screens in the same way.
+  // For stuff that affects the two players' screens in the same way.
   socket.on("message", function(msg, id) {
     socket.broadcast.to(id).emit("message", msg);
   });
 
-  // For stuff that affects both player's screens differently.
+  // For stuff that affects the two players' screens differently.
   socket.on("my", function(type, thing, id) {
     socket.broadcast.to(id).emit("their", type, thing);
   });

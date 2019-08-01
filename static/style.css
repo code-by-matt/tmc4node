@@ -17,7 +17,7 @@ body {
     margin-top: 88px;
     width: 400px;
   }
-  #inner-box {
+  #start-panel {
     width: 300px;
     background-color: white;
     position: absolute;
@@ -37,7 +37,7 @@ body {
   .box {
     width: 100vw;
   }
-  #inner-box {
+  #start-panel {
     width: 75vw;
     background-color: white;
     position: absolute;

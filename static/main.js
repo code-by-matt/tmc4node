@@ -19,7 +19,8 @@
 
   var theyAreReady = false;
 
-  document.getElementById("inner-box").addEventListener("change", function(event) {
+  // Handle events that happen in the start panel.
+  document.getElementById("start-panel").addEventListener("change", function(event) {
     if (event.target.id == "my-name-panel") {
       socket.emit("my", "name", event.target.value, id);
     }
@@ -37,6 +38,7 @@
     }
   });
 
+  // Handle socket stuff that affects the two players' screens in the same way.
   socket.on("message", function(msg) {
     if (msg == "one minute") {
       document.getElementById("one-min").click();
@@ -52,6 +54,7 @@
     }
   });
 
+  // Handle socket stuff that affects the two players' screens differently.
   socket.on("their", function(type, thing) {
     if (type == "name") {
       document.getElementById("their-name-panel").textContent = thing;
