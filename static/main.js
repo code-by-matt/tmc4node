@@ -28,19 +28,24 @@
       socket.emit("my", "message", "ready", id);
     }
     else if (event.target.id == "one-min") {
+      theyAreReady = false;
       socket.emit("my", "message", "one minute", id);
     }
     else if (event.target.id == "thr-min") {
+      theyAreReady = false;
       socket.emit("my", "message", "three minutes", id);
     }
     else if (event.target.id == "ten-min") {
+      theyAreReady = false;
       socket.emit("my", "message", "ten minutes", id);
     }
     else if (event.target.id == "inf-min") {
+      theyAreReady = false;
       socket.emit("my", "message", "infinity minutes", id);
     }
     if (document.getElementById("my-name-panel").value != "" && document.getElementById("their-name-panel").value != "" && document.getElementById("ready").checked && theyAreReady) {
-      console.log("GOOO");
+      d.playAnimation();
+      socket.emit("my", "message", "play", id);
     }
   });
 
@@ -66,6 +71,9 @@
       else if (thing == "ready") {
         theyAreReady = !theyAreReady;
         console.log(theyAreReady);
+      }
+      else if (thing == "play") {
+        d.playAnimation();
       }
     }
     else if (type == "name") {

@@ -207,14 +207,13 @@ const display = function(game) {
   }
 
   // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
-  function countdown() {
+  function playAnimation() {
     setTimeout(function() {
-      // marquee.textContent = "Play!";
-    }, 3000);
-  }
-
-  function checkOne() {
-    oneMin.click();
+      document.getElementById("start-panel").style.display = "none";
+    }, 500);
+    setTimeout(function() {
+      document.getElementById("play-panel").style.display = "none";
+    }, 2000);
   }
 
   return {
@@ -222,7 +221,6 @@ const display = function(game) {
     writeMe: writeMe,
     writeThem: writeThem,
     tryDraw: tryDraw,
-    countdown: countdown,
-    checkOne: checkOne,
+    playAnimation: playAnimation,
   };
 };

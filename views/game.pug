@@ -12,6 +12,8 @@ block content
   div(class="b1 board flex justify-content-center vct")
     canvas(id="board-canvas" width="1400" height="1200")
     img(id="board-img")
+    div(id="play-panel")
+      div(class="flex justify-content-center") Play!
     div(id="start-panel")
       div(class="flex justify-content-around")
         input(id="my-name-panel" type="text" placeholder="enter a name")
@@ -29,8 +31,6 @@ block content
       div(class="flex justify-content-center")
         input(id="ready" type="checkbox")
         label(tabindex="0" for="ready" class="butt") Ready
-    div(id="play-panel")
-      div(class="flex justify-content-center") Play!
   div(class="b1 flex justify-content-between")
     div(class="flex")
       canvas(id="future-canvas" width="1600" height="200")
