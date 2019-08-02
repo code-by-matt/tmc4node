@@ -40,29 +40,26 @@
 
   // Handle socket stuff that affects the two players' screens in the same way.
   socket.on("their", function(type, thing) {
+    console.log("bruh");
     if (type == "message") {
       if (thing == "one minute") {
-        document.getElementById("one-min").click();
+        document.getElementById("one-min").checked = true;
         document.getElementById("ready").checked = false;
       }
       else if (thing == "three minutes") {
-        document.getElementById("thr-min").click();
+        document.getElementById("thr-min").checked = true;
         document.getElementById("ready").checked = false;
       }
       else if (thing == "ten minutes") {
-        document.getElementById("ten-min").click();
+        document.getElementById("ten-min").checked = true;
         document.getElementById("ready").checked = false;
       }
       else if (thing == "infinity minutes") {
-        document.getElementById("inf-min").click();
+        document.getElementById("inf-min").checked = true;
         document.getElementById("ready").checked = false;
       }
     }
-  });
-
-  // Handle socket stuff that affects the two players' screens differently.
-  socket.on("their", function(type, thing) {
-    if (type == "name") {
+    else if (type == "name") {
       document.getElementById("their-name-panel").textContent = thing;
     }
   });
