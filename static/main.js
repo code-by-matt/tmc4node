@@ -21,26 +21,23 @@
 
   // Handle events that happen in the start panel.
   document.getElementById("start-panel").addEventListener("change", function(event) {
-    if (event.target.id == "ready") {
+    if (event.target.id == "my-name-panel") {
+      socket.emit("my", "name", event.target.value, id);
+    }
+    else if (event.target.id == "ready") {
       socket.emit("my", "message", "ready", id);
     }
-    else {
-      document.getElementById("ready").checked = false;
-      if (event.target.id == "my-name-panel") {
-        socket.emit("my", "name", event.target.value, id);
-      }
-      else if (event.target.id == "one-min") {
-        socket.emit("my", "message", "one minute", id);
-      }
-      else if (event.target.id == "thr-min") {
-        socket.emit("my", "message", "three minutes", id);
-      }
-      else if (event.target.id == "ten-min") {
-        socket.emit("my", "message", "ten minutes", id);
-      }
-      else if (event.target.id == "inf-min") {
-        socket.emit("my", "message", "infinity minutes", id);
-      }
+    else if (event.target.id == "one-min") {
+      socket.emit("my", "message", "one minute", id);
+    }
+    else if (event.target.id == "thr-min") {
+      socket.emit("my", "message", "three minutes", id);
+    }
+    else if (event.target.id == "ten-min") {
+      socket.emit("my", "message", "ten minutes", id);
+    }
+    else if (event.target.id == "inf-min") {
+      socket.emit("my", "message", "infinity minutes", id);
     }
   });
 
