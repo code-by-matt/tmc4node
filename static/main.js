@@ -22,18 +22,23 @@
   // Handle events that happen in the start panel.
   document.getElementById("start-panel").addEventListener("change", function(event) {
     if (event.target.id == "my-name-panel") {
+      document.getElementById("ready").checked = false;
       socket.emit("my", "name", event.target.value, id);
     }
     else if (event.target.id == "one-min") {
+      document.getElementById("ready").checked = false;
       socket.emit("my", "message", "one minute", id);
     }
     else if (event.target.id == "thr-min") {
+      document.getElementById("ready").checked = false;
       socket.emit("my", "message", "three minutes", id);
     }
     else if (event.target.id == "ten-min") {
+      document.getElementById("ready").checked = false;
       socket.emit("my", "message", "ten minutes", id);
     }
     else if (event.target.id == "inf-min") {
+      document.getElementById("ready").checked = false;
       socket.emit("my", "message", "infinity minutes", id);
     }
   });
