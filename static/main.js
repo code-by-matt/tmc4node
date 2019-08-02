@@ -43,7 +43,6 @@
     }
   });
 
-  // Handle socket stuff that affects the two players' screens in the same way.
   socket.on("their", function(type, thing) {
     console.log("bruh");
     if (type == "message") {
