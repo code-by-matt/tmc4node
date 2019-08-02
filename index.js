@@ -54,6 +54,7 @@ app.get("/game", function(request, response) {
 io.on("connection", function(socket) {
 
   socket.on("my", function(type, thing, id) {
+    console.log(type + " " + thing);
     socket.broadcast.to(id).emit("their", type, thing);
   });
 

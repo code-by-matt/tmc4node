@@ -30,18 +30,11 @@ module.exports = (on, config) => {
       });
     },
 
-    // Make a socket that emits "my name" with the given id and name.
-    name({id, name}) {
+    // Make a socket that emits "my" with the given type, thing, and id.
+    my({type, thing, id}) {
       var socket = client("http://localhost:8000");
-      socket.emit("my name", id, name);
+      socket.emit("my", type, thing, id);
       return null;
     },
-
-    // Make a socket that emits "my game" with the given id and game.
-    game({id, game}) {
-      var socket = client("http://localhost:8000");
-      socket.emit("my game", id, game);
-      return null;
-    }
   });
 };

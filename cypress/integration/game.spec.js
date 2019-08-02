@@ -35,42 +35,58 @@ describe("Routing.", function() {
 
 describe("Gameplay.", function() {
 
-  it("Should write my name and their name.", function() {
-    var id = Math.random().toString(36).substr(6);
-    cy.visit("http://localhost:8000/game?id=" + id);
-    cy.get("#my-name-input")
-      .type("BoJack{enter}")
-      .log("Check for 'my name' in server log!")
-      .pause();
-    cy.get("#my-name")
-      .should("have.text", "BoJack");
-    cy.task("name", {id: id, name: "Princess Carolyn"});
-    cy.get("#their-name")
-      .should("have.text", "Princess Carolyn");
-  });
-
   it("Should start a game.", function() {
     var id = Math.random().toString(36).substr(6);
     cy.visit("http://localhost:8000/game?id=" + id);
-    cy.task("name", {id: id, name: "Bertie"});
-    cy.get("#my-name-input")
+    cy.get("#my-name-panel")
       .type("BoJack{enter}");
-    cy.get("#marquee")
-      .should("have.text", "3...");
-    cy.get("#marquee")
-      .should("have.text", "3... 2...");
-    cy.get("#marquee")
-      .should("have.text", "3... 2... 1...");
-    cy.get("#marquee")
-      .should("have.text", "Play!");
-    cy.log("Check for 'my game' in server log!")
+    cy.get('[for="thr-min"]')
+      .click();
+    cy.get('[for="ready"]')
+      .click()
+      .log("name BoJack?")
+      .log("message three minutes?")
+      .log("message ready?")
       .pause();
-    var game = {
-      history: "r22r33r42b43b32b23",
-      future: "rrbbrrbb",
-    };
-    cy.task("game", {id: id, game: game});
-    cy.log("Check that game pattern is correct!")
-      .pause();
+    cy.task("my", {type: "name", thing: "Princess Carolyn", id: id});
+    cy.task("my", {type: "message", thing: "ten minutes", id: id});
+    cy.task("my", {type: "message", thing: "ready", id: id});
+    cy.get("#their-name-panel")
+      .should("have.text", "Princess Carolyn");
+    cy.get("#ten-min")
+      .should("be.checked");
+    cy.get("#ready")
+      .should("not.be.checked");
+    cy.get('[for="ready"]')
+      .click();
+    cy.get("#start-panel")
+      .should("not.be.visible");
+    cy.get("#play-panel")
+      .should("not.be.visible");
   });
+
+  // it("Should start a game.", function() {
+  //   var id = Math.random().toString(36).substr(6);
+  //   cy.visit("http://localhost:8000/game?id=" + id);
+  //   cy.task("name", {id: id, name: "Bertie"});
+  //   cy.get("#my-name-input")
+  //     .type("BoJack{enter}");
+  //   cy.get("#marquee")
+  //     .should("have.text", "3...");
+  //   cy.get("#marquee")
+  //     .should("have.text", "3... 2...");
+  //   cy.get("#marquee")
+  //     .should("have.text", "3... 2... 1...");
+  //   cy.get("#marquee")
+  //     .should("have.text", "Play!");
+  //   cy.log("Check for 'my game' in server log!")
+  //     .pause();
+  //   var game = {
+  //     history: "r22r33r42b43b32b23",
+  //     future: "rrbbrrbb",
+  //   };
+  //   cy.task("game", {id: id, game: game});
+  //   cy.log("Check that game pattern is correct!")
+  //     .pause();
+  // });
 });
