@@ -6,6 +6,7 @@
   var readyBtn = document.getElementById("ready");
   var myNamePanel = document.getElementById("my-name-panel");
   var theirNamePanel = document.getElementById("their-name-panel");
+  var myName = document.getElementById("my-name");
 
   // Load some modules.
   var l = logic(game);
@@ -43,9 +44,14 @@
       theyAreReady = false;
       socket.emit("my", "message", "infinity minutes", id);
     }
-    if (document.getElementById("my-name-panel").value != "" && document.getElementById("their-name-panel").value != "" && document.getElementById("ready").checked && theyAreReady) {
+    if (myNamePanel.value != "" && theirNamePanel.textContent != "" && readyBtn.checked && theyAreReady) {
       d.playAnimation();
       socket.emit("my", "message", "play", id);
+      setTimeout(function() {
+        l.init(myNamePanel.value, theirNamePanel.textContent);
+        d.tryDraw();
+        socket.emit("my", "game", game, id);
+      }, 2500);
     }
   });
 
@@ -79,6 +85,10 @@
     else if (type == "name") {
       document.getElementById("their-name-panel").textContent = thing;
     }
+    else if (type == "game") {
+      Object.assign(game, thing);
+      d.tryDraw();
+    }
   });
 
   // // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
@@ -103,10 +113,10 @@
   boardImg.addEventListener("mousemove",  function(event) {
     var col = d.getCol(event);
     if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (game.red == myNameDiv.textContent && game.future[0] == "r") {
+      if (game.red == myName.textContent && game.future[0] == "r") {
         boardImg.style.cursor = "pointer";
       }
-      else if (game.blu == myNameDiv.textContent && game.future[0] == "b") {
+      else if (game.blu == myName.textContent && game.future[0] == "b") {
         boardImg.style.cursor = "pointer";
       }
       else boardImg.style.cursor = "default";

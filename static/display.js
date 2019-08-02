@@ -21,6 +21,10 @@ const display = function(game) {
   var myNamePanel = document.getElementById("my-name-panel");
   var theirNamePanel = document.getElementById("their-name-panel");
 
+  // These elements are where the players' names are displayed during gameplay.
+  var myName = document.getElementById("my-name");
+  var theirName = document.getElementById("their-name");
+
   // Player times displayed here.
   var myTimeDiv = document.getElementById("my-time");
   var theirTimeDiv = document.getElementById("their-time");
@@ -65,11 +69,11 @@ const display = function(game) {
     }
     handle = setInterval(function() {
       var yeet = times();
-      if (game.red == myNameDiv.textContent && game.blu == theirNamePanel.textContent) {
+      if (game.red == myName.textContent && game.blu == theirNamePanel.textContent) {
         myTimeDiv.textContent = yeet[0];
         theirTimeDiv.textContent = yeet[1];
       }
-      else if (game.blu == myNameDiv.textContent && game.red == theirNamePanel.textContent) {
+      else if (game.blu == myName.textContent && game.red == theirNamePanel.textContent) {
         myTimeDiv.textContent = yeet[1];
         theirTimeDiv.textContent = yeet[0];
       }
@@ -106,12 +110,14 @@ const display = function(game) {
   }
 
   // Assigns colors to the players.
-  function drawColors() {
-    if (game.red == myNameDiv.textContent && game.blu == theirNamePanel.textContent) {
+  function drawColorsAndNames() {
+    myName.textContent = myNamePanel.value;
+    theirName.textContent = theirNamePanel.textContent;
+    if (game.red == myNamePanel.value && game.blu == theirNamePanel.textContent) {
       myColor.style.backgroundColor = "#DC3545";
       theirColor.style.backgroundColor = "#007BFF";
     }
-    else if (game.blu == myNameDiv.textContent && game.red == theirNamePanel.textContent) {
+    else if (game.blu == myNamePanel.value && game.red == theirNamePanel.textContent) {
       myColor.style.backgroundColor = "#007BFF";
       theirColor.style.backgroundColor = "#DC3545";
     }
@@ -189,17 +195,17 @@ const display = function(game) {
   }
 
   function tryDraw() {
-    if (game.red != undefined && game.blu != undefined) drawColors();
+    if (game.red != undefined && game.blu != undefined) drawColorsAndNames();
     if (game.future != undefined) drawFuture();
     if (game.history != undefined) drawBoard();
     if (game.redStart != undefined) displayTimes();
     if (game.isOver) {
       clearInterval(handle);
-      if (game.red == myNameDiv.textContent && game.blu == theirNamePanel.textContent) {
+      if (game.red == myName.textContent && game.blu == theirNamePanel.textContent) {
         myTimeDiv.textContent = convert(game.redTime);
         theirTimeDiv.textContent = convert(game.bluTime);
       }
-      else if (game.blu == myNameDiv.textContent && game.red == theirNamePanel.textContent) {
+      else if (game.blu == myName.textContent && game.red == theirNamePanel.textContent) {
         myTimeDiv.textContent = convert(game.bluTime);
         theirTimeDiv.textContent = convert(game.redTime);
       }
@@ -213,6 +219,7 @@ const display = function(game) {
     }, 500);
     setTimeout(function() {
       document.getElementById("play-panel").style.display = "none";
+      tryDraw();
     }, 2000);
   }
 
