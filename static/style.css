@@ -12,22 +12,29 @@ body {
   align-items: center;
 }
 
+#start-panel, #play-panel {
+  display: flex; /* During start sequence, this changes to none. */
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: white;
+  position: absolute;
+  border-style: solid;
+  border-width: 2px;
+  border-color: gray;
+}
+
+#play-panel {
+  display: none; /* During start sequence, this changes to flex for a sec, then back to none. */
+}
+
 @media (min-width: 576px) {
   .box {
     margin-top: 88px;
     width: 400px;
   }
-  #start-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+  #start-panel, #play-panel {
     width: 300px;
     height: 120px;
-    background-color: white;
-    position: absolute;
-    border-style: solid;
-    border-width: 2px;
-    border-color: gray;
   }
   .b1 {
     border-style: solid;
@@ -40,18 +47,9 @@ body {
   .box {
     width: 100vw;
   }
-  #start-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+  #start-panel, #play-panel {
     width: 75vw;
     height: 30vw;
-    background-color: white;
-    position: absolute;
-    padding: 4px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: gray;
   }
   .b1 {
     border-style: solid none;
