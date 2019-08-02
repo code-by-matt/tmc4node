@@ -128,12 +128,12 @@
   boardImg.addEventListener("click", function(event) {
     var col = d.getCol(event);
     if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (game.red == myNameDiv.textContent && game.future[0] == "r") {
+      if (game.red == myName.textContent && game.future[0] == "r") {
         l.update(col);
         socket.emit("my game", id, game);
         d.tryDraw();
       }
-      else if (game.blu == myNameDiv.textContent && game.future[0] == "b") {
+      else if (game.blu == myName.textContent && game.future[0] == "b") {
         l.update(col);
         socket.emit("my game", id, game);
         d.tryDraw();

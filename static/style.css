@@ -179,9 +179,9 @@ img {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: center;
+  text-align: right;
   display: block;
-  width: 100px;
+  flex: 1;
 }
 
 .timer {
