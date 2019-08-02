@@ -39,8 +39,12 @@
     else if (event.target.id == "inf-min") {
       socket.emit("my", "message", "infinity minutes", id);
     }
+    if (document.getElementById("my-name-panel").value != "" && document.getElementById("their-name-panel").value != "" && document.getElementById("ready").checked && theyAreReady) {
+      console.log("GOOO");
+    }
   });
 
+  // Handle socket stuff.
   socket.on("their", function(type, thing) {
     if (type == "message") {
       if (thing == "one minute") {
