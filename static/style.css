@@ -18,10 +18,13 @@ body {
     width: 400px;
   }
   #start-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     width: 300px;
+    height: 120px;
     background-color: white;
     position: absolute;
-    padding: 4px;
     border-style: solid;
     border-width: 2px;
     border-color: gray;
@@ -38,7 +41,11 @@ body {
     width: 100vw;
   }
   #start-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     width: 75vw;
+    height: 30vw;
     background-color: white;
     position: absolute;
     padding: 4px;
