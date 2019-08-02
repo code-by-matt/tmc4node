@@ -21,30 +21,30 @@
 
   // Handle events that happen in the start panel.
   document.getElementById("start-panel").addEventListener("change", function(event) {
-    if (event.target.id == "my-name-panel") {
-      document.getElementById("ready").checked = false;
-      socket.emit("my", "name", event.target.value, id);
+    if (event.target.id == "ready") {
+      socket.emit("my", "message", "ready", id);
     }
-    else if (event.target.id == "one-min") {
+    else {
       document.getElementById("ready").checked = false;
-      socket.emit("my", "message", "one minute", id);
-    }
-    else if (event.target.id == "thr-min") {
-      document.getElementById("ready").checked = false;
-      socket.emit("my", "message", "three minutes", id);
-    }
-    else if (event.target.id == "ten-min") {
-      document.getElementById("ready").checked = false;
-      socket.emit("my", "message", "ten minutes", id);
-    }
-    else if (event.target.id == "inf-min") {
-      document.getElementById("ready").checked = false;
-      socket.emit("my", "message", "infinity minutes", id);
+      if (event.target.id == "my-name-panel") {
+        socket.emit("my", "name", event.target.value, id);
+      }
+      else if (event.target.id == "one-min") {
+        socket.emit("my", "message", "one minute", id);
+      }
+      else if (event.target.id == "thr-min") {
+        socket.emit("my", "message", "three minutes", id);
+      }
+      else if (event.target.id == "ten-min") {
+        socket.emit("my", "message", "ten minutes", id);
+      }
+      else if (event.target.id == "inf-min") {
+        socket.emit("my", "message", "infinity minutes", id);
+      }
     }
   });
 
   socket.on("their", function(type, thing) {
-    console.log("bruh");
     if (type == "message") {
       if (thing == "one minute") {
         document.getElementById("one-min").checked = true;
@@ -61,6 +61,10 @@
       else if (thing == "infinity minutes") {
         document.getElementById("inf-min").checked = true;
         document.getElementById("ready").checked = false;
+      }
+      else if (thing == "ready") {
+        theyAreReady = !theyAreReady;
+        console.log(theyAreReady);
       }
     }
     else if (type == "name") {
@@ -120,16 +124,15 @@
 
   // When reset is clicked, reset game and send reset request.
   readyBtn.addEventListener("change", function() {
-    socket.emit("my check", id);
-    if (readyBtn.checked && theyAreReady) {
-      socket.emit("countdown", id);
-      d.countdown();
-      setTimeout(function() {
-        l.init(myNameDiv.textContent, theirNameDiv.textContent);
-        socket.emit("my game", id, game);
-        d.tryDraw();
-      }, 3000);
-    }
+    // if (readyBtn.checked && theyAreReady) {
+    //   socket.emit("countdown", id);
+    //   d.countdown();
+    //   setTimeout(function() {
+    //     l.init(myNameDiv.textContent, theirNameDiv.textContent);
+    //     socket.emit("my game", id, game);
+    //     d.tryDraw();
+    //   }, 3000);
+    // }
     // if (game.isOver) {
     //   socket.emit("countdown", id);
     //   d.countdown();
@@ -144,14 +147,6 @@
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
     socket.emit("leave room", id);
-  });
-
-  socket.on("their check", function() {
-    theyAreReady = !theyAreReady;
-  });
-
-  socket.on("their name", function(senderName) {
-    d.writeThem(senderName);
   });
 
   socket.on("countdown", function() {

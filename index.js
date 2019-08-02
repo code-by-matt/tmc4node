@@ -80,11 +80,6 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("their name", senderName);
   });
 
-  socket.on("my check", function(id, senderName) {
-    console.log("my check");
-    socket.broadcast.to(id).emit("their check", senderName);
-  });
-
   socket.on("my game", function(id, senderGame) {
     console.log("my game");
     socket.broadcast.to(id).emit("their game", senderGame);
