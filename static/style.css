@@ -23,6 +23,11 @@ body {
   border-color: gray;
 }
 
+.b1 {
+  border-width: 1px;
+  border-color: gray;
+}
+
 @media (min-width: 576px) {
   #box {
     margin-top: 88px;
@@ -34,8 +39,6 @@ body {
   }
   .b1 {
     border-style: solid;
-    border-width: 1px;
-    border-color: gray;
   }
 }
 
@@ -49,8 +52,6 @@ body {
   }
   .b1 {
     border-style: solid none;
-    border-width: 1px;
-    border-color: gray;
   }
 }
 
@@ -59,7 +60,7 @@ body {
   width: 100%;
 }
 
-.board {
+#board-div {
   position: relative;
 }
 

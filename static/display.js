@@ -13,6 +13,9 @@ const display = function(game) {
   var futureImg = document.getElementById("future-img");
   var boardImg = document.getElementById("board-img");
 
+  // This div is to help with getCol().
+  var boardDiv = document.getElementById("board-div");
+
   // These divs are where the players' colors are displayed.
   var myColor = document.getElementById("my-color");
   var theirColor = document.getElementById("their-color");
@@ -96,7 +99,7 @@ const display = function(game) {
 
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
-    return Math.floor((7 * (event.pageX - boardImg.offsetLeft))/boardImg.offsetWidth);
+    return Math.floor((7 * (event.pageX - boardDiv.offsetLeft))/boardDiv.offsetWidth);
   }
 
   // Writes your name (on reload).
