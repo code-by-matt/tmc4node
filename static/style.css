@@ -3,7 +3,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
-.universe {
+#universe {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -24,7 +24,7 @@ body {
 }
 
 @media (min-width: 576px) {
-  .box {
+  #box {
     margin-top: 88px;
     width: 400px;
   }
@@ -40,7 +40,7 @@ body {
 }
 
 @media (max-width: 576px) {
-  .box {
+  #box {
     width: 100vw;
   }
   #start-panel, #play-panel {
