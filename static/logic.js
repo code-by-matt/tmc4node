@@ -82,14 +82,14 @@ const logic = function(game) {
         game.future += "b";
       }
     }
-    if (Math.random() > 0.5) {
-      game.red = myName;
-      game.blu = theirName;
-    }
-    else {
-      game.red = theirName;
-      game.blu = myName;
-    }
+    // if (Math.random() > 0.5) {
+    //   game.red = myName;
+    //   game.blu = theirName;
+    // }
+    // else {
+    //   game.red = theirName;
+    //   game.blu = myName;
+    // }
     game.redStart = new Date().getTime(); // The start time (in ms) of each color's most recent move/pair of moves.
     game.bluStart = null;
     game.redTime = 0;         // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.

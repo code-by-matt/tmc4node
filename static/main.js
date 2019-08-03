@@ -7,6 +7,11 @@
   var myNamePanel = document.getElementById("my-name-panel");
   var theirNamePanel = document.getElementById("their-name-panel");
   var myName = document.getElementById("my-name");
+  var theirName = document.getElementById("their-name");
+
+  // These divs are where the players' colors are displayed.
+  var myColor = document.getElementById("my-color");
+  var theirColor = document.getElementById("their-color");
 
   // Load some modules.
   var l = logic(game);
@@ -16,7 +21,7 @@
   var socket = io();
   socket.emit("join room", id);
   // socket.emit("sync pls", id);
-  d.tryDraw();
+  d.drawBoard();
 
   var theyAreReady = false;
 
@@ -48,8 +53,22 @@
       d.playAnimation();
       socket.emit("my", "message", "play", id);
       setTimeout(function() {
-        l.init(myNamePanel.value, theirNamePanel.textContent);
-        d.tryDraw();
+        myName.textContent = myNamePanel.value;
+        theirName.textContent = theirNamePanel.textContent;
+        socket.emit("my", "message", "transfer names", id);
+        if (Math.random() > 0.5) {
+          myColor.style.backgroundColor = "#DC3545";
+          theirColor.style.backgroundColor = "#007BFF";
+          socket.emit("my", "message", "sender is red", id);
+        }
+        else {
+          myColor.style.backgroundColor = "#007BFF";
+          theirColor.style.backgroundColor = "#DC3545";
+          socket.emit("my", "message", "sender is blue", id);
+        }
+        l.init();
+        d.drawBoard();
+        d.drawFuture();
         socket.emit("my", "game", game, id);
       }, 2000);
     }
@@ -81,13 +100,26 @@
       else if (thing == "play") {
         d.playAnimation();
       }
+      else if (thing == "sender is red") {
+        myColor.style.backgroundColor = "#007BFF";
+        theirColor.style.backgroundColor = "#DC3545";
+      }
+      else if (thing == "sender is blue") {
+        myColor.style.backgroundColor = "#DC3545";
+        theirColor.style.backgroundColor = "#007BFF";
+      }
+      else if (thing == "transfer names") {
+        myName.textContent = myNamePanel.value;
+        theirName.textContent = theirNamePanel.textContent;
+      }
     }
     else if (type == "name") {
       document.getElementById("their-name-panel").textContent = thing;
     }
     else if (type == "game") {
       Object.assign(game, thing);
-      d.tryDraw();
+      d.drawBoard();
+      d.drawFuture();
     }
   });
 

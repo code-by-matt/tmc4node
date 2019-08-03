@@ -113,7 +113,7 @@ const display = function(game) {
   }
 
   // Assigns colors to the players.
-  function drawColorsAndNames() {
+  function drawColors() {
     myName.textContent = myNamePanel.value;
     theirName.textContent = theirNamePanel.textContent;
     if (game.red == myNamePanel.value && game.blu == theirNamePanel.textContent) {
@@ -197,22 +197,22 @@ const display = function(game) {
     boardImg.src = boardCan.toDataURL();
   }
 
-  function tryDraw() {
-    if (game.red != undefined && game.blu != undefined) drawColorsAndNames();
-    if (game.future != undefined) drawFuture();
-    if (game.history != undefined) drawBoard();
-    if (game.redStart != undefined) displayTimes();
-    if (game.isOver) {
-      clearInterval(handle);
-      if (game.red == myName.textContent && game.blu == theirNamePanel.textContent) {
-        myTimeDiv.textContent = convert(game.redTime);
-        theirTimeDiv.textContent = convert(game.bluTime);
-      }
-      else if (game.blu == myName.textContent && game.red == theirNamePanel.textContent) {
-        myTimeDiv.textContent = convert(game.bluTime);
-        theirTimeDiv.textContent = convert(game.redTime);
-      }
-    }
+  function tryDraw(iAmRed) {
+    // if (game.red != undefined && game.blu != undefined) drawColorsAndNames();
+    // if (game.future != undefined) drawFuture();
+    // if (game.history != undefined) drawBoard();
+    // if (game.redStart != undefined) displayTimes();
+    // if (game.isOver) {
+    //   clearInterval(handle);
+    //   if (game.red == myName.textContent && game.blu == theirNamePanel.textContent) {
+    //     myTimeDiv.textContent = convert(game.redTime);
+    //     theirTimeDiv.textContent = convert(game.bluTime);
+    //   }
+    //   else if (game.blu == myName.textContent && game.red == theirNamePanel.textContent) {
+    //     myTimeDiv.textContent = convert(game.bluTime);
+    //     theirTimeDiv.textContent = convert(game.redTime);
+    //   }
+    // }
   }
 
   // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
@@ -231,6 +231,8 @@ const display = function(game) {
     writeMe: writeMe,
     writeThem: writeThem,
     tryDraw: tryDraw,
+    drawBoard: drawBoard,
+    drawFuture: drawFuture,
     playAnimation: playAnimation,
   };
 };
