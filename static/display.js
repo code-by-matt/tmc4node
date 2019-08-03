@@ -72,11 +72,11 @@ const display = function(game) {
     }
     handle = setInterval(function() {
       var yeet = times();
-      if (game.red == myName.textContent && game.blu == theirNamePanel.textContent) {
+      if (myColor.style.backgroundColor == "#DC3545") {
         myTimeDiv.textContent = yeet[0];
         theirTimeDiv.textContent = yeet[1];
       }
-      else if (game.blu == myName.textContent && game.red == theirNamePanel.textContent) {
+      else if (myColor.style.backgroundColor == "#007BFF") {
         myTimeDiv.textContent = yeet[1];
         theirTimeDiv.textContent = yeet[0];
       }
@@ -110,20 +110,6 @@ const display = function(game) {
   // Writes your opponent's name.
   function writeThem(name) {
     theirNamePanel.textContent = name;
-  }
-
-  // Assigns colors to the players.
-  function drawColors() {
-    myName.textContent = myNamePanel.value;
-    theirName.textContent = theirNamePanel.textContent;
-    if (game.red == myNamePanel.value && game.blu == theirNamePanel.textContent) {
-      myColor.style.backgroundColor = "#DC3545";
-      theirColor.style.backgroundColor = "#007BFF";
-    }
-    else if (game.blu == myNamePanel.value && game.red == theirNamePanel.textContent) {
-      myColor.style.backgroundColor = "#007BFF";
-      theirColor.style.backgroundColor = "#DC3545";
-    }
   }
 
   function drawFuture() {
@@ -234,5 +220,6 @@ const display = function(game) {
     drawBoard: drawBoard,
     drawFuture: drawFuture,
     playAnimation: playAnimation,
+    displayTimes: displayTimes,
   };
 };

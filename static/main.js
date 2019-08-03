@@ -27,6 +27,8 @@
 
   // Handle events that happen in the start panel.
   document.getElementById("start-panel").addEventListener("change", function(event) {
+
+    // These socket emits keep the other player up to date on your actions.
     if (event.target.id == "my-name-panel") {
       socket.emit("my", "name", event.target.value, id);
     }
@@ -49,6 +51,8 @@
       theyAreReady = false;
       socket.emit("my", "message", "infinity minutes", id);
     }
+
+    // If everything's set up, start a game.
     if (myNamePanel.value != "" && theirNamePanel.textContent != "" && readyBtn.checked && theyAreReady) {
       d.playAnimation();
       socket.emit("my", "message", "play", id);
@@ -127,10 +131,10 @@
   boardImg.addEventListener("mousemove",  function(event) {
     var col = d.getCol(event);
     if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (game.red == myName.textContent && game.future[0] == "r") {
+      if (myColor.style.backgroundColor == "#DC3545" && game.future[0] == "r") {
         boardImg.style.cursor = "pointer";
       }
-      else if (game.blu == myName.textContent && game.future[0] == "b") {
+      else if (myColor.style.backgroundColor == "#007BFF" && game.future[0] == "b") {
         boardImg.style.cursor = "pointer";
       }
       else boardImg.style.cursor = "default";
@@ -141,16 +145,21 @@
   // When a valid move is made, update game and send update game request.
   boardImg.addEventListener("click", function(event) {
     var col = d.getCol(event);
+    console.log(myColor.style.backgroundColor);
     if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (game.red == myName.textContent && game.future[0] == "r") {
+      if (myColor.style.backgroundColor == "#DC3545" && game.future[0] == "r") {
         l.update(col);
-        socket.emit("my game", id, game);
-        d.tryDraw();
+        d.drawGame();
+        d.drawFuture();
+        d.displayTimes();
+        socket.emit("my", "game", game, id);
       }
-      else if (game.blu == myName.textContent && game.future[0] == "b") {
+      else if (myColor.style.backgroundColor == "#007BFF" && game.future[0] == "b") {
         l.update(col);
-        socket.emit("my game", id, game);
-        d.tryDraw();
+        d.drawGame();
+        d.drawFuture();
+        d.displayTimes();
+        socket.emit("my", "game", game, id);
       }
     }
   });
