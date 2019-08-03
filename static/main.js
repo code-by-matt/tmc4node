@@ -51,7 +51,7 @@
         l.init(myNamePanel.value, theirNamePanel.textContent);
         d.tryDraw();
         socket.emit("my", "game", game, id);
-      }, 2500);
+      }, 2000);
     }
   });
 
