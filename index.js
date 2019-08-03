@@ -72,20 +72,6 @@ io.on("connection", function(socket) {
     socket.broadcast.to(id).emit("countdown");
   });
 
-  socket.on("one min", function(id) {
-    socket.broadcast.to(id).emit("one min");
-  });
-
-  socket.on("my name", function(id, senderName) {
-    console.log("my name");
-    socket.broadcast.to(id).emit("their name", senderName);
-  });
-
-  socket.on("my game", function(id, senderGame) {
-    console.log("my game");
-    socket.broadcast.to(id).emit("their game", senderGame);
-  });
-
   // socket.on("sync pls", function(id) {
   //   socket.broadcast.to(id).emit("sync pls");
   // });

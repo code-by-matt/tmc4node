@@ -91,24 +91,6 @@
     }
   });
 
-  // // When enter is pressed in the name input, change the input to a div and emit a "my name" message.
-  // myNamePanel.addEventListener("input", function(event) {
-  //   socket.emit("my name", id, myNamePanel.value);
-  //   // if (myNameInput.value != "") {
-  //   //   d.writeMe(myNameInput.value);
-  //   //   socket.emit("my name", id, myNameDiv.textContent);
-  //   //   if (myNameDiv.textContent != "" && theirNameDiv.textContent != "") {
-  //   //     socket.emit("countdown", id);
-  //   //     d.countdown();
-  //   //     setTimeout(function() {
-  //   //       l.init(myNameDiv.textContent, theirNameDiv.textContent);
-  //   //       socket.emit("my game", id, game);
-  //   //       d.tryDraw();
-  //   //     }, 3000);
-  //   //   }
-  //   // }
-  // });
-
   // Change cursor style when appropriate.
   boardImg.addEventListener("mousemove",  function(event) {
     var col = d.getCol(event);
