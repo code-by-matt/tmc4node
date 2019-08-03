@@ -23,6 +23,7 @@
   // socket.emit("sync pls", id);
   d.drawBoard();
 
+  var iAmRed;
   var theyAreReady = false;
 
   // Handle events that happen in the start panel.
@@ -61,11 +62,13 @@
         theirName.textContent = theirNamePanel.textContent;
         socket.emit("my", "message", "transfer names", id);
         if (Math.random() > 0.5) {
+          iAmRed = true;
           myColor.style.backgroundColor = "#DC3545";
           theirColor.style.backgroundColor = "#007BFF";
           socket.emit("my", "message", "sender is red", id);
         }
         else {
+          iAmRed = false;
           myColor.style.backgroundColor = "#007BFF";
           theirColor.style.backgroundColor = "#DC3545";
           socket.emit("my", "message", "sender is blue", id);
@@ -105,10 +108,12 @@
         d.playAnimation();
       }
       else if (thing == "sender is red") {
+        iAmRed = false;
         myColor.style.backgroundColor = "#007BFF";
         theirColor.style.backgroundColor = "#DC3545";
       }
       else if (thing == "sender is blue") {
+        iAmRed = true;
         myColor.style.backgroundColor = "#DC3545";
         theirColor.style.backgroundColor = "#007BFF";
       }
@@ -131,10 +136,10 @@
   boardImg.addEventListener("mousemove",  function(event) {
     var col = d.getCol(event);
     if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (myColor.style.backgroundColor == "#DC3545" && game.future[0] == "r") {
+      if (iAmRed && game.future[0] == "r") {
         boardImg.style.cursor = "pointer";
       }
-      else if (myColor.style.backgroundColor == "#007BFF" && game.future[0] == "b") {
+      else if (!iAmRed && game.future[0] == "b") {
         boardImg.style.cursor = "pointer";
       }
       else boardImg.style.cursor = "default";
@@ -147,16 +152,16 @@
     var col = d.getCol(event);
     console.log(myColor.style.backgroundColor);
     if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (myColor.style.backgroundColor == "#DC3545" && game.future[0] == "r") {
+      if (iAmRed && game.future[0] == "r") {
         l.update(col);
-        d.drawGame();
+        d.drawBoard();
         d.drawFuture();
         d.displayTimes();
         socket.emit("my", "game", game, id);
       }
-      else if (myColor.style.backgroundColor == "#007BFF" && game.future[0] == "b") {
+      else if (!iAmRed && game.future[0] == "b") {
         l.update(col);
-        d.drawGame();
+        d.drawBoard();
         d.drawFuture();
         d.displayTimes();
         socket.emit("my", "game", game, id);
