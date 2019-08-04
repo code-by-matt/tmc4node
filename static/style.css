@@ -27,7 +27,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  padding: 0px 20px;
+  padding: 0px 12px;
 }
 
 .b1 {
@@ -45,7 +45,7 @@ body {
     height: 140px;
   }
   #controls {
-    height: 100px;
+    height: 76px;
   }
   .b1 {
     border-style: solid;
@@ -61,7 +61,7 @@ body {
     height: 35vw;
   }
   #controls {
-    height: 25vw;
+    height: 19vw;
   }
   .b1 {
     border-style: solid none;
@@ -97,11 +97,12 @@ input[type=radio], input[type=checkbox] {
   background-color: #D8D8D8;
   font-family: inherit;
   font-size: 14px;
-  padding: 2px 7px;
+  padding: 0px 7px;
   text-align: center; 
   text-decoration: none;
   color: black;
   border: none;
+  height: 20px;
 }
 
 /* Focusing on a butt gives it a blue outline. */
