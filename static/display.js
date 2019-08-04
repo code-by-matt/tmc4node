@@ -93,8 +93,8 @@ const display = function(game) {
     game.bluStart = Number.NEGATIVE_INFINITY;
     game.redTime = 0;
     game.bluTime = 0;
-    myTimeDiv.innerHTML = "00:00";
-    theirTimeDiv.innerHTML = "00:00";
+    myTimeDiv.textContent = "00:00";
+    theirTimeDiv.textContent = "00:00";
   }
 
   // Calculates the column in which a player clicked (0 thru 6).
