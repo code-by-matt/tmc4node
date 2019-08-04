@@ -3,7 +3,6 @@ var iAmRed;
 (function() {
 
   // Grab lots of document elements.
-  var boardImg = document.getElementById("board-img");
   var readyBtn = document.getElementById("ready");
   var myNamePanel = document.getElementById("my-name-panel");
   var theirNamePanel = document.getElementById("their-name-panel");
@@ -23,7 +22,7 @@ var iAmRed;
   socket.emit("join room", id);
   // socket.emit("sync pls", id);
   d.drawBoard();
-  
+
   var theyAreReady = false;
 
   // Handle events that happen in the start panel.
@@ -87,15 +86,55 @@ var iAmRed;
         l.init();
         d.drawBoard();
         d.drawFuture();
+        d.displayTimes();
         socket.emit("my", "game", game, id);
       }, 2000);
+    }
+  });
+
+  // Change cursor style when appropriate.
+  window.addEventListener("mousemove",  function(event) {
+    if (event.target.id == "board-img") {
+      event.target.style.cursor = "default";
+      var col = d.getCol(event);
+      if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
+        if (iAmRed && game.future[0] == "r") {
+          event.target.style.cursor = "pointer";
+        }
+        else if (!iAmRed && game.future[0] == "b") {
+          event.target.style.cursor = "pointer";
+        } 
+      }
+    }
+  });
+
+  // When a valid move is made, update game and send game.
+  window.addEventListener("click", function(event) {
+    if (event.target.id == "board-img") {
+      var col = d.getCol(event);
+      if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
+        if (iAmRed && game.future[0] == "r") {
+          l.update(col);
+          d.drawBoard();
+          d.drawFuture();
+          d.displayTimes();
+          socket.emit("my", "game", game, id);
+        }
+        else if (!iAmRed && game.future[0] == "b") {
+          l.update(col);
+          d.drawBoard();
+          d.drawFuture();
+          d.displayTimes();
+          socket.emit("my", "game", game, id);
+        }
+      }
     }
   });
 
   // Handle socket stuff.
   socket.on("their", function(type, thing) {
 
-    // The "message" type is for emits that don't need to send a custom thing.
+    // The "message" type is for emits that carry a thing that is one of the following strings.
     if (type == "message") {
       if (thing == "one minute") {
         document.getElementById("one-min").checked = true;
@@ -150,43 +189,7 @@ var iAmRed;
       Object.assign(game, thing);
       d.drawBoard();
       d.drawFuture();
-    }
-  });
-
-  // Change cursor style when appropriate.
-  boardImg.addEventListener("mousemove",  function(event) {
-    var col = d.getCol(event);
-    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (iAmRed && game.future[0] == "r") {
-        boardImg.style.cursor = "pointer";
-      }
-      else if (!iAmRed && game.future[0] == "b") {
-        boardImg.style.cursor = "pointer";
-      }
-      else boardImg.style.cursor = "default";
-    }
-    else boardImg.style.cursor = "default";
-  });
-
-  // When a valid move is made, update game and send update game request.
-  boardImg.addEventListener("click", function(event) {
-    var col = d.getCol(event);
-    console.log(myColor.style.backgroundColor);
-    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (iAmRed && game.future[0] == "r") {
-        l.update(col);
-        d.drawBoard();
-        d.drawFuture();
-        d.displayTimes();
-        socket.emit("my", "game", game, id);
-      }
-      else if (!iAmRed && game.future[0] == "b") {
-        l.update(col);
-        d.drawBoard();
-        d.drawFuture();
-        d.displayTimes();
-        socket.emit("my", "game", game, id);
-      }
+      d.displayTimes();
     }
   });
 
