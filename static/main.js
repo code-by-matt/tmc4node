@@ -83,6 +83,8 @@
 
   // Handle socket stuff.
   socket.on("their", function(type, thing) {
+
+    // The "message" type is for emits that don't need to send a custom thing.
     if (type == "message") {
       if (thing == "one minute") {
         document.getElementById("one-min").checked = true;
@@ -122,6 +124,8 @@
         theirName.textContent = theirNamePanel.textContent;
       }
     }
+
+    // Other types carry a custom thing.
     else if (type == "sender name") {
       document.getElementById("their-name-panel").textContent = thing;
     }
