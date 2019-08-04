@@ -21,6 +21,7 @@ body {
   border-style: solid;
   border-width: 2px;
   border-color: gray;
+  padding: 0px 12px;
 }
 
 #start-panel .my-name, #start-panel .their-name {
@@ -30,6 +31,7 @@ body {
   text-align: center;
   display: block;
   width: 100px;
+  height: 20px;
   padding: 0px;
 }
 
@@ -69,8 +71,8 @@ body {
     width: 400px;
   }
   #start-panel, #play-panel {
-    width: 300px;
-    height: 140px;
+    width: 276px;
+    height: 108px;
   }
   #controls {
     height: 76px;
@@ -85,8 +87,8 @@ body {
     width: 100vw;
   }
   #start-panel, #play-panel {
-    width: 75vw;
-    height: 35vw;
+    width: 69vw;
+    height: 27vw;
   }
   #controls {
     height: 19vw;
