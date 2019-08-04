@@ -44,11 +44,11 @@ describe("Gameplay.", function() {
       .click();
     cy.get('[for="ready"]')
       .click()
-      .log("name BoJack?")
+      .log("sender name BoJack?")
       .log("message three minutes?")
       .log("message ready?")
       .pause();
-    cy.task("my", {type: "name", thing: "Princess Carolyn", id: id});
+    cy.task("my", {type: "sender name", thing: "Princess Carolyn", id: id});
     cy.task("my", {type: "message", thing: "ten minutes", id: id});
     cy.task("my", {type: "message", thing: "ready", id: id});
     cy.get("#their-name-panel")

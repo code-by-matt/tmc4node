@@ -77,10 +77,6 @@ io.on("connection", function(socket) {
   //   socket.broadcast.to(id).emit("sync pls");
   // });
 
-  // socket.on("here ya go", function(id, senderGame, senderName, receiverName) {
-  //   socket.broadcast.to(id).emit("here ya go", senderGame, senderName, receiverName);
-  // });
-
   // disconnection check
   // socket.on("disconnect", function() {
   //   console.log("a user disconnected!");

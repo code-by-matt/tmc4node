@@ -1,4 +1,5 @@
 // We use an IIFE to protect our script from evil outside forces.
+var iAmRed;
 (function() {
 
   // Grab lots of document elements.
@@ -22,8 +23,7 @@
   socket.emit("join room", id);
   // socket.emit("sync pls", id);
   d.drawBoard();
-
-  var iAmRed;
+  
   var theyAreReady = false;
 
   // Handle events that happen in the start panel.
@@ -55,12 +55,22 @@
 
     // If everything's set up, start a game.
     if (myNamePanel.value != "" && theirNamePanel.textContent != "" && readyBtn.checked && theyAreReady) {
-      d.playAnimation();
-      socket.emit("my", "message", "play", id);
+      
       setTimeout(function() {
+        // Hide start panel, revealing play panel.
+        document.getElementById("start-panel").style.display = "none";
+        socket.emit("my", "message", "hide start panel", id);
+      }, 500);
+
+      setTimeout(function() {
+        // Hide play panel, revealing board.
+        document.getElementById("play-panel").style.display = "none";
+        socket.emit("my", "message", "hide play panel", id);
+        // Transfer names from start panel to the row under the board.
         myName.textContent = myNamePanel.value;
         theirName.textContent = theirNamePanel.textContent;
         socket.emit("my", "message", "transfer names", id);
+        // Randomly assign colors to each player.
         if (Math.random() > 0.5) {
           iAmRed = true;
           myColor.style.backgroundColor = "#DC3545";
@@ -73,6 +83,7 @@
           theirColor.style.backgroundColor = "#DC3545";
           socket.emit("my", "message", "sender is blue", id);
         }
+        // Create a game object, then display it.
         l.init();
         d.drawBoard();
         d.drawFuture();
@@ -106,8 +117,11 @@
         theyAreReady = !theyAreReady;
         console.log(theyAreReady);
       }
-      else if (thing == "play") {
-        d.playAnimation();
+      else if (thing == "hide start panel") {
+        document.getElementById("start-panel").style.display = "none";
+      }
+      else if (thing == "hide play panel") {
+        document.getElementById("play-panel").style.display = "none";
       }
       else if (thing == "sender is red") {
         iAmRed = false;
@@ -201,20 +215,6 @@
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
     socket.emit("leave room", id);
-  });
-
-  socket.on("countdown", function() {
-    d.countdown();
-  });
-
-  socket.on("their game", function(senderGame) {
-    Object.assign(game, senderGame);
-    d.tryDraw();
-  });
-
-  // This handler is triggered when your opponent is requesting a sync.
-  socket.on("sync pls", function() {
-    socket.emit("here ya go", id, game, myNamePanel.value, theirNamePanel.textContent);
   });
 
   // This handler is triggered when you receive a sync from your opponent.

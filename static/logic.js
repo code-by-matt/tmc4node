@@ -65,7 +65,7 @@ const logic = function(game) {
   // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
   // Initializes all game properties.
-  function init(myName, theirName) {
+  function init() {
     game.history = "";
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
     game.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998

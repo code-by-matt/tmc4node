@@ -16,18 +16,6 @@ const display = function(game) {
   // This div is to help with getCol().
   var boardDiv = document.getElementById("board-div");
 
-  // These divs are where the players' colors are displayed.
-  var myColor = document.getElementById("my-color");
-  var theirColor = document.getElementById("their-color");
-
-  // These elements are where the players' names are displayed in the start panel.
-  var myNamePanel = document.getElementById("my-name-panel");
-  var theirNamePanel = document.getElementById("their-name-panel");
-
-  // These elements are where the players' names are displayed during gameplay.
-  var myName = document.getElementById("my-name");
-  var theirName = document.getElementById("their-name");
-
   // Player times displayed here.
   var myTimeDiv = document.getElementById("my-time");
   var theirTimeDiv = document.getElementById("their-time");
@@ -72,11 +60,11 @@ const display = function(game) {
     }
     handle = setInterval(function() {
       var yeet = times();
-      if (myColor.style.backgroundColor == "#DC3545") {
+      if (iAmRed) {
         myTimeDiv.textContent = yeet[0];
         theirTimeDiv.textContent = yeet[1];
       }
-      else if (myColor.style.backgroundColor == "#007BFF") {
+      else {
         myTimeDiv.textContent = yeet[1];
         theirTimeDiv.textContent = yeet[0];
       }
@@ -100,16 +88,6 @@ const display = function(game) {
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
     return Math.floor((7 * (event.pageX - boardDiv.offsetLeft))/boardDiv.offsetWidth);
-  }
-
-  // Writes your name (on reload).
-  function writeMe(name) {
-    myNamePanel.value = name;
-  }
-
-  // Writes your opponent's name.
-  function writeThem(name) {
-    theirNamePanel.textContent = name;
   }
 
   function drawFuture() {
@@ -183,43 +161,10 @@ const display = function(game) {
     boardImg.src = boardCan.toDataURL();
   }
 
-  function tryDraw(iAmRed) {
-    // if (game.red != undefined && game.blu != undefined) drawColorsAndNames();
-    // if (game.future != undefined) drawFuture();
-    // if (game.history != undefined) drawBoard();
-    // if (game.redStart != undefined) displayTimes();
-    // if (game.isOver) {
-    //   clearInterval(handle);
-    //   if (game.red == myName.textContent && game.blu == theirNamePanel.textContent) {
-    //     myTimeDiv.textContent = convert(game.redTime);
-    //     theirTimeDiv.textContent = convert(game.bluTime);
-    //   }
-    //   else if (game.blu == myName.textContent && game.red == theirNamePanel.textContent) {
-    //     myTimeDiv.textContent = convert(game.bluTime);
-    //     theirTimeDiv.textContent = convert(game.redTime);
-    //   }
-    // }
-  }
-
-  // Public function that displays a "3-2-1-Play!"" countdown in the marquee.
-  function playAnimation() {
-    setTimeout(function() {
-      document.getElementById("start-panel").style.display = "none";
-    }, 500);
-    setTimeout(function() {
-      document.getElementById("play-panel").style.display = "none";
-      tryDraw();
-    }, 2000);
-  }
-
   return {
     getCol: getCol,
-    writeMe: writeMe,
-    writeThem: writeThem,
-    tryDraw: tryDraw,
     drawBoard: drawBoard,
     drawFuture: drawFuture,
-    playAnimation: playAnimation,
     displayTimes: displayTimes,
   };
 };
