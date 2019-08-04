@@ -38,7 +38,7 @@ describe("Gameplay.", function() {
   it("Should start a game.", function() {
     var id = Math.random().toString(36).substr(6);
     cy.visit("http://localhost:8000/game?id=" + id);
-    cy.get("#my-name-panel")
+    cy.get("#start-panel .my-name")
       .type("BoJack{enter}");
     cy.get('[for="thr-min"]')
       .click();
@@ -51,7 +51,7 @@ describe("Gameplay.", function() {
     cy.task("my", {type: "sender name", thing: "Princess Carolyn", id: id});
     cy.task("my", {type: "message", thing: "ten minutes", id: id});
     cy.task("my", {type: "message", thing: "ready", id: id});
-    cy.get("#their-name-panel")
+    cy.get("#start-panel .their-name")
       .should("have.text", "Princess Carolyn");
     cy.get("#ten-min")
       .should("be.checked");

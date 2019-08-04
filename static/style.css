@@ -23,11 +23,39 @@ body {
   border-color: gray;
 }
 
+#start-panel .my-name, #start-panel .their-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  display: block;
+  width: 100px;
+  padding: 0px;
+}
+
 #controls {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 0px 12px;
+}
+
+#controls .my-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  display: block;
+  flex: 1;
+}
+
+#controls .their-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  display: block;
+  flex: 1;
 }
 
 .b1 {
@@ -165,16 +193,6 @@ img {
 
 .justify-content-around {
   justify-content: space-around;
-}
-
-#my-name-panel, #their-name-panel {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  display: block;
-  width: 100px;
-  padding: 0px;
 }
 
 #my-name {

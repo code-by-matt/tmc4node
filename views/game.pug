@@ -15,9 +15,9 @@ block content
       div(class="flex justify-content-center") Play!
     div(id="start-panel")
       div(class="flex justify-content-around")
-        input(id="my-name-panel" type="text" placeholder="enter a name")
+        input(class="my-name" type="text" placeholder="enter a name")
         div vs.
-        div(id="their-name-panel")
+        div(class="their-name")
       div(class="flex justify-content-around")
         input(id="one-min" name="time" type="radio")
         label(tabindex="0" for="one-min" class="butt") 1 min.
@@ -41,11 +41,11 @@ block content
     div(class="flex")
       div(class="flex half")
         div(id="my-color" class="sq")
-        div(id="my-name")
+        div(class="my-name")
         div(id="my-time" class="timer vct") 00:00
       div(class="flex half")
         div(id="their-time" class="timer vct") 00:00
-        div(id="their-name")
+        div(class="their-name")
         div(id="their-color" class="sq")
 
 block scripts

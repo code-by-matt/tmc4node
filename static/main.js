@@ -3,11 +3,8 @@ var iAmRed;
 (function() {
 
   // Grab lots of document elements.
-  var readyBtn = document.getElementById("ready");
-  var myNamePanel = document.getElementById("my-name-panel");
-  var theirNamePanel = document.getElementById("their-name-panel");
-  var myName = document.getElementById("my-name");
-  var theirName = document.getElementById("their-name");
+  var startPanel = document.getElementById("start-panel");
+  var controls = document.getElementById("controls");
 
   // These divs are where the players' colors are displayed.
   var myColor = document.getElementById("my-color");
@@ -26,10 +23,10 @@ var iAmRed;
   var theyAreReady = false;
 
   // Handle events that happen in the start panel.
-  document.getElementById("start-panel").addEventListener("change", function(event) {
+  startPanel.addEventListener("change", function(event) {
 
     // These socket emits keep the other player up to date on your actions.
-    if (event.target.id == "my-name-panel") {
+    if (event.target.className == "my-name") {
       socket.emit("my", "sender name", event.target.value, id);
     }
     else if (event.target.id == "ready") {
@@ -53,11 +50,11 @@ var iAmRed;
     }
 
     // If everything's set up, start a game.
-    if (myNamePanel.value != "" && theirNamePanel.textContent != "" && readyBtn.checked && theyAreReady) {
+    if (startPanel.querySelector(".my-name").value != "" && startPanel.querySelector(".their-name").textContent != "" && startPanel.querySelector("#ready").checked && theyAreReady) {
       
       setTimeout(function() {
         // Hide start panel, revealing play panel.
-        document.getElementById("start-panel").style.display = "none";
+        startPanel.style.display = "none";
         socket.emit("my", "message", "hide start panel", id);
       }, 500);
 
@@ -66,8 +63,8 @@ var iAmRed;
         document.getElementById("play-panel").style.display = "none";
         socket.emit("my", "message", "hide play panel", id);
         // Transfer names from start panel to the row under the board.
-        myName.textContent = myNamePanel.value;
-        theirName.textContent = theirNamePanel.textContent;
+        controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
+        controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
         socket.emit("my", "message", "transfer names", id);
         // Randomly assign colors to each player.
         if (Math.random() > 0.5) {
@@ -173,17 +170,17 @@ var iAmRed;
         theirColor.style.backgroundColor = "#007BFF";
       }
       else if (thing == "transfer names") {
-        myName.textContent = myNamePanel.value;
-        theirName.textContent = theirNamePanel.textContent;
+        controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
+        controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
       }
     }
 
     // Other types carry a custom thing.
     else if (type == "sender name") {
-      document.getElementById("their-name-panel").textContent = thing;
+      startPanel.querySelector(".their-name").textContent = thing;
     }
     else if (type == "receiver name") {
-      document.getElementById("my-name-panel").textContent = thing;
+      startPanel.querySelector(".my-name").value = thing;
     }
     else if (type == "game") {
       Object.assign(game, thing);
@@ -194,7 +191,7 @@ var iAmRed;
   });
 
   // When reset is clicked, reset game and send reset request.
-  readyBtn.addEventListener("change", function() {
+  // readyBtn.addEventListener("change", function() {
     // if (readyBtn.checked && theyAreReady) {
     //   socket.emit("countdown", id);
     //   d.countdown();
@@ -213,7 +210,7 @@ var iAmRed;
     //     d.tryDraw();
     //   }, 3000);
     // }
-  });
+  // });
 
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
