@@ -31,7 +31,7 @@
 
     // These socket emits keep the other player up to date on your actions.
     if (event.target.id == "my-name-panel") {
-      socket.emit("my", "name", event.target.value, id);
+      socket.emit("my", "sender name", event.target.value, id);
     }
     else if (event.target.id == "ready") {
       socket.emit("my", "message", "ready", id);
@@ -122,8 +122,11 @@
         theirName.textContent = theirNamePanel.textContent;
       }
     }
-    else if (type == "name") {
+    else if (type == "sender name") {
       document.getElementById("their-name-panel").textContent = thing;
+    }
+    else if (type == "receiver name") {
+      document.getElementById("my-name-panel").textContent = thing;
     }
     else if (type == "game") {
       Object.assign(game, thing);
