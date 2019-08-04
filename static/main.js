@@ -6,10 +6,6 @@ var iAmRed;
   var startPanel = document.getElementById("start-panel");
   var controls = document.getElementById("controls");
 
-  // These divs are where the players' colors are displayed.
-  var myColor = document.getElementById("my-color");
-  var theirColor = document.getElementById("their-color");
-
   // Load some modules.
   var l = logic(game);
   var d = display(game);
@@ -69,14 +65,14 @@ var iAmRed;
         // Randomly assign colors to each player.
         if (Math.random() > 0.5) {
           iAmRed = true;
-          myColor.style.backgroundColor = "#DC3545";
-          theirColor.style.backgroundColor = "#007BFF";
+          controls.querySelector("#my-color").style.backgroundColor = "#DC3545";
+          controls.querySelector("#their-color").style.backgroundColor = "#007BFF";
           socket.emit("my", "message", "sender is red", id);
         }
         else {
           iAmRed = false;
-          myColor.style.backgroundColor = "#007BFF";
-          theirColor.style.backgroundColor = "#DC3545";
+          controls.querySelector("#my-color").style.backgroundColor = "#007BFF";
+          controls.querySelector("#their-color").style.backgroundColor = "#DC3545";
           socket.emit("my", "message", "sender is blue", id);
         }
         // Create a game object, then display it.
@@ -161,13 +157,13 @@ var iAmRed;
       }
       else if (thing == "sender is red") {
         iAmRed = false;
-        myColor.style.backgroundColor = "#007BFF";
-        theirColor.style.backgroundColor = "#DC3545";
+        controls.querySelector("#my-color").style.backgroundColor = "#007BFF";
+        controls.querySelector("#their-color").style.backgroundColor = "#DC3545";
       }
       else if (thing == "sender is blue") {
         iAmRed = true;
-        myColor.style.backgroundColor = "#DC3545";
-        theirColor.style.backgroundColor = "#007BFF";
+        controls.querySelector("#my-color").style.backgroundColor = "#DC3545";
+        controls.querySelector("#their-color").style.backgroundColor = "#007BFF";
       }
       else if (thing == "transfer names") {
         controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
