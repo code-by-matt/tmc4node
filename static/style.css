@@ -122,15 +122,18 @@ input[type=radio], input[type=checkbox] {
 
 /* Base style for anchors, radio labels, checkbox labels, and real buttons. Visited anchors don't look any different. */
 .butt, .butt:visited {
+  width: 60px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #D8D8D8;
+  color: black;
   font-family: inherit;
   font-size: 14px;
-  padding: 0px 7px;
-  text-align: center; 
+  padding: 0px;
   text-decoration: none;
-  color: black;
   border: none;
-  height: 20px;
 }
 
 /* Focusing on a butt gives it a blue outline. */
