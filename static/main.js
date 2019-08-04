@@ -112,6 +112,10 @@ var iAmRed;
           d.drawFuture();
           d.displayTimes();
           socket.emit("my", "game", game, id);
+          if (game.isOver) {
+            this.document.getElementById("end-panel").style.display = "flex";
+            socket.emit("my", "message", "show end panel", id);
+          }
         }
         else if (!iAmRed && game.future[0] == "b") {
           l.update(col);
@@ -168,6 +172,9 @@ var iAmRed;
       else if (thing == "transfer names") {
         controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
         controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
+      }
+      else if (thing == "show end panel") {
+        document.getElementById("end-panel").style.display = "flex";
       }
     }
 

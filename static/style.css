@@ -12,7 +12,7 @@ body {
   align-items: center;
 }
 
-#start-panel, #play-panel {
+#start-panel, #play-panel, #end-panel {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -22,6 +22,10 @@ body {
   border-width: 2px;
   border-color: gray;
   padding: 0px 12px;
+}
+
+#end-panel {
+  display: none;
 }
 
 #start-panel .my-name, #start-panel .their-name {
