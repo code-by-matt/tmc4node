@@ -74,7 +74,7 @@ body {
     margin-top: 88px;
     width: 400px;
   }
-  #start-panel, #play-panel {
+  #start-panel {
     width: 276px;
     height: 108px;
   }
@@ -90,7 +90,7 @@ body {
   #box {
     width: 100vw;
   }
-  #start-panel, #play-panel {
+  #start-panel {
     width: 69vw;
     height: 27vw;
   }
