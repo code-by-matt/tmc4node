@@ -30,22 +30,23 @@ block content
       div(class="flex justify-content-center")
         input(id="ready" type="checkbox")
         label(tabindex="0" for="ready" class="butt") Ready
-  div(class="b1 flex justify-content-between")
+  div(id="controls" class="b1")
+    div(class="flex justify-content-between")
+      div(class="flex")
+        canvas(id="future-canvas" width="1600" height="200")
+        img(id="future-img" width="160" height="20" src="nothing.png")
+      div(class="flex")
+        button(class="butt") Resign
+        button(class="butt") Toggle Numbers
     div(class="flex")
-      canvas(id="future-canvas" width="1600" height="200")
-      img(id="future-img" class="m4" width="160" height="20" src="nothing.png")
-    div(class="flex")
-      button(class="m4 butt") Resign
-      button(class="m4 butt") Toggle Numbers
-  div(class="b1 flex")
-    div(class="flex half")
-      div(id="my-color" class="m4 sq")
-      div(id="my-name" class="m4")
-      div(id="my-time" class="timer m4 vct") 00:00
-    div(class="flex half")
-      div(id="their-time" class="timer m4 vct") 00:00
-      div(id="their-name" class="m4")
-      div(id="their-color" class="m4 sq")
+      div(class="flex half")
+        div(id="my-color" class="sq")
+        div(id="my-name")
+        div(id="my-time" class="timer m4 vct") 00:00
+      div(class="flex half")
+        div(id="their-time" class="timer m4 vct") 00:00
+        div(id="their-name")
+        div(id="their-color" class="sq")
 
 block scripts
   //Gives us the socket.io framework.

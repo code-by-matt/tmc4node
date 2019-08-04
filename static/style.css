@@ -23,6 +23,13 @@ body {
   border-color: gray;
 }
 
+#controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 0px 20px;
+}
+
 .b1 {
   border-width: 1px;
   border-color: gray;
@@ -35,7 +42,10 @@ body {
   }
   #start-panel, #play-panel {
     width: 300px;
-    height: 120px;
+    height: 140px;
+  }
+  #controls {
+    height: 100px;
   }
   .b1 {
     border-style: solid;
@@ -48,7 +58,10 @@ body {
   }
   #start-panel, #play-panel {
     width: 75vw;
-    height: 30vw;
+    height: 35vw;
+  }
+  #controls {
+    height: 25vw;
   }
   .b1 {
     border-style: solid none;
