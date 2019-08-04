@@ -53,6 +53,7 @@ app.get("/game", function(request, response) {
 
 io.on("connection", function(socket) {
 
+  // Emits with "my" are from client to server, emits with "their" are from server to client.
   socket.on("my", function(type, thing, id) {
     console.log(type + " " + thing);
     socket.broadcast.to(id).emit("their", type, thing);
