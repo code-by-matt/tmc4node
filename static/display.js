@@ -2,8 +2,6 @@
 const display = function(game) {
 
   // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-  // Handle should ultimately go here? Nah.
   
   // Future and board are drawn in these (invisbile) canvas elements...
   var futureCan = document.getElementById("future-canvas");
@@ -110,7 +108,7 @@ const display = function(game) {
     futureImg.src = futureCan.toDataURL();
   }
 
-  function drawBoard() {
+  function drawBoard(writeNumbers) {
     var ctx = boardCan.getContext("2d");
     // Wipe out the previous board.
     ctx.fillStyle = "#FFFFFF";
@@ -142,7 +140,9 @@ const display = function(game) {
       ctx.fillStyle = "#000000";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(number, (200 * col) + 100, (200 * (5 - row)) + 100);
+      if (writeNumbers) {
+        ctx.fillText(number, (200 * col) + 100, (200 * (5 - row)) + 100);
+      }
     }
     // Draw lines.
     ctx.strokeStyle = "#D8D8D8";

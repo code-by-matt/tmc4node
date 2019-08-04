@@ -14,9 +14,10 @@ var iAmRed;
   var socket = io();
   socket.emit("join room", id);
   // socket.emit("sync pls", id);
-  d.drawBoard();
+  d.drawBoard(writeNumbers);
 
   var theyAreReady = false;
+  var writeNumbers = true;
 
   // Handle events that happen in the start panel.
   startPanel.addEventListener("change", function(event) {
@@ -77,7 +78,7 @@ var iAmRed;
         }
         // Create a game object, then display it.
         l.init();
-        d.drawBoard();
+        d.drawBoard(writeNumbers);
         d.drawFuture();
         d.displayTimes();
         socket.emit("my", "game", game, id);
@@ -108,7 +109,7 @@ var iAmRed;
       if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
         if (iAmRed && game.future[0] == "r") {
           l.update(col);
-          d.drawBoard();
+          d.drawBoard(writeNumbers);
           d.drawFuture();
           d.displayTimes();
           socket.emit("my", "game", game, id);
@@ -119,12 +120,19 @@ var iAmRed;
         }
         else if (!iAmRed && game.future[0] == "b") {
           l.update(col);
-          d.drawBoard();
+          d.drawBoard(writeNumbers);
           d.drawFuture();
           d.displayTimes();
           socket.emit("my", "game", game, id);
         }
       }
+    }
+  });
+
+  controls.addEventListener("click", function(event) {
+    if (event.target.id == "number-toggle") {
+      writeNumbers = !writeNumbers;
+      d.drawBoard(writeNumbers);
     }
   });
 
@@ -187,7 +195,7 @@ var iAmRed;
     }
     else if (type == "game") {
       Object.assign(game, thing);
-      d.drawBoard();
+      d.drawBoard(writeNumbers);
       d.drawFuture();
       d.displayTimes();
     }
