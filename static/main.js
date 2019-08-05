@@ -231,6 +231,9 @@ var iAmRed;
           }
           socket.emit("my", "game", game, id);
         }
+        if (game.isOver) {
+          socket.emit("my", "message", "show end panel", id);
+        }
       }
     }
 
@@ -247,8 +250,8 @@ var iAmRed;
       d.drawFuture();
       d.displayTimes();
       if (game.isOver) {
-        this.clearInterval(handle);
-        this.document.getElementById("end-panel").style.display = "flex";
+        clearInterval(handle);
+        document.getElementById("end-panel").style.display = "flex";
       }
     }
   });
