@@ -125,10 +125,6 @@ var iAmRed;
           d.drawFuture();
           d.displayTimes();
           socket.emit("my", "game", game, id);
-          if (game.isOver) {
-            this.document.getElementById("end-panel").style.display = "flex";
-            socket.emit("my", "message", "show end panel", id);
-          }
         }
         else if (!iAmRed && game.future[0] == "b") {
           l.update(col);
@@ -136,6 +132,12 @@ var iAmRed;
           d.drawFuture();
           d.displayTimes();
           socket.emit("my", "game", game, id);
+        }
+        if (game.isOver) {
+          this.clearInterval(handle);
+          this.document.getElementById("end-panel").style.display = "flex";
+          socket.emit("my", "message", "show end panel", id);
+          socket.emit("my", "message", "stop timer", id);
         }
       }
     }
@@ -199,6 +201,9 @@ var iAmRed;
       }
       else if (thing == "show end panel") {
         document.getElementById("end-panel").style.display = "flex";
+      }
+      else if (thing == "stop timer") {
+        clearInterval(handle);
       }
       else if (thing == "sync") {
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);

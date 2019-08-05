@@ -78,6 +78,7 @@ describe("Gameplay.", function() {
     cy.get("#end-panel")
       .should("contain.text", "Game Over!")
       .log("message show end panel?")
+      .log("message stop timer?")
       .pause();
   });
 
