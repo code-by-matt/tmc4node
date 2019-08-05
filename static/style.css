@@ -204,7 +204,7 @@ img {
   justify-content: space-around;
 }
 
-#my-name {
+#controls .my-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -217,7 +217,7 @@ img {
   width: 50%;
 }
 
-#their-name {
+.controls .their-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
