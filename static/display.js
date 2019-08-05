@@ -72,17 +72,6 @@ const display = function(game) {
 
   // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-  function stop(handle) {
-    clearInterval(handle);
-    handle = 0;
-    game.redStart = Number.NEGATIVE_INFINITY;
-    game.bluStart = Number.NEGATIVE_INFINITY;
-    game.redTime = 0;
-    game.bluTime = 0;
-    myTimeDiv.textContent = "00:00";
-    theirTimeDiv.textContent = "00:00";
-  }
-
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
     return Math.floor((7 * (event.pageX - boardDiv.offsetLeft))/boardDiv.offsetWidth);
