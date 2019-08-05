@@ -20,6 +20,21 @@ const logic = function(game) {
     console.log("flip");
   }
 
+  // Stops the timer.
+  function stop() {
+    var currentTime = new Date().getTime();
+    // Red is completing its move.
+    if (game.redStart > game.bluStart) {
+      game.redTime -= currentTime - game.redStart;
+    }
+    // Blu is completing its move.
+    else if (game.redStart < game.bluStart) {
+      game.bluTime -= currentTime - game.bluStart;
+    }
+    // Hopefully game.redStart and game.bluStart are never equal...
+    console.log("stop");
+  }
+
   // Starts at the most recent move, then counts matching colors in the direction specified by up and right.
   function count(up, right) {
     var color = game.history.slice(-3, -2);
@@ -110,7 +125,7 @@ const logic = function(game) {
     }
   }
 
-  // Records a move in the given column, flipping the timer if necessary.
+  // Records a move in the given column, flipping/stopping the timer if necessary.
   function update(col) {
     var row = game.openRows[col];
     game.history += game.future[0] + col + row;
@@ -121,10 +136,13 @@ const logic = function(game) {
       if (thueMorse(game.firstTurn) ^ thueMorse(game.currentTurn + i) == 0) game.future += "r";
       else game.future += "b";
     }
-    if (game.history.slice(-3, -2) != game.future.slice(0, 1)) {
+    game.isOver = isWin();
+    if (game.isOver) {
+      stop();
+    }
+    else if (!game.isOver && game.history.slice(-3, -2) != game.future.slice(0, 1)) {
       flip();
     }
-    game.isOver = isWin();
   }
 
   return {
