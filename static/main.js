@@ -80,11 +80,11 @@ var iAmRed;
       d.displayTimes();
       socket.emit("my", "game", game, id);
 
-      // Hide play panel after one second.
+      // Hide play panel after two seconds.
       setTimeout(function() {
         playPanel.style.display = "none";
         socket.emit("my", "message", "hide play panel", id);
-      }, 1000);
+      }, 2000);
     }
   });
 
