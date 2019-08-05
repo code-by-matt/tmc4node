@@ -50,10 +50,6 @@ var iAmRed;
     // If everything's set up, start a game.
     if (startPanel.querySelector(".my-name").value != "" && startPanel.querySelector(".their-name").textContent != "" && startPanel.querySelector("#ready").checked && theyAreReady) {
 
-      // Hide start panel, revealing play panel.
-      startPanel.style.display = "none";
-      socket.emit("my", "message", "hide start panel", id);
-
       // Transfer names from start panel to the controls.
       controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
       controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
@@ -80,11 +76,12 @@ var iAmRed;
       d.displayTimes();
       socket.emit("my", "game", game, id);
 
-      // Hide play panel after two seconds.
+      // Hide start panel, revealing play panel, wait two seconds, then hide play panel.
+      startPanel.style.display = "none";
       setTimeout(function() {
         playPanel.style.display = "none";
-        socket.emit("my", "message", "hide play panel", id);
       }, 2000);
+      socket.emit("my", "message", "hide-hide animation", id);
     }
   });
 
@@ -163,10 +160,14 @@ var iAmRed;
         theyAreReady = !theyAreReady;
         console.log(theyAreReady);
       }
-      else if (thing == "hide start panel") {
+      else if (thing == "hide-hide animation") {
         startPanel.style.display = "none";
+        setTimeout(function() {
+          playPanel.style.display = "none";
+        }, 2000);
       }
-      else if (thing == "hide play panel") {
+      else if (thing == "hide-hide instant") {
+        startPanel.style.display = "none";
         playPanel.style.display = "none";
       }
       else if (thing == "sender is red") {
@@ -190,8 +191,7 @@ var iAmRed;
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
         socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
         if (game.redStart != undefined) {
-          socket.emit("my", "message", "hide start panel", id);
-          socket.emit("my", "message", "hide play panel", id);
+          socket.emit("my", "message", "hide-hide instant", id);
           socket.emit("my", "message", "transfer names", id);
           if (iAmRed) {
             socket.emit("my", "message", "sender is red", id);
