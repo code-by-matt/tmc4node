@@ -35,7 +35,7 @@ describe("Routing.", function() {
 
 describe("Gameplay.", function() {
 
-  it("Should start a game.", function() {
+  it("Should play a game.", function() {
     var id = Math.random().toString(36).substr(6);
     cy.visit("http://localhost:8000/game?id=" + id);
     cy.get("#start-panel .my-name")
