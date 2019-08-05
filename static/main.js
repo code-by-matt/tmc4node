@@ -212,9 +212,6 @@ var iAmRed;
         controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
         controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
       }
-      else if (thing == "show end panel") {
-        endPanel.style.display = "flex";
-      }
       else if (thing == "sync") {
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
         socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
@@ -228,9 +225,6 @@ var iAmRed;
             socket.emit("my", "message", "sender is blue", id);
           }
           socket.emit("my", "game", game, id);
-        }
-        if (game.isOver) {
-          socket.emit("my", "message", "show end panel", id);
         }
       }
     }
