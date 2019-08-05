@@ -4,6 +4,7 @@ var iAmRed;
 
   // Grab lots of document elements.
   var startPanel = document.getElementById("start-panel");
+  var playPanel = document.getElementById("play-panel");
   var controls = document.getElementById("controls");
 
   // Load some modules.
@@ -48,41 +49,42 @@ var iAmRed;
 
     // If everything's set up, start a game.
     if (startPanel.querySelector(".my-name").value != "" && startPanel.querySelector(".their-name").textContent != "" && startPanel.querySelector("#ready").checked && theyAreReady) {
-      
-      setTimeout(function() {
-        // Hide start panel, revealing play panel.
-        startPanel.style.display = "none";
-        socket.emit("my", "message", "hide start panel", id);
-      }, 500);
 
+      // Hide start panel, revealing play panel.
+      startPanel.style.display = "none";
+      socket.emit("my", "message", "hide start panel", id);
+
+      // Transfer names from start panel to the controls.
+      controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
+      controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
+      socket.emit("my", "message", "transfer names", id);
+
+      // Randomly assign colors to each player.
+      if (Math.random() > 0.5) {
+        iAmRed = true;
+        controls.querySelector("#my-color").style.backgroundColor = "#DC3545";
+        controls.querySelector("#their-color").style.backgroundColor = "#007BFF";
+        socket.emit("my", "message", "sender is red", id);
+      }
+      else {
+        iAmRed = false;
+        controls.querySelector("#my-color").style.backgroundColor = "#007BFF";
+        controls.querySelector("#their-color").style.backgroundColor = "#DC3545";
+        socket.emit("my", "message", "sender is blue", id);
+      }
+
+      // Create and display a game object.
+      l.init();
+      d.drawBoard(writeNumbers);
+      d.drawFuture();
+      d.displayTimes();
+      socket.emit("my", "game", game, id);
+
+      // Hide play panel after one second.
       setTimeout(function() {
-        // Hide play panel, revealing board.
-        document.getElementById("play-panel").style.display = "none";
+        playPanel.style.display = "none";
         socket.emit("my", "message", "hide play panel", id);
-        // Transfer names from start panel to the row under the board.
-        controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
-        controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
-        socket.emit("my", "message", "transfer names", id);
-        // Randomly assign colors to each player.
-        if (Math.random() > 0.5) {
-          iAmRed = true;
-          controls.querySelector("#my-color").style.backgroundColor = "#DC3545";
-          controls.querySelector("#their-color").style.backgroundColor = "#007BFF";
-          socket.emit("my", "message", "sender is red", id);
-        }
-        else {
-          iAmRed = false;
-          controls.querySelector("#my-color").style.backgroundColor = "#007BFF";
-          controls.querySelector("#their-color").style.backgroundColor = "#DC3545";
-          socket.emit("my", "message", "sender is blue", id);
-        }
-        // Create a game object, then display it.
-        l.init();
-        d.drawBoard(writeNumbers);
-        d.drawFuture();
-        d.displayTimes();
-        socket.emit("my", "game", game, id);
-      }, 2000);
+      }, 1000);
     }
   });
 
@@ -162,10 +164,10 @@ var iAmRed;
         console.log(theyAreReady);
       }
       else if (thing == "hide start panel") {
-        document.getElementById("start-panel").style.display = "none";
+        startPanel.style.display = "none";
       }
       else if (thing == "hide play panel") {
-        document.getElementById("play-panel").style.display = "none";
+        playPanel.style.display = "none";
       }
       else if (thing == "sender is red") {
         iAmRed = false;
