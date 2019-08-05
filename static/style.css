@@ -143,7 +143,7 @@ input[type=radio], input[type=checkbox] {
 }
 
 /* Focusing on a butt gives it a blue outline. */
-.butt:focus {
+.butt:focus, #start-panel .my-name:focus {
   outline-style: solid;
   outline-width: 2px;
   outline-color: #007bff;
