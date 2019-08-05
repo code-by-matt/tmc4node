@@ -5,6 +5,8 @@ var iAmRed;
   // Grab lots of document elements.
   var startPanel = document.getElementById("start-panel");
   var playPanel = document.getElementById("play-panel");
+  var endPanel = document.getElementById("end-panel");
+  var boardDiv = document.getElementById("board-div");
   var controls = document.getElementById("controls");
 
   // Load some modules.
@@ -108,44 +110,40 @@ var iAmRed;
   });
 
   // Change cursor style when appropriate.
-  window.addEventListener("mousemove",  function(event) {
-    if (event.target.id == "board-img") {
-      event.target.style.cursor = "default";
-      var col = d.getCol(event);
-      if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-        if (iAmRed && game.future[0] == "r") {
-          event.target.style.cursor = "pointer";
-        }
-        else if (!iAmRed && game.future[0] == "b") {
-          event.target.style.cursor = "pointer";
-        } 
+  boardDiv.addEventListener("mousemove",  function(event) {
+    event.target.style.cursor = "default";
+    var col = d.getCol(event);
+    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
+      if (iAmRed && game.future[0] == "r") {
+        event.target.style.cursor = "pointer";
       }
+      else if (!iAmRed && game.future[0] == "b") {
+        event.target.style.cursor = "pointer";
+      } 
     }
   });
 
   // When a valid move is made, update game and send game.
-  window.addEventListener("click", function(event) {
-    if (event.target.id == "board-img") {
-      var col = d.getCol(event);
-      if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-        if (iAmRed && game.future[0] == "r") {
-          l.update(col);
-          d.drawBoard(writeNumbers);
-          d.drawFuture();
-          d.displayTimes();
-          socket.emit("my", "game", game, id);
-        }
-        else if (!iAmRed && game.future[0] == "b") {
-          l.update(col);
-          d.drawBoard(writeNumbers);
-          d.drawFuture();
-          d.displayTimes();
-          socket.emit("my", "game", game, id);
-        }
-        if (game.isOver) {
-          this.clearInterval(handle);
-          this.document.getElementById("end-panel").style.display = "flex";
-        }
+  boardDiv.addEventListener("click", function(event) {
+    var col = d.getCol(event);
+    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
+      if (iAmRed && game.future[0] == "r") {
+        l.update(col);
+        d.drawBoard(writeNumbers);
+        d.drawFuture();
+        d.displayTimes();
+        socket.emit("my", "game", game, id);
+      }
+      else if (!iAmRed && game.future[0] == "b") {
+        l.update(col);
+        d.drawBoard(writeNumbers);
+        d.drawFuture();
+        d.displayTimes();
+        socket.emit("my", "game", game, id);
+      }
+      if (game.isOver) {
+        clearInterval(handle);
+        endPanel.style.display = "flex";
       }
     }
   });
@@ -160,7 +158,7 @@ var iAmRed;
   var wao = setInterval(function() {
     if (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00") {
       clearInterval(handle);
-      document.getElementById("end-panel").style.display = "flex";
+      endPanel.style.display = "flex";
       clearInterval(wao);
     }
   }, 10);
@@ -215,7 +213,7 @@ var iAmRed;
         controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
       }
       else if (thing == "show end panel") {
-        document.getElementById("end-panel").style.display = "flex";
+        endPanel.style.display = "flex";
       }
       else if (thing == "sync") {
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
@@ -251,7 +249,7 @@ var iAmRed;
       d.displayTimes();
       if (game.isOver) {
         clearInterval(handle);
-        document.getElementById("end-panel").style.display = "flex";
+        endPanel.style.display = "flex";
       }
     }
   });
