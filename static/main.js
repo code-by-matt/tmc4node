@@ -190,6 +190,8 @@ var iAmRed;
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
         socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
         if (game.redStart != undefined) {
+          socket.emit("my", "message", "hide start panel", id);
+          socket.emit("my", "message", "hide play panel", id);
           socket.emit("my", "message", "transfer names", id);
           if (iAmRed) {
             socket.emit("my", "message", "sender is red", id);
