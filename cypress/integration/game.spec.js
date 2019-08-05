@@ -81,29 +81,4 @@ describe("Gameplay.", function() {
       .log("message stop timer?")
       .pause();
   });
-
-  // it("Should start a game.", function() {
-  //   var id = Math.random().toString(36).substr(6);
-  //   cy.visit("http://localhost:8000/game?id=" + id);
-  //   cy.task("name", {id: id, name: "Bertie"});
-  //   cy.get("#my-name-input")
-  //     .type("BoJack{enter}");
-  //   cy.get("#marquee")
-  //     .should("have.text", "3...");
-  //   cy.get("#marquee")
-  //     .should("have.text", "3... 2...");
-  //   cy.get("#marquee")
-  //     .should("have.text", "3... 2... 1...");
-  //   cy.get("#marquee")
-  //     .should("have.text", "Play!");
-  //   cy.log("Check for 'my game' in server log!")
-  //     .pause();
-  //   var game = {
-  //     history: "r22r33r42b43b32b23",
-  //     future: "rrbbrrbb",
-  //   };
-  //   cy.task("game", {id: id, game: game});
-  //   cy.log("Check that game pattern is correct!")
-  //     .pause();
-  // });
 });
