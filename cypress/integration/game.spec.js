@@ -48,21 +48,38 @@ describe("Gameplay.", function() {
       .log("message three minutes?")
       .log("message ready?")
       .pause();
-    cy.task("my", {type: "sender name", thing: "Princess Carolyn", id: id});
+    cy.task("my", {type: "sender name", thing: "Carolyn", id: id});
     cy.task("my", {type: "message", thing: "ten minutes", id: id});
     cy.task("my", {type: "message", thing: "ready", id: id});
     cy.get("#start-panel .their-name")
-      .should("have.text", "Princess Carolyn");
+      .should("have.text", "Carolyn");
     cy.get("#ten-min")
       .should("be.checked");
     cy.get("#ready")
       .should("not.be.checked");
     cy.get('[for="ready"]')
-      .click();
+      .click()
+      .log("message trasnfer names?")
+      .log("message sender is red/blue?")
+      .log("game [object Object]?")
+      .log("message hide-hide animation?")
+      .pause();
     cy.get("#start-panel")
       .should("not.be.visible");
     cy.get("#play-panel")
       .should("not.be.visible");
+    cy.task("my", {type: "message", thing: "sender is blue", id: id});
+    var game = {
+      history: "r30r31r32",
+      future: "rbrbrbrb",
+      openRows: [0, 0, 0, 3, 0, 0, 0],
+    };
+    cy.task("my", {type: "game", thing: game, id: id});
+    cy.get("#board-img").click(200, 25);
+    cy.get("#end-panel")
+      .should("contain.text", "Game Over!")
+      .log("message show end panel?")
+      .pause();
   });
 
   // it("Should start a game.", function() {
