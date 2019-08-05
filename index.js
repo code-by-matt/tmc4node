@@ -68,15 +68,6 @@ io.on("connection", function(socket) {
     socket.leave(id);
   });
 
-  socket.on("countdown", function(id) {
-    console.log("countdown");
-    socket.broadcast.to(id).emit("countdown");
-  });
-
-  // socket.on("sync pls", function(id) {
-  //   socket.broadcast.to(id).emit("sync pls");
-  // });
-
   // disconnection check
   // socket.on("disconnect", function() {
   //   console.log("a user disconnected!");

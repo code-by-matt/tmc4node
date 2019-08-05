@@ -14,7 +14,7 @@ var iAmRed;
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", id);
-  // socket.emit("sync pls", id);
+  socket.emit("my", "message", "sync", id);
   d.drawBoard(writeNumbers);
 
   var theyAreReady = false;
@@ -185,6 +185,20 @@ var iAmRed;
       }
       else if (thing == "show end panel") {
         document.getElementById("end-panel").style.display = "flex";
+      }
+      else if (thing == "sync") {
+        socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
+        socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
+        if (game.redStart != undefined) {
+          socket.emit("my", "message", "transfer names", id);
+          if (iAmRed) {
+            socket.emit("my", "message", "sender is red", id);
+          }
+          else {
+            socket.emit("my", "message", "sender is blue", id);
+          }
+          socket.emit("my", "game", game, id);
+        }
       }
     }
 
