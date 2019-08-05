@@ -131,19 +131,29 @@ var iAmRed;
         l.update(col);
         d.drawBoard(writeNumbers);
         d.drawFuture();
-        d.displayTimes();
+        if (game.isOver) {
+          clearInterval(handle);
+          d.displayStoppedTimes();
+          endPanel.style.display = "flex";
+        }
+        else {
+          d.displayTimes();
+        }
         socket.emit("my", "game", game, id);
       }
       else if (!iAmRed && game.future[0] == "b") {
         l.update(col);
         d.drawBoard(writeNumbers);
         d.drawFuture();
-        d.displayTimes();
+        if (game.isOver) {
+          clearInterval(handle);
+          d.displayStoppedTimes();
+          endPanel.style.display = "flex";
+        }
+        else {
+          d.displayTimes();
+        }
         socket.emit("my", "game", game, id);
-      }
-      if (game.isOver) {
-        clearInterval(handle);
-        endPanel.style.display = "flex";
       }
     }
   });
@@ -240,10 +250,13 @@ var iAmRed;
       Object.assign(game, thing);
       d.drawBoard(writeNumbers);
       d.drawFuture();
-      d.displayTimes();
       if (game.isOver) {
         clearInterval(handle);
+        d.displayStoppedTimes();
         endPanel.style.display = "flex";
+      }
+      else {
+        d.displayTimes();
       }
     }
   });

@@ -51,6 +51,8 @@ const display = function(game) {
     return [redString, bluString];
   }
 
+  // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
   // Writes the player times every tenth of a second,
   function displayTimes() {
     if (handle != 0) {
@@ -70,7 +72,16 @@ const display = function(game) {
     }, 100);
   }
 
-  // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  function displayStoppedTimes() {
+    if (iAmRed) {
+      myTimeDiv.textContent = convert(game.redTime);
+      theirTimeDiv.textContent = convert(game.bluTime);
+    }
+    else {
+      myTimeDiv.textContent = convert(game.bluTime);
+      theirTimeDiv.textContent = convert(game.redTime);
+    }
+  }
 
   // Calculates the column in which a player clicked (0 thru 6).
   function getCol(event) {
@@ -155,5 +166,6 @@ const display = function(game) {
     drawBoard: drawBoard,
     drawFuture: drawFuture,
     displayTimes: displayTimes,
+    displayStoppedTimes: displayStoppedTimes,
   };
 };
