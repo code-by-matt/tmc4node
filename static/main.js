@@ -98,6 +98,15 @@ var iAmRed;
     }
   });
 
+  // Make start panel buttons space-bar accessible.
+  startPanel.addEventListener("keypress", function(event) {
+    if (event.keyCode == 32) {
+      if (event.target.getAttribute("for") == "one-min" || event.target.getAttribute("for") == "thr-min" || event.target.getAttribute("for") == "ten-min" || event.target.getAttribute("for") == "inf-min" || event.target.getAttribute("for") == "ready") {
+        event.target.click();
+      }
+    }
+  });
+
   // Change cursor style when appropriate.
   window.addEventListener("mousemove",  function(event) {
     if (event.target.id == "board-img") {
