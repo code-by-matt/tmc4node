@@ -136,8 +136,6 @@ var iAmRed;
         if (game.isOver) {
           this.clearInterval(handle);
           this.document.getElementById("end-panel").style.display = "flex";
-          socket.emit("my", "message", "show end panel", id);
-          socket.emit("my", "message", "stop timer", id);
         }
       }
     }
@@ -149,6 +147,14 @@ var iAmRed;
       d.drawBoard(writeNumbers);
     }
   });
+
+  var wao = setInterval(function() {
+    if (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00") {
+      clearInterval(handle);
+      document.getElementById("end-panel").style.display = "flex";
+      clearInterval(wao);
+    }
+  }, 10);
 
   // Handle socket stuff.
   socket.on("their", function(type, thing) {
@@ -202,9 +208,6 @@ var iAmRed;
       else if (thing == "show end panel") {
         document.getElementById("end-panel").style.display = "flex";
       }
-      else if (thing == "stop timer") {
-        clearInterval(handle);
-      }
       else if (thing == "sync") {
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
         socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
@@ -234,6 +237,10 @@ var iAmRed;
       d.drawBoard(writeNumbers);
       d.drawFuture();
       d.displayTimes();
+      if (game.isOver) {
+        this.clearInterval(handle);
+        this.document.getElementById("end-panel").style.display = "flex";
+      }
     }
   });
 
