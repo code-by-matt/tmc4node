@@ -76,9 +76,6 @@ describe("Gameplay.", function() {
     cy.task("my", {type: "game", thing: game, id: id});
     cy.get("#board-img").click(200, 25);
     cy.get("#end-panel")
-      .should("contain.text", "Game Over!")
-      .log("message show end panel?")
-      .log("message stop timer?")
-      .pause();
+      .should("contain.text", "Game Over!");
   });
 });
