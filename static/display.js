@@ -35,18 +35,18 @@ const display = function(game) {
     var currentTime = new Date().getTime();
     // It is red's very first turn.
     if (game.bluStart == null) {
-      redString = convert(game.redTime + currentTime - game.redStart);
+      redString = convert(game.redTime - currentTime + game.redStart);
       bluString = convert(game.bluTime); 
     }
     // Red is in the middle of making a move.
     else if (game.redStart > game.bluStart) {
-      redString = convert(game.redTime + currentTime - game.redStart);
+      redString = convert(game.redTime - currentTime + game.redStart);
       bluString = convert(game.bluTime);
     }
     // Blu is in the middle of making a move.
     else {
       redString = convert(game.redTime);
-      bluString = convert(game.bluTime + currentTime - game.bluStart);
+      bluString = convert(game.bluTime - currentTime + game.bluStart);
     }
     return [redString, bluString];
   }

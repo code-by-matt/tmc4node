@@ -8,12 +8,12 @@ const logic = function(game) {
     var currentTime = new Date().getTime();
     // Red is completing its move.
     if (game.redStart > game.bluStart) {
-      game.redTime += currentTime - game.redStart;
+      game.redTime -= currentTime - game.redStart;
       game.bluStart = currentTime;
     }
     // Blu is completing its move.
     else if (game.redStart < game.bluStart) {
-      game.bluTime += currentTime - game.bluStart;
+      game.bluTime -= currentTime - game.bluStart;
       game.redStart = currentTime;
     }
     // Hopefully game.redStart and game.bluStart are never equal...
