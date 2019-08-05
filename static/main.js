@@ -55,6 +55,20 @@ var iAmRed;
       controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
       socket.emit("my", "message", "transfer names", id);
 
+      // Crate the game object with appropriate time control.
+      if (startPanel.querySelector("#one-min").checked) {
+        l.init(1);
+      }
+      else if (startPanel.querySelector("#thr-min").checked) {
+        l.init(3);
+      }
+      else if (startPanel.querySelector("#ten-min").checked) {
+        l.init(10);
+      }
+      else {
+        l.init(-1);
+      }
+
       // Randomly assign colors to each player.
       if (Math.random() > 0.5) {
         iAmRed = true;
@@ -69,8 +83,7 @@ var iAmRed;
         socket.emit("my", "message", "sender is blue", id);
       }
 
-      // Create and display a game object.
-      l.init();
+      // Display the game object.
       d.drawBoard(writeNumbers);
       d.drawFuture();
       d.displayTimes();

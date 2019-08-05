@@ -59,7 +59,7 @@ describe("Gameplay.", function() {
       .should("not.be.checked");
     cy.get('[for="ready"]')
       .click()
-      .log("message trasnfer names?")
+      .log("message transfer names?")
       .log("message sender is red/blue?")
       .log("game [object Object]?")
       .log("message hide-hide animation?")
@@ -71,7 +71,6 @@ describe("Gameplay.", function() {
     cy.task("my", {type: "message", thing: "sender is blue", id: id});
     var game = {
       history: "r30r31r32",
-      future: "rbrbrbrb",
       openRows: [0, 0, 0, 3, 0, 0, 0],
     };
     cy.task("my", {type: "game", thing: game, id: id});

@@ -65,7 +65,7 @@ const logic = function(game) {
   // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
   // Initializes all game properties.
-  function init() {
+  function init(time) {
     game.history = "";
     game.openRows = [0, 0, 0, 0, 0, 0, 0];
     game.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
@@ -92,8 +92,22 @@ const logic = function(game) {
     // }
     game.redStart = new Date().getTime(); // The start time (in ms) of each color's most recent move/pair of moves.
     game.bluStart = null;
-    game.redTime = 0;         // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
-    game.bluTime = 0;
+    if (time == 1) {          // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+      game.redTime = 60000;
+      game.bluTime = 60000;
+    }
+    else if (time == 3) {
+      game.redTime = 180000;
+      game.bluTime = 180000;
+    }
+    else if (time == 10) {
+      game.redTime = 600000;
+      game.bluTime = 600000;
+    }
+    else {
+      game.redTime = 0;
+      game.bluTime = 0;
+    }
   }
 
   // Records a move in the given column, flipping the timer if necessary.

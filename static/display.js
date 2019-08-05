@@ -36,7 +36,7 @@ const display = function(game) {
     // It is red's very first turn.
     if (game.bluStart == null) {
       redString = convert(game.redTime + currentTime - game.redStart);
-      bluString = "00:00";
+      bluString = convert(game.bluTime); 
     }
     // Red is in the middle of making a move.
     else if (game.redStart > game.bluStart) {
