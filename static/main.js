@@ -1,5 +1,4 @@
 // We use an IIFE to protect our script from evil outside forces.
-var iAmRed;
 (function() {
 
   // Grab lots of document elements.
@@ -16,10 +15,11 @@ var iAmRed;
   var socket = io();
   socket.emit("join room", id);
   socket.emit("my", "message", "sync", id);
-  show(null, false);
+  show(null, null, null);
 
   var theyAreReady = false;
-  var numbers = true;
+  var showNumbers = true;
+  var iAmRed;
 
   // Handle events that happen in the start panel.
   startPanel.addEventListener("change", function(event) {
@@ -85,7 +85,7 @@ var iAmRed;
       }
 
       // Display the game object.
-      show(game.stats, numbers);
+      show(game.stats, showNumbers, iAmRed);
       socket.emit("my", "game stats", game.stats, id);
 
       // Hide start panel, revealing play panel, wait two seconds, then hide play panel.
@@ -131,12 +131,12 @@ var iAmRed;
     if (game.stats.redStart != undefined && game.stats.openRows[col] < 6 && game.stats.winner == null) {
       if (iAmRed && game.stats.future[0] == "r") {
         game.move(col);
-        show(game.stats, numbers);
+        show(game.stats, showNumbers, iAmRed);
         socket.emit("my", "game stats", game.stats, id);
       }
       else if (!iAmRed && game.stats.future[0] == "b") {
         game.move(col);
-        show(game.stats, numbers);
+        show(game.stats, showNumbers, iAmRed);
         socket.emit("my", "game stats", game.stats, id);
       }
     }
@@ -144,8 +144,8 @@ var iAmRed;
 
   controls.addEventListener("click", function(event) {
     if (event.target.id == "number-toggle") {
-      numbers = !numbers;
-      show(game.stats, numbers);
+      showNumbers = !showNumbers;
+      show(game.stats, showNumbers, iAmRed);
     }
   });
 

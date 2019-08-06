@@ -1,5 +1,5 @@
 // Here are the functions that deal with displaying information.
-const show = function(stats, numbers) {
+const show = function(stats, showNumbers, iAmRed) {
 
   // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   
@@ -49,7 +49,7 @@ const show = function(stats, numbers) {
   }
 
   // Writes the player times every tenth of a second.
-  function showRunningTimes(redStart, redTime, bluStart, bluTime) {
+  function showRunningTimes(iAmRed, redStart, redTime, bluStart, bluTime) {
     if (handle != 0) {
       clearInterval(handle);
     }
@@ -68,7 +68,7 @@ const show = function(stats, numbers) {
   }
 
   // Writes the player times once, cuz they're not changing anymore.
-  function showStoppedTimes(redTime, bluTime) {
+  function showStoppedTimes(iAmRed, redTime, bluTime) {
     if (iAmRed) {
       myTimeDiv.textContent = convert(redTime);
       theirTimeDiv.textContent = convert(bluTime);
@@ -99,7 +99,7 @@ const show = function(stats, numbers) {
     futureImg.src = futureCan.toDataURL();
   }
 
-  function showBoard(history, numbers) {
+  function showBoard(history, showNumbers) {
     var ctx = boardCan.getContext("2d");
     // Wipe out the previous board.
     ctx.fillStyle = "#FFFFFF";
@@ -131,7 +131,7 @@ const show = function(stats, numbers) {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       let number = (i / 3) + 1;
-      if (numbers) {
+      if (showNumbers) {
         ctx.fillText(number, (200 * col) + 100, (200 * (5 - row)) + 100);
       }
     }
@@ -154,18 +154,17 @@ const show = function(stats, numbers) {
 
   // THE ACTUAL FUNCTION –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––  
 
-  // Shows the board, future, and times of the given game stats, with or without move numbers.
   if (stats == null) {
     showBoard("", false);
   }
   else {
-    showBoard(stats.history, numbers);
+    showBoard(stats.history, showNumbers);
     showFuture(stats.future);
     if (stats.winner == null) {
-      showRunningTimes(stats.redStart, stats.redTime, stats.bluStart, stats.bluTime);
+      showRunningTimes(iAmRed, stats.redStart, stats.redTime, stats.bluStart, stats.bluTime);
     }
     else {
-      showStoppedTimes(stats.redTime, stats.bluTime);
+      showStoppedTimes(iAmRed, stats.redTime, stats.bluTime);
     }
   }
 };
