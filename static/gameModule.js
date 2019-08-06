@@ -162,10 +162,18 @@ const gameModule = function() {
     }
   }
 
+  // Stops the game on a timeout.
+  function timeout(winner) {
+    stop();
+    stats.winner = winner;
+    stats.winBy = "timeout";
+  }
+
   return {
     stats: stats,
     assign: assign,
     start: start,
     move: move,
+    timeout: timeout,
   };
 };

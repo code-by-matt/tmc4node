@@ -151,25 +151,23 @@
 
   var wao = setInterval(function() {
     if (controls.querySelector("#my-time").textContent == "00:00") {
-      clearInterval(handle);
       clearInterval(wao);
       if (iAmRed) {
-        game.assign({winBy: "timeout", winner: "Blue"});
+        game.timeout("Blue");
       }
       else {
-        game.assign({winBy: "timeout", winner: "Red"});
+        game.timeout("Red");
       }
       show(game.stats, showNumbers, iAmRed);
       socket.emit("my", "game stats", game.stats, id);
     }
     else if (controls.querySelector("#their-time").textContent == "00:00") {
-      clearInterval(handle);
       clearInterval(wao);
       if (iAmRed) {
-        game.assign({winBy: "timeout", winner: "Red"});
+        game.timeout("Red");
       }
       else {
-        game.assign({winBy: "timeout", winner: "Blue"});
+        game.timeout("Blue");
       }
       show(game.stats, showNumbers, iAmRed);
       socket.emit("my", "game stats", game.stats, id);

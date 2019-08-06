@@ -72,6 +72,9 @@ const show = function(stats, showNumbers, iAmRed) {
 
   // Writes the player times once, cuz they're not changing anymore.
   function showStoppedTimes(iAmRed, redTime, bluTime) {
+    if (handle != 0) {
+      clearInterval(handle);
+    }
     if (iAmRed) {
       myTimeDiv.textContent = convert(redTime);
       theirTimeDiv.textContent = convert(bluTime);
@@ -168,7 +171,7 @@ const show = function(stats, showNumbers, iAmRed) {
     }
     else {
       showStoppedTimes(iAmRed, stats.redTime, stats.bluTime);
-      endPanel.textContent = stats.winner + " wins by " + stats.winBy + " !";
+      endPanel.textContent = stats.winner + " wins by " + stats.winBy + "!";
       endPanel.style.display = "flex";
     }
   }
