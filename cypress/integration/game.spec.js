@@ -69,11 +69,11 @@ describe("Gameplay.", function() {
     cy.get("#play-panel")
       .should("not.be.visible");
     cy.task("my", {type: "message", thing: "sender is blue", id: id});
-    var game = {
+    var stats = {
       history: "r30r31r32",
       openRows: [0, 0, 0, 3, 0, 0, 0],
     };
-    cy.task("my", {type: "game", thing: game, id: id});
+    cy.task("my", {type: "game stats", thing: stats, id: id});
     cy.get("#board-img").click(200, 25);
     cy.get("#end-panel")
       .should("contain.text", "Game Over!");

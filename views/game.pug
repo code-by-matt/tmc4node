@@ -58,13 +58,11 @@ block scripts
   //Gives us the socket.io framework.
   script(src="/socket.io/socket.io.js")
   //Gives us methods that the main script uses.
-  script(src="/logic.js")
-  script(src="/display.js")
+  script(src="/gameModule.js")
+  script(src="/show.js")
   //(Pug passes us the game object)
   script.
     var id = "#{id}";
     var handle = 0;
-    var game = {};
-    game.history = "";
   //Gives us the main script.
   script(src="/main.js")

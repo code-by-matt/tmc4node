@@ -10,17 +10,16 @@ var iAmRed;
   var controls = document.getElementById("controls");
 
   // Load some modules.
-  var l = logic(game);
-  var d = display(game);
+  var game = gameModule();
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", id);
   socket.emit("my", "message", "sync", id);
-  d.drawBoard(writeNumbers);
+  show(null, false);
 
   var theyAreReady = false;
-  var writeNumbers = true;
+  var numbers = true;
 
   // Handle events that happen in the start panel.
   startPanel.addEventListener("change", function(event) {
@@ -59,16 +58,16 @@ var iAmRed;
 
       // Crate the game object with appropriate time control.
       if (startPanel.querySelector("#one-min").checked) {
-        l.init(1);
+        game.start(1);
       }
       else if (startPanel.querySelector("#thr-min").checked) {
-        l.init(3);
+        game.start(3);
       }
       else if (startPanel.querySelector("#ten-min").checked) {
-        l.init(10);
+        game.start(10);
       }
       else {
-        l.init(-1);
+        game.start(-1);
       }
 
       // Randomly assign colors to each player.
@@ -86,10 +85,8 @@ var iAmRed;
       }
 
       // Display the game object.
-      d.drawBoard(writeNumbers);
-      d.drawFuture();
-      d.displayTimes();
-      socket.emit("my", "game", game, id);
+      show(game.stats, numbers);
+      socket.emit("my", "game stats", game.stats, id);
 
       // Hide start panel, revealing play panel, wait two seconds, then hide play panel.
       startPanel.style.display = "none";
@@ -109,15 +106,20 @@ var iAmRed;
     }
   });
 
+  // Calculates the column in which a player clicked (0 thru 6).
+  function getCol(event) {
+    return Math.floor((7 * (event.pageX - boardDiv.offsetLeft))/boardDiv.offsetWidth);
+  }
+
   // Change cursor style when appropriate.
   boardDiv.addEventListener("mousemove",  function(event) {
     event.target.style.cursor = "default";
-    var col = d.getCol(event);
-    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (iAmRed && game.future[0] == "r") {
+    var col = getCol(event);
+    if (game.stats.redStart != undefined && game.stats.openRows[col] < 6 && game.stats.winner == null) {
+      if (iAmRed && game.stats.future[0] == "r") {
         event.target.style.cursor = "pointer";
       }
-      else if (!iAmRed && game.future[0] == "b") {
+      else if (!iAmRed && game.stats.future[0] == "b") {
         event.target.style.cursor = "pointer";
       } 
     }
@@ -125,43 +127,25 @@ var iAmRed;
 
   // When a valid move is made, update game and send game.
   boardDiv.addEventListener("click", function(event) {
-    var col = d.getCol(event);
-    if (game.redStart != undefined && game.openRows[col] < 6 && !game.isOver) {
-      if (iAmRed && game.future[0] == "r") {
-        l.update(col);
-        d.drawBoard(writeNumbers);
-        d.drawFuture();
-        if (game.isOver) {
-          clearInterval(handle);
-          d.displayStoppedTimes();
-          endPanel.style.display = "flex";
-        }
-        else {
-          d.displayTimes();
-        }
-        socket.emit("my", "game", game, id);
+    var col = getCol(event);
+    if (game.stats.redStart != undefined && game.stats.openRows[col] < 6 && game.stats.winner == null) {
+      if (iAmRed && game.stats.future[0] == "r") {
+        game.move(col);
+        show(game.stats, numbers);
+        socket.emit("my", "game stats", game.stats, id);
       }
-      else if (!iAmRed && game.future[0] == "b") {
-        l.update(col);
-        d.drawBoard(writeNumbers);
-        d.drawFuture();
-        if (game.isOver) {
-          clearInterval(handle);
-          d.displayStoppedTimes();
-          endPanel.style.display = "flex";
-        }
-        else {
-          d.displayTimes();
-        }
-        socket.emit("my", "game", game, id);
+      else if (!iAmRed && game.stats.future[0] == "b") {
+        game.move(col);
+        show(game.stats, numbers);
+        socket.emit("my", "game stats", game.stats, id);
       }
     }
   });
 
   controls.addEventListener("click", function(event) {
     if (event.target.id == "number-toggle") {
-      writeNumbers = !writeNumbers;
-      d.drawBoard(writeNumbers);
+      numbers = !numbers;
+      show(game.stats, numbers);
     }
   });
 
@@ -225,7 +209,7 @@ var iAmRed;
       else if (thing == "sync") {
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
         socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
-        if (game.redStart != undefined) {
+        if (game.stats.redStart != undefined) {
           socket.emit("my", "message", "hide-hide instant", id);
           socket.emit("my", "message", "transfer names", id);
           if (iAmRed) {
@@ -234,7 +218,7 @@ var iAmRed;
           else {
             socket.emit("my", "message", "sender is blue", id);
           }
-          socket.emit("my", "game", game, id);
+          socket.emit("my", "game stats", game.stats, id);
         }
       }
     }
@@ -246,18 +230,8 @@ var iAmRed;
     else if (type == "receiver name") {
       startPanel.querySelector(".my-name").value = thing;
     }
-    else if (type == "game") {
-      Object.assign(game, thing);
-      d.drawBoard(writeNumbers);
-      d.drawFuture();
-      if (game.isOver) {
-        clearInterval(handle);
-        d.displayStoppedTimes();
-        endPanel.style.display = "flex";
-      }
-      else {
-        d.displayTimes();
-      }
+    else if (type == "game stats") {
+      game.assign(thing);
     }
   });
 
@@ -272,7 +246,7 @@ var iAmRed;
     //     d.tryDraw();
     //   }, 3000);
     // }
-    // if (game.isOver) {
+    // if (game.stats.winner != null) {
     //   socket.emit("countdown", id);
     //   d.countdown();
     //   setTimeout(function() {
@@ -287,12 +261,4 @@ var iAmRed;
   window.addEventListener("beforeunload", function() {
     socket.emit("leave room", id);
   });
-
-  // This handler is triggered when you receive a sync from your opponent.
-  // socket.on("here ya go", function(senderGame, senderName, receiverName) {
-  //   d.writeThem(senderName);
-  //   d.writeMe(receiverName);
-  //   // Object.assign(game, senderGame);
-  //   // d.tryDraw();
-  // });
 })();

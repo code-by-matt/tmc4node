@@ -1,5 +1,5 @@
 // Here are the functions that deal with displaying information.
-const display = function(game) {
+const show = function(stats, numbers) {
 
   // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   
@@ -11,14 +11,11 @@ const display = function(game) {
   var futureImg = document.getElementById("future-img");
   var boardImg = document.getElementById("board-img");
 
-  // This div is to help with getCol().
-  var boardDiv = document.getElementById("board-div");
-
   // Player times displayed here.
   var myTimeDiv = document.getElementById("my-time");
   var theirTimeDiv = document.getElementById("their-time");
 
-  // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  // HELPER FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
   // Converts a time in ms into a human-readable string.
   function convert(ms) {
@@ -30,36 +27,34 @@ const display = function(game) {
   }
 
   // Returns human-readable strings of red's and blu's play time at the instant this function is called.
-  function times() {
+  function times(redStart, redTime, bluStart, bluTime) {
     var redString, bluString;
     var currentTime = new Date().getTime();
     // It is red's very first turn.
-    if (game.bluStart == null) {
-      redString = convert(game.redTime - currentTime + game.redStart);
-      bluString = convert(game.bluTime); 
+    if (bluStart == null) {
+      redString = convert(redTime - currentTime + redStart);
+      bluString = convert(bluTime); 
     }
     // Red is in the middle of making a move.
-    else if (game.redStart > game.bluStart) {
-      redString = convert(game.redTime - currentTime + game.redStart);
-      bluString = convert(game.bluTime);
+    else if (redStart > bluStart) {
+      redString = convert(redTime - currentTime + redStart);
+      bluString = convert(bluTime);
     }
     // Blu is in the middle of making a move.
     else {
-      redString = convert(game.redTime);
-      bluString = convert(game.bluTime - currentTime + game.bluStart);
+      redString = convert(redTime);
+      bluString = convert(bluTime - currentTime + bluStart);
     }
     return [redString, bluString];
   }
 
-  // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-  // Writes the player times every tenth of a second,
-  function displayTimes() {
+  // Writes the player times every tenth of a second.
+  function showRunningTimes(redStart, redTime, bluStart, bluTime) {
     if (handle != 0) {
       clearInterval(handle);
     }
     handle = setInterval(function() {
-      var yeet = times();
+      var yeet = times(redStart, redTime, bluStart, bluTime);
       if (iAmRed) {
         myTimeDiv.textContent = yeet[0];
         theirTimeDiv.textContent = yeet[1];
@@ -72,30 +67,26 @@ const display = function(game) {
     }, 100);
   }
 
-  function displayStoppedTimes() {
+  // Writes the player times once, cuz they're not changing anymore.
+  function showStoppedTimes(redTime, bluTime) {
     if (iAmRed) {
-      myTimeDiv.textContent = convert(game.redTime);
-      theirTimeDiv.textContent = convert(game.bluTime);
+      myTimeDiv.textContent = convert(redTime);
+      theirTimeDiv.textContent = convert(bluTime);
     }
     else {
-      myTimeDiv.textContent = convert(game.bluTime);
-      theirTimeDiv.textContent = convert(game.redTime);
+      myTimeDiv.textContent = convert(bluTime);
+      theirTimeDiv.textContent = convert(redTime);
     }
   }
 
-  // Calculates the column in which a player clicked (0 thru 6).
-  function getCol(event) {
-    return Math.floor((7 * (event.pageX - boardDiv.offsetLeft))/boardDiv.offsetWidth);
-  }
-
-  function drawFuture() {
+  function showFuture(future) {
     var ctx = futureCan.getContext("2d");
     // // Wipe out the previous future.
     // ctx.fillStyle = "#000000";
     // ctx.fillRect(0, 0, 1600, 200);
     // Draw the future.
     for (let i = 0; i < 8; i++) {
-      if (game.future[i] == "r") {
+      if (future[i] == "r") {
         ctx.fillStyle = "#DC3545";
         ctx.fillRect((200 * i), 0, 200, 200);
       }
@@ -108,7 +99,7 @@ const display = function(game) {
     futureImg.src = futureCan.toDataURL();
   }
 
-  function drawBoard(writeNumbers) {
+  function showBoard(history, numbers) {
     var ctx = boardCan.getContext("2d");
     // Wipe out the previous board.
     ctx.fillStyle = "#FFFFFF";
@@ -124,11 +115,10 @@ const display = function(game) {
     }
     // Draw game history.
     ctx.font = "80px Arial";
-    for (let i = 0; i < game.history.length; i += 3) {
-      let color = game.history.charAt(i);
-      let col = game.history.charAt(i + 1);
-      let row = game.history.charAt(i + 2);
-      let number = (i / 3) + 1;
+    for (let i = 0; i < history.length; i += 3) {
+      let color = history.charAt(i);
+      let col = history.charAt(i + 1);
+      let row = history.charAt(i + 2);
       if (color == "b") {
         ctx.fillStyle = "#007BFF";
         ctx.fillRect((200 * col), (200 * (5 - row)), 200, 200);
@@ -140,7 +130,8 @@ const display = function(game) {
       ctx.fillStyle = "#000000";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      if (writeNumbers) {
+      let number = (i / 3) + 1;
+      if (numbers) {
         ctx.fillText(number, (200 * col) + 100, (200 * (5 - row)) + 100);
       }
     }
@@ -161,11 +152,20 @@ const display = function(game) {
     boardImg.src = boardCan.toDataURL();
   }
 
-  return {
-    getCol: getCol,
-    drawBoard: drawBoard,
-    drawFuture: drawFuture,
-    displayTimes: displayTimes,
-    displayStoppedTimes: displayStoppedTimes,
-  };
+  // THE ACTUAL FUNCTION –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––  
+
+  // Shows the board, future, and times of the given game stats, with or without move numbers.
+  if (stats == null) {
+    showBoard("", false);
+  }
+  else {
+    showBoard(stats.history, numbers);
+    showFuture(stats.future);
+    if (stats.winner == null) {
+      showRunningTimes(stats.redStart, stats.redTime, stats.bluStart, stats.bluTime);
+    }
+    else {
+      showStoppedTimes(stats.redTime, stats.bluTime);
+    }
+  }
 };
