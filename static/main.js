@@ -56,7 +56,7 @@ var iAmRed;
       controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
       socket.emit("my", "message", "transfer names", id);
 
-      // Crate the game object with appropriate time control.
+      // Create the game object with appropriate time control.
       if (startPanel.querySelector("#one-min").checked) {
         game.start(1);
       }
