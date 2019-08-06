@@ -8,7 +8,7 @@
   var boardDiv = document.getElementById("board-div");
   var controls = document.getElementById("controls");
 
-  // Load some modules.
+  // Create a game instance.
   var game = gameModule();
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
