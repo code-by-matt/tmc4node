@@ -106,7 +106,6 @@ const gameModule = function() {
     // stats.firstTurn = 0;
     stats.currentTurn = stats.firstTurn;
     stats.future = "";
-    stats.isOver = false;
     for (let i = 0; i < 8; i++) {
       // XORing with thueMorse(stats.firstTurn) ensures that the first player is always red.
       if (thueMorse(stats.firstTurn) ^ thueMorse(stats.currentTurn + i) == 0) {
