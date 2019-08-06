@@ -168,7 +168,7 @@ const show = function(stats, showNumbers, iAmRed) {
     }
     else {
       showStoppedTimes(iAmRed, stats.redTime, stats.bluTime);
-      endPanel.textContent = stats.winner + " wins by connection!";
+      endPanel.textContent = stats.winner + " wins by " + stats.winBy + " !";
       endPanel.style.display = "flex";
     }
   }

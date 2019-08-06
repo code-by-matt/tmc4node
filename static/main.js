@@ -154,23 +154,25 @@
       clearInterval(handle);
       clearInterval(wao);
       if (iAmRed) {
-        endPanel.textContent = "Blue wins by timeout!";
+        game.assign({winBy: "timeout", winner: "Blue"});
       }
       else {
-        endPanel.textContent = "Red wins by timeout!";
+        game.assign({winBy: "timeout", winner: "Red"});
       }
-      endPanel.style.display = "flex";
+      show(game.stats, showNumbers, iAmRed);
+      socket.emit("my", "game stats", game.stats, id);
     }
     else if (controls.querySelector("#their-time").textContent == "00:00") {
       clearInterval(handle);
       clearInterval(wao);
       if (iAmRed) {
-        endPanel.textContent = "Red wins by timeout!";
+        game.assign({winBy: "timeout", winner: "Red"});
       }
       else {
-        endPanel.textContent = "Blue wins by timeout!";
+        game.assign({winBy: "timeout", winner: "Blue"});
       }
-      endPanel.style.display = "flex";
+      show(game.stats, showNumbers, iAmRed);
+      socket.emit("my", "game stats", game.stats, id);
     }
   }, 10);
 

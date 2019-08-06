@@ -8,11 +8,12 @@ const gameModule = function() {
     firstTurn: null,
     currentTurn: null,
     future: null,
-    winner: null,
     redStart: null,
     bluStart: null,
     redTime: null,
     bluTime: null,
+    winner: null,
+    winBy: null,
   };
 
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -147,6 +148,7 @@ const gameModule = function() {
       else stats.future += "b";
     }
     if (isWinningMove()) {
+      stats.winBy = "connection";
       if (stats.history.slice(-3, -2) == "r") {
         stats.winner = "Red";
       }
