@@ -150,10 +150,27 @@
   });
 
   var wao = setInterval(function() {
-    if (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00") {
+    if (controls.querySelector("#my-time").textContent == "00:00") {
       clearInterval(handle);
-      endPanel.style.display = "flex";
       clearInterval(wao);
+      if (iAmRed) {
+        endPanel.textContent = "Blue wins by timeout!";
+      }
+      else {
+        endPanel.textContent = "Red wins by timeout!";
+      }
+      endPanel.style.display = "flex";
+    }
+    else if (controls.querySelector("#their-time").textContent == "00:00") {
+      clearInterval(handle);
+      clearInterval(wao);
+      if (iAmRed) {
+        endPanel.textContent = "Red wins by timeout!";
+      }
+      else {
+        endPanel.textContent = "Blue wins by timeout!";
+      }
+      endPanel.style.display = "flex";
     }
   }, 10);
 
