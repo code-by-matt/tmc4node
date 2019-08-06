@@ -232,6 +232,7 @@
     }
     else if (type == "game stats") {
       game.assign(thing);
+      show(game.stats, showNumbers, iAmRed);
     }
   });
 
