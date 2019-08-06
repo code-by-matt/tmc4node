@@ -15,6 +15,9 @@ const show = function(stats, showNumbers, iAmRed) {
   var myTimeDiv = document.getElementById("my-time");
   var theirTimeDiv = document.getElementById("their-time");
 
+  // Game over message is displayed here.
+  var endPanel = document.getElementById("end-panel");
+
   // HELPER FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
   // Converts a time in ms into a human-readable string.
@@ -165,6 +168,8 @@ const show = function(stats, showNumbers, iAmRed) {
     }
     else {
       showStoppedTimes(iAmRed, stats.redTime, stats.bluTime);
+      endPanel.textContent = stats.winner + " wins!";
+      endPanel.style.display = "flex";
     }
   }
 };

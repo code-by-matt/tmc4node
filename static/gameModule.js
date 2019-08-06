@@ -147,7 +147,12 @@ const gameModule = function() {
       else stats.future += "b";
     }
     if (isWinningMove()) {
-      stats.winner = stats.history.slice(-3, -2);
+      if (stats.history.slice(-3, -2) == "r") {
+        stats.winner = "Red";
+      }
+      else {
+        stats.winner = "Blue";
+      }
       stop();
     }
     else if (stats.history.slice(-3, -2) != stats.future.slice(0, 1)) {

@@ -61,7 +61,7 @@ describe("Gameplay.", function() {
       .click()
       .log("message transfer names?")
       .log("message sender is red/blue?")
-      .log("game [object Object]?")
+      .log("game stats [object Object]?")
       .log("message hide-hide animation?")
       .pause();
     cy.get("#start-panel")
@@ -76,6 +76,6 @@ describe("Gameplay.", function() {
     cy.task("my", {type: "game stats", thing: stats, id: id});
     cy.get("#board-img").click(200, 25);
     cy.get("#end-panel")
-      .should("contain.text", "Game Over!");
+      .should("be.visible");
   });
 });
