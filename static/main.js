@@ -15,8 +15,9 @@
   var socket = io();
   socket.emit("join room", id);
   socket.emit("my", "message", "sync", id);
-  show(null, null, null);
+  show(null, null, null, null);
 
+  var handle = {val: 0};
   var theyAreReady = false;
   var showNumbers = true;
   var iAmRed;
@@ -85,7 +86,7 @@
       }
 
       // Display the game object.
-      show(game.stats, showNumbers, iAmRed);
+      show(game.stats, showNumbers, iAmRed, handle);
       socket.emit("my", "game stats", game.stats, id);
 
       // Hide start panel, revealing play panel, wait two seconds, then hide play panel.
@@ -131,12 +132,12 @@
     if (game.stats.redStart != undefined && game.stats.openRows[col] < 6 && game.stats.winner == null) {
       if (iAmRed && game.stats.future[0] == "r") {
         game.move(col);
-        show(game.stats, showNumbers, iAmRed);
+        show(game.stats, showNumbers, iAmRed, handle);
         socket.emit("my", "game stats", game.stats, id);
       }
       else if (!iAmRed && game.stats.future[0] == "b") {
         game.move(col);
-        show(game.stats, showNumbers, iAmRed);
+        show(game.stats, showNumbers, iAmRed, handle);
         socket.emit("my", "game stats", game.stats, id);
       }
     }
@@ -145,7 +146,7 @@
   controls.addEventListener("click", function(event) {
     if (event.target.id == "number-toggle") {
       showNumbers = !showNumbers;
-      show(game.stats, showNumbers, iAmRed);
+      show(game.stats, showNumbers, iAmRed, handle);
     }
   });
 
@@ -158,7 +159,7 @@
       else {
         game.timeout("Red");
       }
-      show(game.stats, showNumbers, iAmRed);
+      show(game.stats, showNumbers, iAmRed, handle);
       socket.emit("my", "game stats", game.stats, id);
     }
     else if (controls.querySelector("#their-time").textContent == "00:00") {
@@ -169,10 +170,10 @@
       else {
         game.timeout("Blue");
       }
-      show(game.stats, showNumbers, iAmRed);
+      show(game.stats, showNumbers, iAmRed, handle);
       socket.emit("my", "game stats", game.stats, id);
     }
-  }, 10);
+  }, 100);
 
   // Handle socket stuff.
   socket.on("their", function(type, thing) {
@@ -249,7 +250,7 @@
     }
     else if (type == "game stats") {
       game.assign(thing);
-      show(game.stats, showNumbers, iAmRed);
+      show(game.stats, showNumbers, iAmRed, handle);
     }
   });
 

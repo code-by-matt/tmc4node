@@ -1,5 +1,5 @@
 // Here are the functions that deal with displaying information.
-const show = function(stats, showNumbers, iAmRed) {
+const show = function(stats, showNumbers, iAmRed, handle) {
 
   // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   
@@ -20,13 +20,18 @@ const show = function(stats, showNumbers, iAmRed) {
 
   // HELPER FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-  // Converts a time in ms into a human-readable string.
+  // Converts a time in ms into a human-readable string. If ms is non-positive, returns "00:00".
   function convert(ms) {
-    var min = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-    var sec = Math.floor((ms % (1000 * 60)) / 1000);
-    if (min < 10) min = "0" + min;
-    if (sec < 10) sec = "0" + sec;
-    return min + ':' + sec;
+    if (ms > 0) {
+      var min = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+      var sec = Math.floor((ms % (1000 * 60)) / 1000);
+      if (min < 10) min = "0" + min;
+      if (sec < 10) sec = "0" + sec;
+      return min + ':' + sec;
+    }
+    else {
+      return "00:00";
+    }
   }
 
   // Returns human-readable strings of red's and blu's play time at the instant this function is called.
@@ -53,10 +58,10 @@ const show = function(stats, showNumbers, iAmRed) {
 
   // Writes the player times every tenth of a second.
   function showRunningTimes(iAmRed, redStart, redTime, bluStart, bluTime) {
-    if (handle != 0) {
-      clearInterval(handle);
+    if (handle.val != 0) {
+      clearInterval(handle.val);
     }
-    handle = setInterval(function() {
+    handle.val = setInterval(function() {
       var yeet = times(redStart, redTime, bluStart, bluTime);
       if (iAmRed) {
         myTimeDiv.textContent = yeet[0];
@@ -66,14 +71,17 @@ const show = function(stats, showNumbers, iAmRed) {
         myTimeDiv.textContent = yeet[1];
         theirTimeDiv.textContent = yeet[0];
       }
+      if (yeet[0] == "00:00" || yeet[1] == "00:00") {
+        clearInterval(handle.val);
+      }
       console.log("running");
     }, 100);
   }
 
   // Writes the player times once, cuz they're not changing anymore.
   function showStoppedTimes(iAmRed, redTime, bluTime) {
-    if (handle != 0) {
-      clearInterval(handle);
+    if (handle.val != 0) {
+      clearInterval(handle.val);
     }
     if (iAmRed) {
       myTimeDiv.textContent = convert(redTime);
