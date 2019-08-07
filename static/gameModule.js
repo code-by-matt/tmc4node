@@ -5,11 +5,11 @@ const gameModule = function() {
   stats = {
 
     // We call these the non-timing properties.
+    future: null,      // A string of the colors of the next eight moves.
     history: null,     // A string representing the squares on the board, in the order they were played.
     openRows: null,    // An integer array where element i is the lowest open row in column i of the board.
     firstTurn: null,   // An integer that is the position in the Thue-Morse sequence where the game started.
     currentTurn: null, // An integer that is the position in the Thue-Morse sequence where the game is now.
-    future: null,      // A string of the colors of the next eight moves.
 
     // We call these the timing properties.
     moveStart: null,   // The moment in time (in ms) at which the current move started, whether it be red or blu.
