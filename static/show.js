@@ -71,6 +71,8 @@ const show = function(stats, showNumbers, iAmRed, handle) {
         myTimeDiv.textContent = yeet[1];
         theirTimeDiv.textContent = yeet[0];
       }
+
+      // Stops the interval if someone times out.
       if (yeet[0] == "00:00" || yeet[1] == "00:00") {
         clearInterval(handle.val);
       }

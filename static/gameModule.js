@@ -35,21 +35,6 @@ const gameModule = function() {
     console.log("flip");
   }
 
-  // Stops the timer.
-  function stop() {
-    var currentTime = new Date().getTime();
-    // Red is completing its move.
-    if (stats.redStart > stats.bluStart) {
-      stats.redTime -= currentTime - stats.redStart;
-    }
-    // Blu is completing its move.
-    else if (stats.redStart < stats.bluStart) {
-      stats.bluTime -= currentTime - stats.bluStart;
-    }
-    // Hopefully stats.redStart and stats.bluStart are never equal...
-    console.log("stop");
-  }
-
   // Starts at the most recent move, then counts matching colors in the direction specified by up and right.
   function count(up, right) {
     var color = stats.history.slice(-3, -2);
@@ -155,16 +140,14 @@ const gameModule = function() {
       else {
         stats.winner = "Blue";
       }
-      stop();
     }
-    else if (stats.history.slice(-3, -2) != stats.future.slice(0, 1)) {
+    if (stats.history.slice(-3, -2) != stats.future.slice(0, 1)) {
       flip();
     }
   }
 
   // Stops the game on a timeout.
   function timeout(winner) {
-    stop();
     stats.winner = winner;
     stats.winBy = "timeout";
   }
