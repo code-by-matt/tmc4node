@@ -150,6 +150,7 @@
     }
   });
 
+  // Keep an eye out for timeouts.
   var wao = setInterval(function() {
     if (controls.querySelector("#my-time").textContent == "00:00") {
       clearInterval(wao);
