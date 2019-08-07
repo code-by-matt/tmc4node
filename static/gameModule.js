@@ -5,11 +5,11 @@ const gameModule = function() {
   stats = {
 
     // We call these the non-timing properties.
-    future: null,      // A string of the colors of the next eight moves.
-    history: null,     // A string representing the squares on the board, in the order they were played.
-    openRows: null,    // An integer array where element i is the lowest open row in column i of the board.
-    firstTurn: null,   // An integer that is the position in the Thue-Morse sequence where the game started.
     currentTurn: null, // An integer that is the position in the Thue-Morse sequence where the game is now.
+    firstTurn: null,   // An integer that is the position in the Thue-Morse sequence where the game started.
+    openRows: null,    // An integer array where element i is the lowest open row in column i of the board.
+    history: null,     // A string representing the squares on the board, in the order they were played.
+    future: null,      // A string of the colors of the next eight moves.
 
     // We call these the timing properties.
     moveStart: null,   // The moment in time (in ms) at which the current move started, whether it be red or blu.
@@ -95,11 +95,10 @@ const gameModule = function() {
     }
 
     // Initialize the non-timing properties.
-    stats.history = "";
+    stats.currentTurn = Math.floor(Math.random() * 5000) * 2; // Random even integer between 0 and 99998.
+    stats.firstTurn = stats.currentTurn;
     stats.openRows = [0, 0, 0, 0, 0, 0, 0];
-    stats.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
-    // stats.firstTurn = 0;
-    stats.currentTurn = stats.firstTurn;
+    stats.history = "";
     stats.future = "";
     for (let i = 0; i < 8; i++) {
       // XORing with thueMorse(stats.firstTurn) ensures that the first player is always red.
@@ -126,10 +125,9 @@ const gameModule = function() {
     stats.moveStart = moveEnd;
 
     // Update the non-timing properties.
-    var row = stats.openRows[col];
-    stats.history += stats.future[0] + col + row;
-    stats.openRows[col] += 1;
     stats.currentTurn += 1;
+    stats.history += stats.future[0] + col + stats.openRows[col];
+    stats.openRows[col] += 1;
     stats.future = "";
     for (let i = 0; i < 8; i++) {
       if (thueMorse(stats.firstTurn) ^ thueMorse(stats.currentTurn + i) == 0) stats.future += "r";
