@@ -3,37 +3,25 @@ const gameModule = function() {
 
   // The stats object is the only thing that is emitted by sockets.
   stats = {
-    history: null,
-    openRows: null,
-    firstTurn: null,
-    currentTurn: null,
-    future: null,
-    redStart: null,
-    bluStart: null,
-    redTime: null,
-    bluTime: null,
-    winner: null,
-    winBy: null,
+
+    // We call these the non-timing properties.
+    history: null,     // A string representing the squares on the board, in the order they were played.
+    openRows: null,    // An integer array where element i is the lowest open row in column i of the board.
+    firstTurn: null,   // An integer that is the position in the Thue-Morse sequence where the game started.
+    currentTurn: null, // An integer that is the position in the Thue-Morse sequence where the game is now.
+    future: null,      // A string of the colors of the next eight moves.
+
+    // We call these the timing properties.
+    moveStart: null,   // The moment in time (in ms) at which the current move started, whether it be red or blu.
+    redTime: null,     // The amount of time (in ms) that red has spent playing, excluding the current move.
+    bluTime: null,     // The amount of time (in ms) that blu has spent playing, excluding the current move.
+
+    // We call these the winning properties.
+    winner: null,      // The winner of the game. Either "Red", "Blue", or null.
+    winBy: null,       // How the game was won. Either "connection", "timeout", "resignation", or null.
   };
 
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-  // Flips the timer.
-  function flip() {
-    var currentTime = new Date().getTime();
-    // Red is completing its move.
-    if (stats.redStart > stats.bluStart) {
-      stats.redTime -= currentTime - stats.redStart;
-      stats.bluStart = currentTime;
-    }
-    // Blu is completing its move.
-    else if (stats.redStart < stats.bluStart) {
-      stats.bluTime -= currentTime - stats.bluStart;
-      stats.redStart = currentTime;
-    }
-    // Hopefully stats.redStart and stats.bluStart are never equal...
-    console.log("flip");
-  }
 
   // Starts at the most recent move, then counts matching colors in the direction specified by up and right.
   function count(up, right) {
@@ -86,23 +74,9 @@ const gameModule = function() {
   
   // Starts a game with the given time control.
   function start(time) {
-    stats.history = "";
-    stats.openRows = [0, 0, 0, 0, 0, 0, 0];
-    stats.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
-    // stats.firstTurn = 0;
-    stats.currentTurn = stats.firstTurn;
-    stats.future = "";
-    for (let i = 0; i < 8; i++) {
-      // XORing with thueMorse(stats.firstTurn) ensures that the first player is always red.
-      if (thueMorse(stats.firstTurn) ^ thueMorse(stats.currentTurn + i) == 0) {
-        stats.future += "r";
-      }
-      else {
-        stats.future += "b";
-      }
-    }
-    stats.redStart = new Date().getTime(); // The start time (in ms) of each color's most recent move/pair of moves.
-    stats.bluStart = null;
+
+    // Initialize the timing properties.
+    stats.moveStart = new Date().getTime();
     if (time == 1) {          // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
       stats.redTime = 60000;
       stats.bluTime = 60000;
@@ -119,10 +93,39 @@ const gameModule = function() {
       stats.redTime = 0;
       stats.bluTime = 0;
     }
+
+    // Initialize the non-timing properties.
+    stats.history = "";
+    stats.openRows = [0, 0, 0, 0, 0, 0, 0];
+    stats.firstTurn = Math.floor(Math.random() * 5000) * 2; // random even integer between 0 and 99998
+    // stats.firstTurn = 0;
+    stats.currentTurn = stats.firstTurn;
+    stats.future = "";
+    for (let i = 0; i < 8; i++) {
+      // XORing with thueMorse(stats.firstTurn) ensures that the first player is always red.
+      if (thueMorse(stats.firstTurn) ^ thueMorse(stats.currentTurn + i) == 0) {
+        stats.future += "r";
+      }
+      else {
+        stats.future += "b";
+      }
+    }
   }
 
-  // Records a move in the given column, flipping/stopping the timer if necessary.
+  // Records a move in the given column.
   function move(col) {
+
+    // Update the timing properties.
+    var moveEnd = new Date().getTime();
+    if (stats.future[0] == "r") {
+      stats.redTime -= moveEnd - stats.moveStart;
+    }
+    else {
+      stats.bluTime -= moveEnd - stats.moveStart;
+    }
+    stats.moveStart = moveEnd;
+
+    // Update the non-timing properties.
     var row = stats.openRows[col];
     stats.history += stats.future[0] + col + row;
     stats.openRows[col] += 1;
@@ -132,6 +135,8 @@ const gameModule = function() {
       if (thueMorse(stats.firstTurn) ^ thueMorse(stats.currentTurn + i) == 0) stats.future += "r";
       else stats.future += "b";
     }
+
+    // Update the winning properties.
     if (isWinningMove()) {
       stats.winBy = "connection";
       if (stats.history.slice(-3, -2) == "r") {
@@ -141,13 +146,22 @@ const gameModule = function() {
         stats.winner = "Blue";
       }
     }
-    if (stats.history.slice(-3, -2) != stats.future.slice(0, 1)) {
-      flip();
-    }
   }
 
   // Stops the game on a timeout.
   function timeout(winner) {
+
+    // Update the timing properties.
+    var moveEnd = new Date().getTime();
+    if (stats.future[0] == "r") {
+      stats.redTime -= moveEnd - stats.moveStart;
+    }
+    else {
+      stats.bluTime -= moveEnd - stats.moveStart;
+    }
+    stats.moveStart = moveEnd;
+
+    // Update the winning properties.
     stats.winner = winner;
     stats.winBy = "timeout";
   }

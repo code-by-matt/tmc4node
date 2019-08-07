@@ -116,7 +116,7 @@
   boardDiv.addEventListener("mousemove",  function(event) {
     event.target.style.cursor = "default";
     var col = getCol(event);
-    if (game.stats.redStart != undefined && game.stats.openRows[col] < 6 && game.stats.winner == null) {
+    if (game.stats.moveStart != null && game.stats.openRows[col] < 6 && game.stats.winner == null) {
       if (iAmRed && game.stats.future[0] == "r") {
         event.target.style.cursor = "pointer";
       }
@@ -129,7 +129,7 @@
   // When a valid move is made, update game and send game.
   boardDiv.addEventListener("click", function(event) {
     var col = getCol(event);
-    if (game.stats.redStart != undefined && game.stats.openRows[col] < 6 && game.stats.winner == null) {
+    if (game.stats.moveStart != null && game.stats.openRows[col] < 6 && game.stats.winner == null) {
       if (iAmRed && game.stats.future[0] == "r") {
         game.move(col);
         show(game.stats, showNumbers, iAmRed, handle);
@@ -228,7 +228,7 @@
       else if (thing == "sync") {
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
         socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
-        if (game.stats.redStart != undefined) {
+        if (game.stats.moveStart != null) {
           socket.emit("my", "message", "hide-hide instant", id);
           socket.emit("my", "message", "transfer names", id);
           if (iAmRed) {

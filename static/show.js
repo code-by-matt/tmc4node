@@ -35,34 +35,29 @@ const show = function(stats, showNumbers, iAmRed, handle) {
   }
 
   // Returns human-readable strings of red's and blu's play time at the instant this function is called.
-  function times(redStart, redTime, bluStart, bluTime) {
-    var redString, bluString;
+  function times(moveStart, redTime, bluTime) {
     var currentTime = new Date().getTime();
-    // It is red's very first turn.
-    if (bluStart == null) {
-      redString = convert(redTime - currentTime + redStart);
+    var redString, bluString;
+    // The current move is red.
+    if (stats.future[0] == "r") {
+      redString = convert(redTime - currentTime + moveStart);
       bluString = convert(bluTime); 
     }
-    // Red is in the middle of making a move.
-    else if (redStart > bluStart) {
-      redString = convert(redTime - currentTime + redStart);
-      bluString = convert(bluTime);
-    }
-    // Blu is in the middle of making a move.
+    // The current move is blue.
     else {
       redString = convert(redTime);
-      bluString = convert(bluTime - currentTime + bluStart);
+      bluString = convert(bluTime - currentTime + moveStart);
     }
     return [redString, bluString];
   }
 
   // Writes the player times every tenth of a second.
-  function showRunningTimes(iAmRed, redStart, redTime, bluStart, bluTime) {
+  function showRunningTimes(iAmRed, moveStart, redTime, bluTime) {
     if (handle.val != 0) {
       clearInterval(handle.val);
     }
     handle.val = setInterval(function() {
-      var yeet = times(redStart, redTime, bluStart, bluTime);
+      var yeet = times(moveStart, redTime, bluTime);
       if (iAmRed) {
         myTimeDiv.textContent = yeet[0];
         theirTimeDiv.textContent = yeet[1];
@@ -177,7 +172,7 @@ const show = function(stats, showNumbers, iAmRed, handle) {
     showBoard(stats.history, showNumbers);
     showFuture(stats.future);
     if (stats.winner == null) {
-      showRunningTimes(iAmRed, stats.redStart, stats.redTime, stats.bluStart, stats.bluTime);
+      showRunningTimes(iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
     }
     else {
       showStoppedTimes(iAmRed, stats.redTime, stats.bluTime);
