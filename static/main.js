@@ -181,6 +181,8 @@
 
     // The "message" type is for emits that carry a thing that is one of the following strings.
     if (type == "message") {
+
+      // Start panel buttons.
       if (thing == "one minute") {
         document.getElementById("one-min").checked = true;
         document.getElementById("ready").checked = false;
@@ -201,6 +203,8 @@
         theyAreReady = !theyAreReady;
         console.log(theyAreReady);
       }
+
+      // Hiding the start panel and the play panel.
       else if (thing == "hide-hide animation") {
         startPanel.style.display = "none";
         setTimeout(function() {
@@ -211,6 +215,8 @@
         startPanel.style.display = "none";
         playPanel.style.display = "none";
       }
+
+      // Assigning colors.
       else if (thing == "sender is red") {
         iAmRed = false;
         controls.querySelector("#my-color").style.backgroundColor = "#007BFF";
@@ -221,13 +227,35 @@
         controls.querySelector("#my-color").style.backgroundColor = "#DC3545";
         controls.querySelector("#their-color").style.backgroundColor = "#007BFF";
       }
+
+      // Moving names from the start panel into the controls.
       else if (thing == "transfer names") {
         controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
         controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
       }
+
+      // Updating the other player with all info.
       else if (thing == "sync") {
+
+        // Give names.
         socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
         socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
+
+        // Give time control, if one has been clicked.
+        if (startPanel.querySelector("#one-min").checked) {
+          socket.emit("my", "message", "one minute", id);
+        }
+        else if (startPanel.querySelector("#thr-min").checked) {
+          socket.emit("my", "message", "three minutes", id);
+        }
+        else if (startPanel.querySelector("#ten-min").checked) {
+          socket.emit("my", "message", "ten minutes", id);
+        }
+        else if (startPanel.querySelector("#inf-min").checked) {
+          socket.emit("my", "message", "infinity minutes", id);
+        }
+
+        // If the game has started, give all the game stuff.
         if (game.stats.moveStart != null) {
           socket.emit("my", "message", "hide-hide instant", id);
           socket.emit("my", "message", "transfer names", id);
