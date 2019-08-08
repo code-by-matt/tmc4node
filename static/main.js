@@ -19,7 +19,7 @@
 
   var handle = {val: 0};
   var theyAreReady = false;
-  var showNumbers = true;
+  var showNumbers = false;
   var iAmRed;
 
   // Handle events that happen in the start panel.
