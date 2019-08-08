@@ -4,7 +4,6 @@
   // Grab lots of document elements.
   var startPanel = document.getElementById("start-panel");
   var playPanel = document.getElementById("play-panel");
-  var endPanel = document.getElementById("end-panel");
   var boardDiv = document.getElementById("board-div");
   var controls = document.getElementById("controls");
 
