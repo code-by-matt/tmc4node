@@ -116,7 +116,7 @@
   boardDiv.addEventListener("mousemove",  function(event) {
     event.target.style.cursor = "default";
     var col = getCol(event);
-    if (game.stats.moveStart != null && game.stats.openRows[col] < 6 && game.stats.winner == null) {
+    if (game.stats.history != null && game.stats.openRows[col] < 6 && game.stats.winner == null) {
       if (iAmRed && game.stats.future[0] == "r") {
         event.target.style.cursor = "pointer";
       }
@@ -129,7 +129,7 @@
   // When a valid move is made, update game and send game.
   boardDiv.addEventListener("click", function(event) {
     var col = getCol(event);
-    if (game.stats.moveStart != null && game.stats.openRows[col] < 6 && game.stats.winner == null) {
+    if (game.stats.history != null && game.stats.openRows[col] < 6 && game.stats.winner == null) {
       if (iAmRed && game.stats.future[0] == "r") {
         game.move(col);
         show(game.stats, showNumbers, iAmRed, handle);
@@ -245,7 +245,7 @@
         }
 
         // If the game has started, give all the game stuff.
-        if (game.stats.moveStart != null) {
+        if (game.stats.history != null) {
           socket.emit("my", "message", "hide-hide instant", id);
           socket.emit("my", "message", "transfer names", id);
           if (iAmRed) {

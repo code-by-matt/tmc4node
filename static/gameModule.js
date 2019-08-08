@@ -77,7 +77,7 @@ const gameModule = function() {
 
     // Initialize the timing properties.
     stats.moveStart = new Date().getTime();
-    if (time == 1) {          // The time elapsed (in ms) for each color, NOT INCLUDING THE ACTIVE TIMING INTERVAL.
+    if (time == 1) {
       stats.redTime = 60000;
       stats.bluTime = 60000;
     }
@@ -90,8 +90,7 @@ const gameModule = function() {
       stats.bluTime = 600000;
     }
     else {
-      stats.redTime = 0;
-      stats.bluTime = 0;
+      stats.moveStart = null; // The nullness of moveStart is how we will determine if the game has time control.
     }
 
     // Initialize the non-timing properties.
@@ -114,15 +113,17 @@ const gameModule = function() {
   // Records a move in the given column.
   function move(col) {
 
-    // Update the timing properties.
+    // Update the timing properties if we're using time control.
     var moveEnd = new Date().getTime();
-    if (stats.future[0] == "r") {
-      stats.redTime -= moveEnd - stats.moveStart;
+    if (stats.moveStart != null) {
+      if (stats.future[0] == "r") {
+        stats.redTime -= moveEnd - stats.moveStart;
+      }
+      else {
+        stats.bluTime -= moveEnd - stats.moveStart;
+      }
+      stats.moveStart = moveEnd;
     }
-    else {
-      stats.bluTime -= moveEnd - stats.moveStart;
-    }
-    stats.moveStart = moveEnd;
 
     // Update the non-timing properties.
     stats.currentTurn += 1;
@@ -149,15 +150,17 @@ const gameModule = function() {
   // Stops the game on a timeout.
   function timeout() {
 
-    // Update the timing properties.
+    // Update the timing properties if we're using time control.
     var moveEnd = new Date().getTime();
-    if (stats.future[0] == "r") {
-      stats.redTime -= moveEnd - stats.moveStart;
+    if (stats.moveStart != null) {
+      if (stats.future[0] == "r") {
+        stats.redTime -= moveEnd - stats.moveStart;
+      }
+      else {
+        stats.bluTime -= moveEnd - stats.moveStart;
+      }
+      stats.moveStart = moveEnd;
     }
-    else {
-      stats.bluTime -= moveEnd - stats.moveStart;
-    }
-    stats.moveStart = moveEnd;
 
     // Update the winning properties.
     if (stats.future[0] == "r") {

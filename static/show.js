@@ -167,10 +167,14 @@ const show = function(stats, showNumbers, iAmRed, handle) {
     showBoard(stats.history, showNumbers);
     showFuture(stats.future);
     if (stats.winner == null) {
-      showRunningTimes(iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
+      if (stats.moveStart != null) {
+        showRunningTimes(iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
+      }
     }
     else {
-      showStoppedTimes(iAmRed, stats.redTime, stats.bluTime);
+      if (stats.moveStart != null) {
+        showStoppedTimes(iAmRed, stats.redTime, stats.bluTime);
+      }
       endPanel.textContent = stats.winner + " wins by " + stats.winBy + "!";
       endPanel.style.display = "flex";
     }
