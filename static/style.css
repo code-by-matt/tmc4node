@@ -49,8 +49,8 @@ body {
 #controls {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  padding: 0px 12px;
+  justify-content: space-between;
+  padding: 12px;
 }
 
 #controls .my-name {
@@ -86,7 +86,7 @@ body {
     height: 84px;
   }
   #controls {
-    height: 76px;
+    height: 52px;
   }
   .b1 {
     border-style: solid;
@@ -102,7 +102,7 @@ body {
     height: 84px;
   }
   #controls {
-    height: 76px;
+    height: 52px;
   }
   .b1 {
     border-style: solid none;
@@ -185,16 +185,6 @@ img {
   align-items: center;
 }
 
-.lat {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.rat {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .flex {
   display: flex;
 }
@@ -224,7 +214,7 @@ img {
   width: 50%;
 }
 
-.controls .their-name {
+#controls .their-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
