@@ -3,96 +3,20 @@
 @media (min-width: 576px) { #box { width: 400px; margin-top: 88px; } }
 @media (max-width: 576px) { #box { width: 100vw; } }
 
-body       { margin: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif }
-#universe  { display: flex; width: 100vw; height: 100vh; flex-direction: column; justify-content: flex-start; align-items: center; }
-#board-div { display: flex; position: relative; justify-content: center; align-items: center; }
-#board-img { display: block; width: 100%; }
-.panel     { background-color: white; position: absolute; border-style: solid; border-width: 2px; border-color: gray; }
+body       { margin: 0px; }
+#universe  { width: 100vw; height: 100vh; }
+#board-img { width: 100%; }
+.panel     { border-width: 2px; }
 #start-panel { width: 276px; height: 84px; }
-
-#start-panel, #controls {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 12px;
-}
-
-#controls {
-  height: 52px;
-}
-
-#play-panel, #end-panel {
-  padding: 2px;
-}
-
-#end-panel {
-  display: none;
-}
-
-#start-panel .my-name, #start-panel .their-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  display: block;
-  width: 116px;
-  height: 20px;
-  padding: 0px;
-}
-
-#controls .my-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  display: block;
-  flex: 1;
-}
-
-#controls .their-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: right;
-  display: block;
-  flex: 1;
-}
-
-.b1 {
-  border-width: 1px;
-  border-color: gray;
-}
-
-canvas {
-  display: none;
-}
-
-input {
-  border-style: none;
-  font-family: inherit;
-  font-size: inherit;
-}
-
-/* Hide native radio and checkbox elements. We use custom-styled labels instead. */
-input[type=radio], input[type=checkbox] {
-  display: none;
-}
+#start-panel .my-name { width: 116px; height: 20px; padding: 0px; }
+#start-panel .their-name { width: 116px; height: 20px; padding: 0px; }
+#start-panel, #controls { padding: 12px; }
+#controls { height: 52px; }
+#play-panel, #end-panel { padding: 2px; }
+.b1 { border-width: 1px; }
 
 /* Base style for anchors, radio labels, checkbox labels, and real buttons. Visited anchors don't look any different. */
-.butt, .butt:visited {
-  width: 60px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #D8D8D8;
-  color: black;
-  font-family: inherit;
-  font-size: 14px;
-  padding: 0px;
-  text-decoration: none;
-  border: none;
-}
+.butt, .butt:visited { width: 60px; height: 20px; padding: 0px; font-size: 14px; }
 
 /* Focusing on a butt gives it a blue outline. */
 .butt:focus, #start-panel .my-name:focus {
