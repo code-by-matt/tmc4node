@@ -35,6 +35,13 @@ describe("Routing.", function() {
 
 describe("Gameplay.", function() {
 
+  it("Should look nice on an iPhone 5.", function() {
+    cy.viewport("iphone-5");
+    var id = Math.random().toString(36).substr(6);
+    cy.visit("http://localhost:8000/game?id=" + id)
+      .pause();
+  });
+
   it("Should play a game.", function() {
     var id = Math.random().toString(36).substr(6);
     cy.visit("http://localhost:8000/game?id=" + id);
