@@ -75,8 +75,6 @@ input[type=radio], input[type=checkbox] {
   background-color: #D8D8D8;
   color: black;
   font-family: inherit;
-  font-size: 14px;
-  padding: 0px;
   text-decoration: none;
   border: none;
 }
@@ -144,7 +142,6 @@ img {
 
 .timer {
   font-family: "Lucida Console", Monaco, monospace;
-  font-size: 10pt;
 }
 
 .sq {
