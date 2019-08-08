@@ -255,6 +255,11 @@
           socket.emit("my", "message", "infinity minutes", id);
         }
 
+        // Give readiness, if ready.
+        if (startPanel.querySelector("#ready").checked) {
+          socket.emit("my", "message", "ready", id);
+        }
+
         // If the game has started, give all the game stuff.
         if (game.stats.moveStart != null) {
           socket.emit("my", "message", "hide-hide instant", id);
