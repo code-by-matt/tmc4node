@@ -137,13 +137,13 @@ const gameModule = function() {
 
     // Update the winning properties.
     if (isWinningMove()) {
-      stats.winBy = "connection";
       if (stats.history.slice(-3, -2) == "r") {
         stats.winner = "Red";
       }
       else {
         stats.winner = "Blue";
       }
+      stats.winBy = "connection";
     }
   }
 
@@ -172,11 +172,37 @@ const gameModule = function() {
     stats.winBy = "timeout";
   }
 
+  // Resign, with the resigning player determined from iAmRed.
+  function resign(iAmRed) {
+
+    // Update the timing properties if we're using time control.
+    var moveEnd = new Date().getTime();
+    if (stats.moveStart != null) {
+      if (stats.future[0] == "r") {
+        stats.redTime -= moveEnd - stats.moveStart;
+      }
+      else {
+        stats.bluTime -= moveEnd - stats.moveStart;
+      }
+      stats.moveStart = moveEnd;
+    }
+
+    // Update the winning properties.
+    if (iAmRed) {
+      stats.winner = "Blue";
+    }
+    else {
+      stats.winner = "Red";
+    }
+    stats.winBy = "resignation";
+  }
+
   return {
     stats: stats,
     assign: assign,
     start: start,
     move: move,
     timeout: timeout,
+    resign: resign,
   };
 };
