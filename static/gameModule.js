@@ -147,7 +147,7 @@ const gameModule = function() {
   }
 
   // Stops the game on a timeout.
-  function timeout(winner) {
+  function timeout() {
 
     // Update the timing properties.
     var moveEnd = new Date().getTime();
@@ -160,7 +160,12 @@ const gameModule = function() {
     stats.moveStart = moveEnd;
 
     // Update the winning properties.
-    stats.winner = winner;
+    if (stats.future[0] == "r") {
+      stats.winner = "Blue";
+    }
+    else {
+      stats.winner = "Red";
+    }
     stats.winBy = "timeout";
   }
 

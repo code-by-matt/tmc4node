@@ -152,25 +152,9 @@
 
   // Keep an eye out for timeouts.
   var wao = setInterval(function() {
-    if (controls.querySelector("#my-time").textContent == "00:00") {
+    if (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00") {
       clearInterval(wao);
-      if (iAmRed) {
-        game.timeout("Blue");
-      }
-      else {
-        game.timeout("Red");
-      }
-      show(game.stats, showNumbers, iAmRed, handle);
-      socket.emit("my", "game stats", game.stats, id);
-    }
-    else if (controls.querySelector("#their-time").textContent == "00:00") {
-      clearInterval(wao);
-      if (iAmRed) {
-        game.timeout("Red");
-      }
-      else {
-        game.timeout("Blue");
-      }
+      game.timeout();
       show(game.stats, showNumbers, iAmRed, handle);
       socket.emit("my", "game stats", game.stats, id);
     }
