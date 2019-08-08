@@ -6,13 +6,12 @@
 body                     { margin: 0px; }
 #universe                { width: 100vw; height: 100vh; }
 #board-img               { width: 100%; }
-.panel                   { border-width: 2px; }
-#start-panel             { width: 276px; height: 84px; }
+#start-panel             { width: 276px; height: 84px; padding: 12px; border-width: 2px; }
 #start-panel .my-name    { width: 116px; height: 20px; padding: 00px; }
 #start-panel .their-name { width: 116px; height: 20px; padding: 00px; }
-#start-panel, #controls  {                             padding: 12px; }
+#controls                {                             padding: 12px; }
 #controls                {               height: 52px; }
-#play-panel, #end-panel  {                             padding: 02px; }
+#play-panel, #end-panel  {                             padding: 02px; border-width: 2px; }
 .b1 { border-width: 1px; }
 
 /* Base style for anchors, radio labels, checkbox labels, and real buttons. Visited anchors don't look any different. */
