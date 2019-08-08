@@ -92,10 +92,10 @@ body {
   }
   #start-panel {
     width: 69vw;
-    height: 27vw;
+    height: 108px;
   }
   #controls {
-    height: 19vw;
+    height: 76px;
   }
   .b1 {
     border-style: solid none;
