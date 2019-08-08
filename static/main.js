@@ -147,7 +147,7 @@
       showNumbers = !showNumbers;
       show(game.stats, showNumbers, iAmRed, handle);
     }
-    else if (event.target.id == "resign" && game.stats.history != null) {
+    else if (event.target.id == "resign" && game.stats.history != null && game.stats.winner == null) {
       game.resign(iAmRed);
       show(game.stats, showNumbers, iAmRed, handle);
       socket.emit("my", "game stats", game.stats, id);
