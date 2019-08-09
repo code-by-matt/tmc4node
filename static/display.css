@@ -8,10 +8,11 @@
 #universe                    { display: flex;  flex-direction: column; justify-content: flex-start;    align-items: center;                                                                }
 #board-div                   { display: flex;                          justify-content: center;        align-items: center; position: relative;                                            }
 #board-img                   { display: block;                                                                                                                                             }
-#start-panel                 { display: flex;  flex-direction: column; justify-content: space-between;                      position: absolute; border-style: solid;                       }
+#start-panel                 {                                                                                              position: absolute; border-style: solid;                       }
 #play-panel                  {                                                                                              position: absolute; border-style: solid;                       }
 #end-panel                   { display: none;                                                                               position: absolute; border-style: solid;                       }
-#controls                    { display: flex;  flex-direction: column; justify-content: space-between;                                                                                     }
+.col-between                 { display: flex;  flex-direction: column; justify-content: space-between;                                                                                     }
+.row-between                 { display: flex;                          justify-content: space-between;                                                                                     }
 
 /* Items. */
 #start-panel .my-name        { display: block;                                                                                                                                             }

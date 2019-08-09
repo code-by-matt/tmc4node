@@ -13,12 +13,12 @@ block content
     img(id="board-img")
     div(id="end-panel")
     div(id="play-panel") Play!
-    div(id="start-panel")
-      div(class="flex justify-content-between")
+    div(id="start-panel" class="col-between")
+      div(class="row-between")
         input(class="my-name" type="text" placeholder="enter a name" autofocus)
         div(style="width: 20px; text-align: center") vs
         div(class="their-name")
-      div(class="flex justify-content-between")
+      div(class="row-between")
         input(id="one-min" name="time" type="radio")
         label(tabindex="0" for="one-min" class="butt") 1 min.
         input(id="thr-min" name="time" type="radio")
@@ -30,8 +30,8 @@ block content
       div(class="flex justify-content-center")
         input(id="ready" type="checkbox")
         label(tabindex="0" for="ready" class="butt") Ready
-  div(id="controls" class="b1")
-    div(class="flex justify-content-between")
+  div(id="controls" class="b1 col-between")
+    div(class="row-between")
       div(class="flex")
         canvas(id="future-canvas" width="1600" height="200")
         img(id="future-img" width="160" height="20" src="nothing.png")
