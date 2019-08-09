@@ -17,6 +17,7 @@ const show = function(stats, showNumbers, iAmRed, handle) {
 
   // Game over message is displayed here.
   var endPanel = document.getElementById("end-panel");
+  var rematchPanel = document.getElementById("rematch-panel");
 
   // HELPER FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -177,6 +178,7 @@ const show = function(stats, showNumbers, iAmRed, handle) {
       }
       endPanel.textContent = stats.winner + " wins by " + stats.winBy + "!";
       endPanel.style.display = "flex";
+      rematchPanel.style.display = "flex";
     }
   }
 };

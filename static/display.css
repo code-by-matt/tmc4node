@@ -11,7 +11,7 @@
 #start-panel                 {                                                                                              position: absolute; border-style: solid;                       }
 #play-panel                  {                                                                                              position: absolute; border-style: solid;                       }
 #end-panel                   { display: none;                                                                               position: absolute; border-style: solid;                       }
-#rematch-panel               {                                                                                              position: absolute; border-style: solid;                       }
+#rematch-panel               { display: none;                                                                               position: absolute; border-style: solid;                       }
 .col-between                 { display: flex;  flex-direction: column; justify-content: space-between;                                                                                     }
 .row-between                 { display: flex;                          justify-content: space-between;                                                                                     }
 .row-center                  { display: flex;                          justify-content: center;                                                                                            }
