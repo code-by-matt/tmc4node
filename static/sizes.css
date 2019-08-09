@@ -1,102 +1,37 @@
-/* All things measured in px, pt, vw, vh, or %. */
+/* This stylesheet is for width, height, padding, border-width, margin, and outline-width. */
 
+/* Box floats in the middle of large viewports and fills the entirety of small viewports. */
 @media (min-width: 576px) { #box { width: 400px; margin-top: 88px; } }
 @media (max-width: 576px) { #box { width: 100vw; } }
 
-body                     { margin: 0px; }
-#universe                { width: 100vw; height: 100vh; }
-#board-img               { width: 100%; }
-#start-panel             { width: 276px; height: 84px; padding: 12px; border-width: 2px; }
-#start-panel .my-name    { width: 116px; height: 20px; padding: 00px; }
-#start-panel .their-name { width: 116px; height: 20px; padding: 00px; }
-#controls                {               height: 52px; padding: 12px; }
-#play-panel, #end-panel  {                             padding: 02px; border-width: 2px; }
-.b1 { border-width: 1px; }
+/* Containers. */
+body                         {                                                               margin: 0px; }
+#universe                    { width: 100vw; height: 100vh; }
+#board-img                   { width: 100%; }
+#start-panel                 { width: 276px; height: 84px; padding: 12px; border-width: 2px; }
+#play-panel                  {                             padding: 02px; border-width: 2px; }
+#end-panel                   {                             padding: 02px; border-width: 2px; }
+#controls                    {               height: 52px; padding: 12px; }
+.b1                          {                                            border-width: 1px; }
+.half                        { width: 50%; }
 
-/* Base style for anchors, radio labels, checkbox labels, and real buttons. Visited anchors don't look any different. */
-.butt, .butt:visited { width: 60px; height: 20px; padding: 0px; font-size: 14px; }
+/* Items. */
+#start-panel .my-name        { width: 116px; height: 20px; padding: 00px; }
+#start-panel .my-name:focus  {                                                                            outline-width: 2px; }
+#start-panel .their-name     { width: 116px; height: 20px; padding: 00px; }
+.butt                        { width: 060px; height: 20px; padding: 00px; font-size: 14px; }
+.butt:visited                { width: 060px; height: 20px; padding: 00px; font-size: 14px; }
+.butt:focus                  {                                                                            outline-width: 2px; }
+.sq                          { width: 020px; height: 20px; }
 
 /* Focusing on a butt gives it a blue outline. */
-.butt:focus, #start-panel .my-name:focus {
-  outline-style: solid;
-  outline-width: 2px;
-  outline-color: #007bff;
-}
 
- /* Hovering over a butt makes it a lil darker. */
-.butt:hover {
-  background-color: silver;
-  cursor: pointer;
-}
-
-/* Active butts, checked radio labels, and checked checkbox labels are even darker, with white text. */
-.butt:active, input[type=radio]:checked + label, input[type=checkbox]:checked + label {
-  background-color: gray;
-  color: white;
-}
-
-img {
-  background-color: #D8D8D8;
-}
 
 .m4 {
   margin: 4px;
 }
 
-.m8 {
-  margin: 8px;
-}
-
-.vct {
-  display: flex;
-  align-items: center;
-}
-
-.flex {
-  display: flex;
-}
-
-.justify-content-center {
-  justify-content: center;
-}
-
-.justify-content-between {
-  justify-content: space-between;
-}
-
-.justify-content-around {
-  justify-content: space-around;
-}
-
-#controls .my-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  display: block;
-  flex: 1;
-}
-
-.half {
-  width: 50%;
-}
-
-#controls .their-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: right;
-  display: block;
-  flex: 1;
-}
-
 .timer {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 10pt;
-}
-
-.sq {
-  width: 20px;
-  height: 20px;
-  background-color: #D8D8D8;
 }
