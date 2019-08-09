@@ -1,28 +1,19 @@
 /* This stylesheet is for background-color, color, border-color, outline-color, */
 
 /* Containers. */
-#start-panel    { background-color:   white;                 border-color: gray; }
-#play-panel     { background-color:   white;                 border-color: gray; }
-#end-panel      { background-color:   white;                 border-color: gray; }
-.b1             {                                              border-color: gray; }
+#start-panel                          { background-color:   white;                 border-color: gray; }
+#play-panel                           { background-color:   white;                 border-color: gray; }
+#end-panel                            { background-color:   white;                 border-color: gray; }
+.b1                                   {                                              border-color: gray; }
 
 /* Items. */
-.butt           { background-color: #D8D8D8; color: black; }
-.butt:visited   { background-color: #D8D8D8; color: black; }
-.sq             { background-color: #D8D8D8; }
-
-/* Focusing on a butt gives it a blue outline. */
-.butt:focus, #start-panel .my-name:focus { outline-color: #007bff; }
-
- /* Hovering over a butt makes it a lil darker. */
-.butt:hover { background-color: silver; }
-
-/* Active butts, checked radio labels, and checked checkbox labels are even darker, with white text. */
-.butt:active, input[type=radio]:checked + label, input[type=checkbox]:checked + label {
-  background-color: gray;
-  color: white;
-}
-
-img {
-  background-color: #D8D8D8;
-}
+img                                   { background-color: #D8D8D8; }
+#start-panel .my-name:focus           {                                                                    outline-color: #007bff; }
+input[type=checkbox]:checked + label  { background-color: gray; color: white; }
+input[type=radio]:checked + label     { background-color: gray; color: white; }
+.butt                                 { background-color: #D8D8D8; color: black; }
+.butt:hover                           { background-color:  silver; }
+.butt:focus                           {                                                                    outline-color: #007bff; }
+.butt:active                          { background-color:    gray; color: white; }
+.butt:visited                         { background-color: #D8D8D8; color: black; }
+.sq                                   { background-color: #D8D8D8; }
