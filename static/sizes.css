@@ -1,8 +1,14 @@
 /* This stylesheet is for width, height, padding, border-width, margin, and outline-width. */
 
 /* The element with id="box" floats in the middle of large viewports and fills the entirety of small viewports. */
-@media (min-width: 576px) { #box { width: 400px; margin-top: 88px; } }
-@media (max-width: 576px) { #box { width: 100vw; } }
+@media (min-width: 576px) {
+  #box            { width: 400px; margin-top: 88px; }
+  #rematch-panel  {               margin-top: 57px; }
+}
+@media (max-width: 576px) {
+  #box            { width: 100vw;                   }
+  #rematch-panel  {               margin-top: 14vw; }
+}
 
 /* Containers. */
 body                         {                                                                margin: 0px; }
@@ -11,6 +17,7 @@ body                         {                                                  
 #start-panel                 { width: 276px; height: 84px;  padding: 12px; border-width: 2px; }
 #play-panel                  {                              padding: 2px;  border-width: 2px; }
 #end-panel                   {                              padding: 2px;  border-width: 2px; }
+#rematch-panel               {                              padding: 2px;  border-width: 2px;                }
 #controls                    {               height: 52px;  padding: 12px; }
 .b1                          {                                             border-width: 1px; }
 .half                        { width: 50%;   }
@@ -22,7 +29,6 @@ body                         {                                                  
 .butt                        { width: 60px;  height: 20px;  padding: 0px;  }
 .butt:focus                  {                                                                            outline-width: 2px; }
 .sq                          { width: 20px;  height: 20px;  }
-#rematch                     {                                                                margin-top: 57px;               }
 
 .m4 {
   margin: 4px;
