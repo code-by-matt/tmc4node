@@ -1,6 +1,6 @@
 /* This stylesheet is for width, height, padding, border-width, margin, and outline-width. */
 
-/* Box floats in the middle of large viewports and fills the entirety of small viewports. */
+/* The element with id="box" floats in the middle of large viewports and fills the entirety of small viewports. */
 @media (min-width: 576px) { #box { width: 400px; margin-top: 88px; } }
 @media (max-width: 576px) { #box { width: 100vw; } }
 

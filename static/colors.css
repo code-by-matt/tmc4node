@@ -9,8 +9,8 @@
 /* Items. */
 img                                   { background-color: #D8D8D8; }
 #start-panel .my-name:focus           {                                                                    outline-color: #007bff; }
-input[type=checkbox]:checked + label  { background-color: gray; color: white; }
-input[type=radio]:checked + label     { background-color: gray; color: white; }
+input[type=checkbox]:checked + label  { background-color:    gray; color: white; }
+input[type=radio]:checked + label     { background-color:    gray; color: white; }
 .butt                                 { background-color: #D8D8D8; color: black; }
 .butt:hover                           { background-color:  silver; }
 .butt:focus                           {                                                                    outline-color: #007bff; }
