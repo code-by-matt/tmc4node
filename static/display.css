@@ -1,0 +1,125 @@
+/* This stylesheet is for display, flex-direction, justify-content, align-items, position, */
+
+/* The elements with class="b1" will have a border on all sides in large viewports and a border only on top and bottom in small viewports. */
+@media (min-width: 576px) { .b1  { border-style: solid; } }
+@media (max-width: 576px) { .b1  { border-style: solid none; } }
+
+/* Containers. */
+#universe     { display: flex;  flex-direction: column; justify-content: flex-start;    align-items: center; }
+#board-div    { display: flex;                          justify-content: center;        align-items: center; position: relative; }
+#board-img    { display: block; }
+#start-panel  { display: flex;  flex-direction: column; justify-content: space-between;                      position: absolute; border-style: solid; }
+#play-panel   { position: absolute; border-style: solid; }
+#end-panel    { position: absolute; border-style: solid; }
+
+#start-panel { display: flex; flex-direction: column; justify-content: space-between; }
+#controls { display: flex; flex-direction: column; justify-content: space-between; }
+
+#end-panel {
+  display: none;
+}
+
+#start-panel .my-name, #start-panel .their-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  display: block;
+}
+
+#controls .my-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  display: block;
+  flex: 1;
+}
+
+#controls .their-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  display: block;
+  flex: 1;
+}
+
+canvas {
+  display: none;
+}
+
+input {
+  border-style: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Hide native radio and checkbox elements. We use custom-styled labels instead. */
+input[type=radio], input[type=checkbox] {
+  display: none;
+}
+
+/* Base style for anchors, radio labels, checkbox labels, and real buttons. Visited anchors don't look any different. */
+.butt, .butt:visited {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  text-decoration: none;
+  border: none;
+}
+
+/* Focusing on a butt gives it a blue outline. */
+.butt:focus, #start-panel .my-name:focus {
+  outline-style: solid;
+}
+
+ /* Hovering over a butt makes it a lil darker. */
+.butt:hover {
+  cursor: pointer;
+}
+
+
+.vct {
+  display: flex;
+  align-items: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around {
+  justify-content: space-around;
+}
+
+#controls .my-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  display: block;
+  flex: 1;
+}
+
+#controls .their-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  display: block;
+  flex: 1;
+}
+
+.timer {
+  font-family: "Lucida Console", Monaco, monospace;
+}
