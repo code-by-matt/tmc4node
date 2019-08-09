@@ -20,7 +20,6 @@ body                         {                                                  
 #start-panel .my-name:focus  {                                                                            outline-width: 2px; }
 #start-panel .their-name     { width: 116px; height: 20px;  padding: 0px;  }
 .butt                        { width: 60px;  height: 20px;  padding: 0px;  }
-.butt:visited                { width: 60px;  height: 20px;  padding: 0px;  }
 .butt:focus                  {                                                                            outline-width: 2px; }
 .sq                          { width: 20px;  height: 20px;  }
 

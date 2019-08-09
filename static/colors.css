@@ -15,5 +15,4 @@ input[type=radio]:checked + label     { background-color:    gray; color: white;
 .butt:hover                           { background-color:  silver; }
 .butt:focus                           {                                                                    outline-color: #007bff; }
 .butt:active                          { background-color:    gray; color: white; }
-.butt:visited                         { background-color: #D8D8D8; color: black; }
 .sq                                   { background-color: #D8D8D8; }
