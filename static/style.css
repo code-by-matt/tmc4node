@@ -9,7 +9,7 @@
 #universe  { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; }
 #board-div { display: flex; position: relative; justify-content: center; align-items: center; }
 #board-img { display: block; }
-#start-panel, #play-panel, #end-panel     { background-color: white; position: absolute; border-style: solid; border-color: gray; }
+#start-panel, #play-panel, #end-panel     { position: absolute; border-style: solid; }
 
 #start-panel, #controls {
   display: flex;
@@ -47,10 +47,6 @@
   flex: 1;
 }
 
-.b1 {
-  border-color: gray;
-}
-
 canvas {
   display: none;
 }
@@ -71,8 +67,6 @@ input[type=radio], input[type=checkbox] {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #D8D8D8;
-  color: black;
   font-family: inherit;
   text-decoration: none;
   border: none;
@@ -81,24 +75,13 @@ input[type=radio], input[type=checkbox] {
 /* Focusing on a butt gives it a blue outline. */
 .butt:focus, #start-panel .my-name:focus {
   outline-style: solid;
-  outline-color: #007bff;
 }
 
  /* Hovering over a butt makes it a lil darker. */
 .butt:hover {
-  background-color: silver;
   cursor: pointer;
 }
 
-/* Active butts, checked radio labels, and checked checkbox labels are even darker, with white text. */
-.butt:active, input[type=radio]:checked + label, input[type=checkbox]:checked + label {
-  background-color: gray;
-  color: white;
-}
-
-img {
-  background-color: #D8D8D8;
-}
 
 .vct {
   display: flex;
@@ -141,8 +124,4 @@ img {
 
 .timer {
   font-family: "Lucida Console", Monaco, monospace;
-}
-
-.sq {
-  background-color: #D8D8D8;
 }
