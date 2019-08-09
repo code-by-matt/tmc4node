@@ -5,9 +5,9 @@ block title
 
 block content
   div(class="b1 flex justify-content-center")
-    div(class="m4 vct") Thue-Morse
+    div(class="m4") Thue-Morse
     img(class="m4" height="20" src="logo.png")
-    div(class="m4 vct") Connect Four
+    div(class="m4") Connect Four
   div(id="board-div" class="b1")
     canvas(id="board-canvas" width="1400" height="1200")
     img(id="board-img")
@@ -32,22 +32,21 @@ block content
         label(tabindex="0" for="ready" class="butt") Ready
   div(id="controls" class="b1 col-between")
     div(class="row-between")
-      div(class="flex")
+      div(class="row-between")
         canvas(id="future-canvas" width="1600" height="200")
         img(id="future-img" width="160" height="20" src="nothing.png")
-      div(class="flex")
+      div(class="row-between")
         button(id="resign" class="butt") Resign
-        div(style="width: 12px")
         button(id="number-toggle" class="butt") 1 2 3
-    div(class="flex")
+    div(class="row-between")
       div(class="flex half")
         div(id="my-color" class="sq")
         div(style="width: 12px")
         div(class="my-name")
-        div(id="my-time" class="timer vct")
+        div(id="my-time" class="timer")
       div(style="width: 12px")
       div(class="flex half")
-        div(id="their-time" class="timer vct")
+        div(id="their-time" class="timer")
         div(class="their-name")
         div(style="width: 12px")
         div(id="their-color" class="sq")
