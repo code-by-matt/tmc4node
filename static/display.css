@@ -1,21 +1,21 @@
-/* This stylesheet is for display, flex-direction, justify-content, align-items, position, border-style, and outline-style. */
+/* This stylesheet is for display, flex-direction, justify-content, align-items, position, border-style, outline-style, and cursor. */
 
 /* The elements with class="b1" will have a border on all sides in large viewports and a border only on top and bottom in small viewports. */
 @media (min-width: 576px) { .b1  { border-style: solid; } }
 @media (max-width: 576px) { .b1  { border-style: solid none; } }
 
 /* Containers. */
-#universe                 { display: flex;  flex-direction: column; justify-content: flex-start;    align-items: center; }
-#board-div                { display: flex;                          justify-content: center;        align-items: center; position: relative; }
-#board-img                { display: block; }
-#start-panel              { display: flex;  flex-direction: column; justify-content: space-between;                      position: absolute; border-style: solid; }
-#play-panel               {                                                                                              position: absolute; border-style: solid; }
-#end-panel                { display: none;                                                                               position: absolute; border-style: solid; }
-#controls                 { display: flex;  flex-direction: column; justify-content: space-between; }
+#universe                    { display: flex;  flex-direction: column; justify-content: flex-start;    align-items: center;                                                                }
+#board-div                   { display: flex;                          justify-content: center;        align-items: center; position: relative;                                            }
+#board-img                   { display: block;                                                                                                                                             }
+#start-panel                 { display: flex;  flex-direction: column; justify-content: space-between;                      position: absolute; border-style: solid;                       }
+#play-panel                  {                                                                                              position: absolute; border-style: solid;                       }
+#end-panel                   { display: none;                                                                               position: absolute; border-style: solid;                       }
+#controls                    { display: flex;  flex-direction: column; justify-content: space-between;                                                                                     }
 
 /* Items. */
-#start-panel .my-name        { display: block; }
-#start-panel .my-name:focus  { outline-style: solid; }
+#start-panel .my-name        { display: block;                                                                                                                                             }
+#start-panel .my-name:focus  {                                                                                                                                       outline-style: solid; }
 #start-panel .their-name     { display: block; }
 canvas                       { display: none;  }
 #controls .my-name           { display: block; flex: 1; }
@@ -23,18 +23,10 @@ canvas                       { display: none;  }
 input[type=radio]            { display: none;  }
 input[type=checkbox]         { display: none;  }
 .butt                        { display: flex; align-items: center; justify-content: center; border-style: none; }
+.butt:hover                  {                                                                                                                                       cursor: pointer; }
 .butt:focus                  { outline-style: solid; }
 .butt:visited                { display: flex; align-items: center; justify-content: center; border-style: none; }
 input                        { border-style: none; }
-
-/* Focusing on a butt gives it a blue outline. */
-
-
-
- /* Hovering over a butt makes it a lil darker. */
-.butt:hover {
-  cursor: pointer;
-}
 
 .vct {
   display: flex;
