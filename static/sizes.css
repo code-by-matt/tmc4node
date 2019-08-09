@@ -9,29 +9,21 @@ body                         {                                                  
 #universe                    { width: 100vw; height: 100vh; }
 #board-img                   { width: 100%; }
 #start-panel                 { width: 276px; height: 84px; padding: 12px; border-width: 2px; }
-#play-panel                  {                             padding: 02px; border-width: 2px; }
-#end-panel                   {                             padding: 02px; border-width: 2px; }
+#play-panel                  {                             padding:  2px; border-width: 2px; }
+#end-panel                   {                             padding:  2px; border-width: 2px; }
 #controls                    {               height: 52px; padding: 12px; }
 .b1                          {                                            border-width: 1px; }
 .half                        { width: 50%; }
 
 /* Items. */
-#start-panel .my-name        { width: 116px; height: 20px; padding: 00px; }
+#start-panel .my-name        { width: 116px; height: 20px; padding:  0px; }
 #start-panel .my-name:focus  {                                                                            outline-width: 2px; }
-#start-panel .their-name     { width: 116px; height: 20px; padding: 00px; }
-.butt                        { width: 060px; height: 20px; padding: 00px; font-size: 14px; }
-.butt:visited                { width: 060px; height: 20px; padding: 00px; font-size: 14px; }
+#start-panel .their-name     { width: 116px; height: 20px; padding:  0px; }
+.butt                        { width:  60px; height: 20px; padding:  0px; }
+.butt:visited                { width:  60px; height: 20px; padding:  0px; }
 .butt:focus                  {                                                                            outline-width: 2px; }
-.sq                          { width: 020px; height: 20px; }
-
-/* Focusing on a butt gives it a blue outline. */
-
+.sq                          { width:  20px; height: 20px; }
 
 .m4 {
   margin: 4px;
-}
-
-.timer {
-  font-family: "Lucida Console", Monaco, monospace;
-  font-size: 10pt;
 }
