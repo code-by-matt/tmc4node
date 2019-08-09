@@ -15,10 +15,8 @@
 .row-between                 { display: flex;                          justify-content: space-between;                                                                                     }
 
 /* Items. */
-#start-panel .my-name        { display: block;                                                                                                                                             }
-#start-panel .my-name:focus  {                                                                                                                                       outline-style: solid; }
-#start-panel .their-name     { display: block; }
 canvas                       { display: none;  }
+#start-panel .my-name:focus  {                                                                                                                                       outline-style: solid; }
 #controls .my-name           { display: block; flex: 1; }
 #controls .their-name        { display: block; flex: 1; }
 .timer                       { display: flex;  align-items: center; }
