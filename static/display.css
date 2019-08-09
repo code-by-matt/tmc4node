@@ -27,6 +27,7 @@ input[type=checkbox]         { display: none;  }
 .butt:hover                  {                                                                                                                                       cursor: pointer; }
 .butt:focus                  { outline-style: solid; }
 input                        { border-style: none; }
+#rematch                     { display: flex;                                                                               position: absolute;                                            }
 
 .flex {
   display: flex;

@@ -22,6 +22,7 @@ body                         {                                                  
 .butt                        { width: 60px;  height: 20px;  padding: 0px;  }
 .butt:focus                  {                                                                            outline-width: 2px; }
 .sq                          { width: 20px;  height: 20px;  }
+#rematch                     {                                                                margin-top: 57px;               }
 
 .m4 {
   margin: 4px;
