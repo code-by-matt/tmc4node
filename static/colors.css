@@ -1,16 +1,16 @@
-/* This stylesheet is for background-color, color, border-color, outline-color, */
+/* This stylesheet is for background-color, color, border-color, and outline-color. */
 
 /* Containers. */
-.panel                                { background-color:   white;                 border-color: gray; }
-.b1                                   {                                              border-color: gray; }
+.panel                                { background-color:   white;                 border-color: gray;                           }
+.b1                                   {                                              border-color: gray;                           }
 
 /* Items. */
-img                                   { background-color: #D8D8D8; }
-#start       .my-name:focus           {                                                                    outline-color: #007bff; }
-input[type=checkbox]:checked + label  { background-color:    gray; color: white; }
-input[type=radio]:checked + label     { background-color:    gray; color: white; }
-.butt                                 { background-color: #D8D8D8; color: black; }
-.butt:hover                           { background-color:  silver; }
-.butt:active                          { background-color:    gray; color: white; }
-.butt:focus                           {                                                                    outline-color: #007bff; }
-.sq                                   { background-color: #D8D8D8; }
+                                 img  { background-color: #D8D8D8;                                                                 }
+                                 .sq  { background-color: #D8D8D8;                                                                 }
+               #start .my-name:focus  {                                                                    outline-color: #007bff; }
+                               .butt  { background-color: #D8D8D8; color: black;                                                 }
+                         .butt:focus  {                                                                    outline-color: #007bff; }
+                         .butt:hover  { background-color:  silver;                                                                 }
+                        .butt:active  { background-color:    gray; color: white;                                                 }
+input[type=checkbox]:checked + label  { background-color:    gray; color: white;                                                 }
+   input[type=radio]:checked + label  { background-color:    gray; color: white;                                                 }
