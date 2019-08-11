@@ -1,4 +1,3 @@
-var game = gameModule();
 // We use an IIFE to protect our script from evil outside forces.
 (function() {
 
@@ -10,7 +9,7 @@ var game = gameModule();
   var controls = document.getElementById("controls");
 
   // Create a game and other pertinent variables.
-  
+  var game = gameModule();
   var handle = {val: 0};
   var theyAreReady = false;
   var showNumbers = false;
