@@ -7,7 +7,7 @@
 /* Items. */
                                  img  { background-color: #D8D8D8;                                                                 }
                                  .sq  { background-color: #D8D8D8;                                                                 }
-               #start .my-name:focus  {                                                                    outline-color: #007bff; }
+                  #start .name:focus  {                                                                    outline-color: #007bff; }
                                .butt  { background-color: #D8D8D8; color: black;                                                 }
                          .butt:focus  {                                                                    outline-color: #007bff; }
                          .butt:hover  { background-color:  silver;                                                                 }

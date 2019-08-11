@@ -10,7 +10,7 @@
   #rematch  {               margin-top: 14vw; }
 }
 
-/* Fixed-size containers. */
+                       /* Fixed-size containers. */
                  body  {                                                                margin: 0px;                    }
             #universe  { width: 100vw; height: 100vh;                                                                   }
            #board-img  { width: 100%;                                                                                   }
@@ -20,13 +20,11 @@
                   .b1  {                                             border-width: 1px;                                 }
                 .half  { width: 50%;                                                                                    }
            #two-butts  { max-width: 132px;  flex: 1; }
-   #controls .my-name  {                    flex: 1; }
-#controls .their-name  {                    flex: 1; }
 
-/* Items. */
-      #start .my-name  { width: 116px; height: 20px;  padding: 0px;                                                     }
-#start .my-name:focus  {                                                                            outline-width: 2px; }
-   #start .their-name  { width: 116px; height: 20px;  padding: 0px;                                                     }
+                       /* Items. */
+         #start .name  { width: 116px; height: 20px;  padding: 0px;                                                     }
+   #start .name:focus  {                                                                            outline-width: 2px; }
+      #controls .name  {                    flex: 1; }
                 .butt  { width: 60px;  height: 20px;  padding: 0px;                                                     }
           .butt:focus  {                                                                            outline-width: 2px; }
                   .sq  { width: 20px;  height: 20px;                                                                    }

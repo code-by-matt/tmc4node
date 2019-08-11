@@ -47,7 +47,7 @@ describe("Gameplay.", function() {
     cy.visit("http://localhost:8000/game?id=" + id);
 
     // Check that interacting with the start panel emits the right things.
-    cy.get("#start .my-name")
+    cy.get("#start .name").eq(0)
       .type("BoJack{enter}");
     cy.get('[for="thr-min"]')
       .click();
@@ -62,7 +62,7 @@ describe("Gameplay.", function() {
     cy.task("my", {type: "sender name", thing: "Carolyn", id: id});
     cy.task("my", {type: "message", thing: "ten minutes", id: id});
     cy.task("my", {type: "message", thing: "ready", id: id});
-    cy.get("#start .their-name")
+    cy.get("#start .name").eq(1)
       .should("have.text", "Carolyn");
     cy.get("#ten-min")
       .should("be.checked");

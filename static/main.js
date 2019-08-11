@@ -25,7 +25,7 @@
   startPanel.addEventListener("change", function(event) {
 
     // These socket emits keep the other player up to date on your actions.
-    if (event.target.className == "my-name") {
+    if (event.target.className == "name") {
       socket.emit("my", "sender name", event.target.value, id);
     }
     else if (event.target.id == "ready") {
@@ -49,11 +49,11 @@
     }
 
     // If everything's set up, start a game.
-    if (startPanel.querySelector(".my-name").value != "" && startPanel.querySelector(".their-name").textContent != "" && startPanel.querySelector("#ready").checked && theyAreReady) {
+    if (startPanel.querySelectorAll(".name")[0].value != "" && startPanel.querySelectorAll(".name")[1].textContent != "" && startPanel.querySelector("#ready").checked && theyAreReady) {
 
       // Transfer names from start panel to the controls.
-      controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
-      controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
+      controls.querySelectorAll(".name")[0].textContent = startPanel.querySelectorAll(".name")[0].value;
+      controls.querySelectorAll(".name")[1].textContent = startPanel.querySelectorAll(".name")[1].textContent;
       socket.emit("my", "message", "transfer names", id);
 
       // Create the game object with appropriate time control.
@@ -223,16 +223,16 @@
 
       // Moving names from the start panel into the controls.
       else if (thing == "transfer names") {
-        controls.querySelector(".my-name").textContent = startPanel.querySelector(".my-name").value;
-        controls.querySelector(".their-name").textContent = startPanel.querySelector(".their-name").textContent;
+        controls.querySelectorAll(".name")[0].textContent = startPanel.querySelectorAll(".name")[0].value;
+        controls.querySelectorAll(".name")[1].textContent = startPanel.querySelectorAll(".name")[1].textContent;
       }
 
       // Updating the other player with all info.
       else if (thing == "sync") {
 
         // Give names.
-        socket.emit("my", "sender name", startPanel.querySelector(".my-name").value, id);
-        socket.emit("my", "receiver name", startPanel.querySelector(".their-name").textContent, id);
+        socket.emit("my", "sender name", startPanel.querySelectorAll(".name")[0].value, id);
+        socket.emit("my", "receiver name", startPanel.querySelectorAll(".name")[1].textContent, id);
 
         // Give time control, if one has been clicked.
         if (startPanel.querySelector("#one-min").checked) {
@@ -277,10 +277,10 @@
 
     // Other types carry a custom thing.
     else if (type == "sender name") {
-      startPanel.querySelector(".their-name").textContent = thing;
+      startPanel.querySelectorAll(".name")[1].textContent = thing;
     }
     else if (type == "receiver name") {
-      startPanel.querySelector(".my-name").value = thing;
+      startPanel.querySelectorAll(".name")[0].value = thing;
     }
     else if (type == "game stats") {
       game.assign(thing);
