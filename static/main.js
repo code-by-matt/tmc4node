@@ -4,6 +4,7 @@
   // Grab lots of document elements.
   var startPanel = document.getElementById("start-panel");
   var playPanel = document.getElementById("play-panel");
+  var rematchBtn = document.getElementById("rematch");
   var boardDiv = document.getElementById("board-div");
   var controls = document.getElementById("controls");
 
@@ -152,6 +153,10 @@
       show(game.stats, showNumbers, iAmRed, handle);
       socket.emit("my", "game stats", game.stats, id);
     }
+  });
+
+  rematchBtn.addEventListener("click", function() {
+    console.log("bruh");
   });
 
   // Keep an eye out for timeouts.
