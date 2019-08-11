@@ -3,21 +3,19 @@
 /* The element with id="box" floats in the middle of large viewports and fills the entirety of small viewports. */
 @media (min-width: 576px) {
   #box            { width: 400px; margin-top: 88px; }
-  #rematch-panel  {               margin-top: 57px; }
+  #rematch  {               margin-top: 57px; }
 }
 @media (max-width: 576px) {
   #box            { width: 100vw;                   }
-  #rematch-panel  {               margin-top: 14vw; }
+  #rematch  {               margin-top: 14vw; }
 }
 
 /* Fixed-size containers. */
 body                         {                                                                margin: 0px;                    }
 #universe                    { width: 100vw; height: 100vh;                                                                   }
 #board-img                   { width: 100%;                                                                                   }
-#start-panel                 { width: 276px; height: 84px;  padding: 12px; border-width: 2px;                                 }
-#play-panel                  {                              padding: 2px;  border-width: 2px;                                 }
-#end-panel                   {                              padding: 2px;  border-width: 2px;                                 }
-#rematch-panel               {                              padding: 2px;  border-width: 2px;                                 }
+#start                       { width: 276px; height: 84px;  padding: 12px; border-width: 2px;                                 }
+#play, #end, #rematch        {                              padding: 2px;  border-width: 2px;                                 }
 #controls                    {               height: 52px;  padding: 12px;                                                    }
 .b1                          {                                             border-width: 1px;                                 }
 .half                        { width: 50%;                                                                                    }
@@ -26,9 +24,9 @@ body                         {                                                  
 #controls .their-name        {                   flex: 1; }
 
 /* Items. */
-#start-panel .my-name        { width: 116px; height: 20px;  padding: 0px;                                                     }
-#start-panel .my-name:focus  {                                                                            outline-width: 2px; }
-#start-panel .their-name     { width: 116px; height: 20px;  padding: 0px;                                                     }
+#start       .my-name        { width: 116px; height: 20px;  padding: 0px;                                                     }
+#start       .my-name:focus  {                                                                            outline-width: 2px; }
+#start       .their-name     { width: 116px; height: 20px;  padding: 0px;                                                     }
 .butt                        { width: 60px;  height: 20px;  padding: 0px;                                                     }
 .butt:focus                  {                                                                            outline-width: 2px; }
 .sq                          { width: 20px;  height: 20px;                                                                    }

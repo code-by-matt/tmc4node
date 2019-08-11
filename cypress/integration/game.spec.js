@@ -47,7 +47,7 @@ describe("Gameplay.", function() {
     cy.visit("http://localhost:8000/game?id=" + id);
 
     // Check that interacting with the start panel emits the right things.
-    cy.get("#start-panel .my-name")
+    cy.get("#start .my-name")
       .type("BoJack{enter}");
     cy.get('[for="thr-min"]')
       .click();
@@ -62,7 +62,7 @@ describe("Gameplay.", function() {
     cy.task("my", {type: "sender name", thing: "Carolyn", id: id});
     cy.task("my", {type: "message", thing: "ten minutes", id: id});
     cy.task("my", {type: "message", thing: "ready", id: id});
-    cy.get("#start-panel .their-name")
+    cy.get("#start .their-name")
       .should("have.text", "Carolyn");
     cy.get("#ten-min")
       .should("be.checked");
@@ -77,9 +77,9 @@ describe("Gameplay.", function() {
       .log("game stats [object Object]?")
       .log("message play animation?")
       .pause();
-    cy.get("#start-panel")
+    cy.get("#start")
       .should("not.be.visible");
-    cy.get("#play-panel")
+    cy.get("#play")
       .should("not.be.visible");
 
     // Force our player to be red and feed in a dummy game, which also checks that we can receive a game.
@@ -93,7 +93,7 @@ describe("Gameplay.", function() {
     // Make a winning move to check that the game ends.
     cy.get("#board-img")
       .click(200, 25);
-    cy.get("#end-panel")
+    cy.get("#end")
       .should("be.visible")
       .should("have.text", "Red wins by connection!");
   });

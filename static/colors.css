@@ -1,15 +1,12 @@
 /* This stylesheet is for background-color, color, border-color, outline-color, */
 
 /* Containers. */
-#start-panel                          { background-color:   white;                 border-color: gray; }
-#play-panel                           { background-color:   white;                 border-color: gray; }
-#end-panel                            { background-color:   white;                 border-color: gray; }
-#rematch-panel                        { background-color:   white;                 border-color: gray; }
+.panel                                { background-color:   white;                 border-color: gray; }
 .b1                                   {                                              border-color: gray; }
 
 /* Items. */
 img                                   { background-color: #D8D8D8; }
-#start-panel .my-name:focus           {                                                                    outline-color: #007bff; }
+#start       .my-name:focus           {                                                                    outline-color: #007bff; }
 input[type=checkbox]:checked + label  { background-color:    gray; color: white; }
 input[type=radio]:checked + label     { background-color:    gray; color: white; }
 .butt                                 { background-color: #D8D8D8; color: black; }

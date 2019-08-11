@@ -16,9 +16,9 @@ const show = function(stats, showNumbers, iAmRed, handle) {
   var theirTimeDiv = document.getElementById("their-time");
 
   // Game over message is displayed here.
-  var startPanel = document.getElementById("start-panel");
-  var endPanel = document.getElementById("end-panel");
-  var rematchPanel = document.getElementById("rematch-panel");
+  var startPanel = document.getElementById("start");
+  var endPanel = document.getElementById("end");
+  var rematchPanel = document.getElementById("rematch");
 
   // HELPER FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 

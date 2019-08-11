@@ -2,8 +2,8 @@
 (function() {
 
   // Grab lots of document elements.
-  var startPanel = document.getElementById("start-panel");
-  var playPanel = document.getElementById("play-panel");
+  var startPanel = document.getElementById("start");
+  var playPanel = document.getElementById("play");
   var rematchBtn = document.getElementById("rematch");
   var boardDiv = document.getElementById("board-div");
   var controls = document.getElementById("controls");

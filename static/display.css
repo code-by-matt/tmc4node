@@ -8,17 +8,14 @@
 #universe                    { display: flex;  flex-direction: column; justify-content: flex-start;    align-items: center;                                                                }
 #board-div                   { display: flex;                          justify-content: center;        align-items: center; position: relative;                                            }
 #board-img                   { display: block;                                                                                                                                             }
-#start-panel                 { display: none;                                                                               position: absolute; border-style: solid;                       }
-#play-panel                  { display: none;                                                                               position: absolute; border-style: solid;                       }
-#end-panel                   { display: none;                                                                               position: absolute; border-style: solid;                       }
-#rematch-panel               { display: none;                                                                               position: absolute; border-style: solid;                       }
+.panel                       { display: none;                                                                               position: absolute; border-style: solid;                       }
 .col-between                 { display: flex;  flex-direction: column; justify-content: space-between;                                                                                     }
 .row-between                 { display: flex;                          justify-content: space-between;                                                                                     }
 .row-center                  { display: flex;                          justify-content: center;                                                                                            }
 
 /* Items. */
 canvas                       { display: none;  }
-#start-panel .my-name:focus  {                                                                                                                                       outline-style: solid; }
+#start       .my-name:focus  {                                                                                                                                       outline-style: solid; }
 #controls .my-name           { display: block; }
 #controls .their-name        { display: block; }
 .timer                       { display: flex;  align-items: center; }
