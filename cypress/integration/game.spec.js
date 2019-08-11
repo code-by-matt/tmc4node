@@ -73,7 +73,6 @@ describe("Gameplay.", function() {
     cy.get('[for="ready"]')
       .click()
       .log("message transfer names?")
-      .log("message sender is red/blue?")
       .log("game stats [object Object]?")
       .log("message play animation?")
       .pause();
@@ -82,11 +81,11 @@ describe("Gameplay.", function() {
     cy.get("#play")
       .should("not.be.visible");
 
-    // Force our player to be red and feed in a dummy game, which also checks that we can receive a game.
-    cy.task("my", {type: "message", thing: "sender is blue", id: id});
+    // Feed in a dummy game, which checks that we can receive a game and forces us to be red.
     var stats = {
       history: "r30r31r32",
       openRows: [0, 0, 0, 3, 0, 0, 0],
+      iAmRed: false,
     };
     cy.task("my", {type: "game stats", thing: stats, id: id});
 

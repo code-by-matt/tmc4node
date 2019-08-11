@@ -1,5 +1,5 @@
 // Here are the functions that deal with displaying information.
-const show = function(stats, showNumbers, iAmRed, handle) {
+const show = function(stats, showNumbers, handle) {
 
   // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   
@@ -15,12 +15,27 @@ const show = function(stats, showNumbers, iAmRed, handle) {
   var myTimeDiv = document.getElementById("my-time");
   var theirTimeDiv = document.getElementById("their-time");
 
+  // Player colors displayed here.
+  var myColor = document.getElementById("my-color");
+  var theirColor = document.getElementById("their-color");
+
   // Game over message is displayed here.
   var startPanel = document.getElementById("start");
   var endPanel = document.getElementById("end");
   var rematchPanel = document.getElementById("rematch");
 
   // HELPER FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  function showColors(iAmRed) {
+    if (iAmRed) {
+      myColor.style.backgroundColor = "#DC3545";
+      theirColor.style.backgroundColor = "#007BFF";
+    }
+    else {
+      myColor.style.backgroundColor = "#007BFF";
+      theirColor.style.backgroundColor = "#DC3545";
+    }
+  }
 
   // Converts a time in ms into a human-readable string. If ms is non-positive, returns "00:00".
   function convert(ms) {
@@ -168,6 +183,8 @@ const show = function(stats, showNumbers, iAmRed, handle) {
     rematchPanel.style.display = "none";
     showBoard("", false);
     futureImg.src = "nothing.png";
+    myColor.style.backgroundColor = "#D8D8D8";
+    theirColor.style.backgroundColor = "#D8D8D8";
   }
   else {
     startPanel.style.display = "none";
@@ -175,16 +192,17 @@ const show = function(stats, showNumbers, iAmRed, handle) {
     showFuture(stats.future);
     if (stats.winner == null) {
       if (stats.moveStart != null) {
-        showRunningTimes(iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
+        showRunningTimes(stats.iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
       }
     }
     else {
       if (stats.moveStart != null) {
-        showStoppedTimes(iAmRed, stats.redTime, stats.bluTime);
+        showStoppedTimes(stats.iAmRed, stats.redTime, stats.bluTime);
       }
       endPanel.textContent = stats.winner + " wins by " + stats.winBy + "!";
       endPanel.style.display = "flex";
       rematchPanel.style.display = "flex";
     }
+    showColors(stats.iAmRed);
   }
 };

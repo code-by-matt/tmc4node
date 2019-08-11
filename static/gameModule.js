@@ -10,6 +10,7 @@ const gameModule = function() {
     openRows: null,    // An integer array where element i is the lowest open row in column i of the board.
     history: null,     // A string representing the squares on the board, in the order they were played.
     future: null,      // A string of the colors of the next eight moves.
+    iAmRed: null,      // A Boolean that tells me if I'm red. It's REVERSED when the opponent receives our game stats.
 
     // We call these the timing properties.
     moveStart: null,   // The moment in time (in ms) at which the current move started, whether it be red or blu.
@@ -69,6 +70,7 @@ const gameModule = function() {
 
   // Updates game stats with given new stats.
   function assign(newStats) {
+    newStats.iAmRed = !newStats.iAmRed;
     Object.assign(stats, newStats);
   }
   
@@ -107,6 +109,12 @@ const gameModule = function() {
       else {
         stats.future += "b";
       }
+    }
+    if (Math.random() > 0.5) {
+      stats.iAmRed = true;
+    }
+    else {
+      stats.iAmRed = false;
     }
   }
 
@@ -173,7 +181,7 @@ const gameModule = function() {
   }
 
   // Resign, with the resigning player determined from iAmRed.
-  function resign(iAmRed) {
+  function resign() {
 
     // Update the timing properties if we're using time control.
     var moveEnd = new Date().getTime();
@@ -188,7 +196,7 @@ const gameModule = function() {
     }
 
     // Update the winning properties.
-    if (iAmRed) {
+    if (stats.iAmRed) {
       stats.winner = "Blue";
     }
     else {
@@ -205,13 +213,14 @@ const gameModule = function() {
       openRows: null,
       history: null,
       future: null,
+      iAmRed: null,
       moveStart: null,
       redTime: null,
       bluTime: null,
       winner: null,
       winBy: null,
     };
-    assign(newStats);
+    Object.assign(stats, newStats);
   }
 
   return {

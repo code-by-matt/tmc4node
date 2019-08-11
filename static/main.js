@@ -1,3 +1,4 @@
+var game = gameModule();
 // We use an IIFE to protect our script from evil outside forces.
 (function() {
 
@@ -9,12 +10,11 @@
   var controls = document.getElementById("controls");
 
   // Create a game and other pertinent variables.
-  var game = gameModule();
+  
   var handle = {val: 0};
   var theyAreReady = false;
   var showNumbers = false;
-  var iAmRed;
-  show(game.stats, showNumbers, iAmRed, handle);
+  show(game.stats, showNumbers, handle);
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
@@ -70,22 +70,8 @@
         game.start(-1);
       }
 
-      // Randomly assign colors to each player.
-      if (Math.random() > 0.5) {
-        iAmRed = true;
-        controls.querySelector("#my-color").style.backgroundColor = "#DC3545";
-        controls.querySelector("#their-color").style.backgroundColor = "#007BFF";
-        socket.emit("my", "message", "sender is red", id);
-      }
-      else {
-        iAmRed = false;
-        controls.querySelector("#my-color").style.backgroundColor = "#007BFF";
-        controls.querySelector("#their-color").style.backgroundColor = "#DC3545";
-        socket.emit("my", "message", "sender is blue", id);
-      }
-
       // Display the game object.
-      show(game.stats, showNumbers, iAmRed, handle);
+      show(game.stats, showNumbers, handle);
       socket.emit("my", "game stats", game.stats, id);
 
       // Hide start panel, show play panel, wait two seconds, then hide play panel.
@@ -116,10 +102,10 @@
     event.target.style.cursor = "default";
     var col = getCol(event);
     if (game.stats.history != null && game.stats.openRows[col] < 6 && game.stats.winner == null) {
-      if (iAmRed && game.stats.future[0] == "r") {
+      if (game.stats.iAmRed && game.stats.future[0] == "r") {
         event.target.style.cursor = "pointer";
       }
-      else if (!iAmRed && game.stats.future[0] == "b") {
+      else if (!game.stats.iAmRed && game.stats.future[0] == "b") {
         event.target.style.cursor = "pointer";
       } 
     }
@@ -129,14 +115,14 @@
   boardDiv.addEventListener("click", function(event) {
     var col = getCol(event);
     if (game.stats.history != null && game.stats.openRows[col] < 6 && game.stats.winner == null) {
-      if (iAmRed && game.stats.future[0] == "r") {
+      if (game.stats.iAmRed && game.stats.future[0] == "r") {
         game.move(col);
-        show(game.stats, showNumbers, iAmRed, handle);
+        show(game.stats, showNumbers, handle);
         socket.emit("my", "game stats", game.stats, id);
       }
-      else if (!iAmRed && game.stats.future[0] == "b") {
+      else if (!game.stats.iAmRed && game.stats.future[0] == "b") {
         game.move(col);
-        show(game.stats, showNumbers, iAmRed, handle);
+        show(game.stats, showNumbers, handle);
         socket.emit("my", "game stats", game.stats, id);
       }
     }
@@ -145,21 +131,19 @@
   controls.addEventListener("click", function(event) {
     if (event.target.id == "number-toggle") {
       showNumbers = !showNumbers;
-      show(game.stats, showNumbers, iAmRed, handle);
+      show(game.stats, showNumbers, handle);
     }
     else if (event.target.id == "resign" && game.stats.history != null && game.stats.winner == null) {
-      game.resign(iAmRed);
-      show(game.stats, showNumbers, iAmRed, handle);
+      game.resign(game.stats.iAmRed);
+      show(game.stats, showNumbers, handle);
       socket.emit("my", "game stats", game.stats, id);
     }
   });
 
   rematchBtn.addEventListener("click", function() {
-    controls.querySelector("#my-color").style.backgroundColor = "#D8D8D8";
-    controls.querySelector("#their-color").style.backgroundColor = "#D8D8D8";
     startPanel.querySelector("#ready").click();
     game.clear();
-    show(game.stats, showNumbers, iAmRed, handle);
+    show(game.stats, showNumbers, handle);
     socket.emit("my", "message", "rematch", id);
   });
 
@@ -168,7 +152,7 @@
     if (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00") {
       clearInterval(wao);
       game.timeout();
-      show(game.stats, showNumbers, iAmRed, handle);
+      show(game.stats, showNumbers, handle);
       socket.emit("my", "game stats", game.stats, id);
     }
   }, 100);
@@ -209,18 +193,6 @@
         }, 2000);
       }
 
-      // Assigning colors.
-      else if (thing == "sender is red") {
-        iAmRed = false;
-        controls.querySelector("#my-color").style.backgroundColor = "#007BFF";
-        controls.querySelector("#their-color").style.backgroundColor = "#DC3545";
-      }
-      else if (thing == "sender is blue") {
-        iAmRed = true;
-        controls.querySelector("#my-color").style.backgroundColor = "#DC3545";
-        controls.querySelector("#their-color").style.backgroundColor = "#007BFF";
-      }
-
       // Moving names from the start panel into the controls.
       else if (thing == "transfer names") {
         controls.querySelectorAll(".name")[0].textContent = startPanel.querySelectorAll(".name")[0].value;
@@ -256,22 +228,14 @@
         // If the game has started, give all the game stuff.
         if (game.stats.history != null) {
           socket.emit("my", "message", "transfer names", id);
-          if (iAmRed) {
-            socket.emit("my", "message", "sender is red", id);
-          }
-          else {
-            socket.emit("my", "message", "sender is blue", id);
-          }
           socket.emit("my", "game stats", game.stats, id);
         }
       }
 
       else if (thing == "rematch") {
-        controls.querySelector("#my-color").style.backgroundColor = "#D8D8D8";
-        controls.querySelector("#their-color").style.backgroundColor = "#D8D8D8";
         startPanel.querySelector("#ready").click();
         game.clear();
-        show(game.stats, showNumbers, iAmRed, handle);
+        show(game.stats, showNumbers, handle);
       }
     }
 
@@ -284,7 +248,7 @@
     }
     else if (type == "game stats") {
       game.assign(thing);
-      show(game.stats, showNumbers, iAmRed, handle);
+      show(game.stats, showNumbers, handle);
     }
   });
 
