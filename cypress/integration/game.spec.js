@@ -75,7 +75,7 @@ describe("Gameplay.", function() {
       .log("message transfer names?")
       .log("message sender is red/blue?")
       .log("game stats [object Object]?")
-      .log("message hide-hide animation?")
+      .log("message play animation?")
       .pause();
     cy.get("#start-panel")
       .should("not.be.visible");

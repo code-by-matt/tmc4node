@@ -12,10 +12,10 @@
   var game = gameModule();
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
+  show(null, null, null, null);
   var socket = io();
   socket.emit("join room", id);
   socket.emit("my", "message", "sync", id);
-  show(null, null, null, null);
 
   var handle = {val: 0};
   var theyAreReady = false;
@@ -89,12 +89,12 @@
       show(game.stats, showNumbers, iAmRed, handle);
       socket.emit("my", "game stats", game.stats, id);
 
-      // Hide start panel, revealing play panel, wait two seconds, then hide play panel.
-      startPanel.style.display = "none";
+      // Hide start panel, show play panel, wait two seconds, then hide play panel.
+      playPanel.style.display = "flex";
       setTimeout(function() {
         playPanel.style.display = "none";
       }, 2000);
-      socket.emit("my", "message", "hide-hide animation", id);
+      socket.emit("my", "message", "play animation", id);
     }
   });
 
@@ -198,15 +198,11 @@
       }
 
       // Hiding the start panel and the play panel.
-      else if (thing == "hide-hide animation") {
-        startPanel.style.display = "none";
+      else if (thing == "play animation") {
+        playPanel.style.display = "flex";
         setTimeout(function() {
           playPanel.style.display = "none";
         }, 2000);
-      }
-      else if (thing == "hide-hide instant") {
-        startPanel.style.display = "none";
-        playPanel.style.display = "none";
       }
 
       // Assigning colors.
@@ -255,7 +251,6 @@
 
         // If the game has started, give all the game stuff.
         if (game.stats.history != null) {
-          socket.emit("my", "message", "hide-hide instant", id);
           socket.emit("my", "message", "transfer names", id);
           if (iAmRed) {
             socket.emit("my", "message", "sender is red", id);

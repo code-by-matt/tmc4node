@@ -16,6 +16,7 @@ const show = function(stats, showNumbers, iAmRed, handle) {
   var theirTimeDiv = document.getElementById("their-time");
 
   // Game over message is displayed here.
+  var startPanel = document.getElementById("start-panel");
   var endPanel = document.getElementById("end-panel");
   var rematchPanel = document.getElementById("rematch-panel");
 
@@ -162,9 +163,11 @@ const show = function(stats, showNumbers, iAmRed, handle) {
   // THE ACTUAL FUNCTION –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––  
 
   if (stats == null) {
+    startPanel.style.display = "flex";
     showBoard("", false);
   }
   else {
+    startPanel.style.display = "none";
     showBoard(stats.history, showNumbers);
     showFuture(stats.future);
     if (stats.winner == null) {
