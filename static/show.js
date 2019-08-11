@@ -98,7 +98,7 @@ const show = function(stats, showNumbers, iAmRed, handle) {
         ctx.fillStyle = "#DC3545";
         ctx.fillRect((200 * i), 0, 200, 200);
       }
-      else {
+      else if (future[i] == "b") {
         ctx.fillStyle = "#007BFF";
         ctx.fillRect((200 * i), 0, 200, 200);
       }
@@ -162,9 +162,12 @@ const show = function(stats, showNumbers, iAmRed, handle) {
 
   // THE ACTUAL FUNCTION –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––  
 
-  if (stats == null) {
+  if (stats.history == null) {
     startPanel.style.display = "flex";
+    endPanel.style.display = "none";
+    rematchPanel.style.display = "none";
     showBoard("", false);
+    futureImg.src = "nothing.png";
   }
   else {
     startPanel.style.display = "none";

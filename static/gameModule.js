@@ -197,6 +197,23 @@ const gameModule = function() {
     stats.winBy = "resignation";
   }
 
+  // Make all the stats null.
+  function clear() {
+    newStats = {
+      currentTurn: null,
+      firstTurn: null,
+      openRows: null,
+      history: null,
+      future: null,
+      moveStart: null,
+      redTime: null,
+      bluTime: null,
+      winner: null,
+      winBy: null,
+    };
+    assign(newStats);
+  }
+
   return {
     stats: stats,
     assign: assign,
@@ -204,5 +221,6 @@ const gameModule = function() {
     move: move,
     timeout: timeout,
     resign: resign,
+    clear: clear,
   };
 };

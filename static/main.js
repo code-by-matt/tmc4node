@@ -8,19 +8,18 @@
   var boardDiv = document.getElementById("board-div");
   var controls = document.getElementById("controls");
 
-  // Create a game instance.
+  // Create a game and other pertinent variables.
   var game = gameModule();
-  
-  // Establish a websocket connection, join the right room, ask to sync (if necessary).
-  show(null, null, null, null);
-  var socket = io();
-  socket.emit("join room", id);
-  socket.emit("my", "message", "sync", id);
-
   var handle = {val: 0};
   var theyAreReady = false;
   var showNumbers = false;
   var iAmRed;
+  show(game.stats, showNumbers, iAmRed, handle);
+  
+  // Establish a websocket connection, join the right room, ask to sync (if necessary).
+  var socket = io();
+  socket.emit("join room", id);
+  socket.emit("my", "message", "sync", id);
 
   // Handle events that happen in the start panel.
   startPanel.addEventListener("change", function(event) {
@@ -156,7 +155,12 @@
   });
 
   rematchBtn.addEventListener("click", function() {
-    console.log("bruh");
+    controls.querySelector("#my-color").style.backgroundColor = "#D8D8D8";
+    controls.querySelector("#their-color").style.backgroundColor = "#D8D8D8";
+    startPanel.querySelector("#ready").click();
+    game.clear();
+    show(game.stats, showNumbers, iAmRed, handle);
+    socket.emit("my", "message", "rematch", id);
   });
 
   // Keep an eye out for timeouts.
@@ -260,6 +264,14 @@
           }
           socket.emit("my", "game stats", game.stats, id);
         }
+      }
+
+      else if (thing == "rematch") {
+        controls.querySelector("#my-color").style.backgroundColor = "#D8D8D8";
+        controls.querySelector("#their-color").style.backgroundColor = "#D8D8D8";
+        startPanel.querySelector("#ready").click();
+        game.clear();
+        show(game.stats, showNumbers, iAmRed, handle);
       }
     }
 
