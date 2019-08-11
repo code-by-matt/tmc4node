@@ -1,4 +1,4 @@
-/* This stylesheet is for width, height, padding, border-width, margin, and outline-width. */
+/* This stylesheet is for width, height, padding, border-width, margin, outline-width, and flex. */
 
 /* The element with id="box" floats in the middle of large viewports and fills the entirety of small viewports. */
 @media (min-width: 576px) {
@@ -10,25 +10,28 @@
   #rematch-panel  {               margin-top: 14vw; }
 }
 
-/* Containers. */
-body                         {                                                                margin: 0px; }
-#universe                    { width: 100vw; height: 100vh; }
-#board-img                   { width: 100%;  }
-#start-panel                 { width: 276px; height: 84px;  padding: 12px; border-width: 2px; }
-#play-panel                  {                              padding: 2px;  border-width: 2px; }
-#end-panel                   {                              padding: 2px;  border-width: 2px; }
-#rematch-panel               {                              padding: 2px;  border-width: 2px;                }
-#controls                    {               height: 52px;  padding: 12px; }
-.b1                          {                                             border-width: 1px; }
-.half                        { width: 50%;   }
+/* Fixed-size containers. */
+body                         {                                                                margin: 0px;                    }
+#universe                    { width: 100vw; height: 100vh;                                                                   }
+#board-img                   { width: 100%;                                                                                   }
+#start-panel                 { width: 276px; height: 84px;  padding: 12px; border-width: 2px;                                 }
+#play-panel                  {                              padding: 2px;  border-width: 2px;                                 }
+#end-panel                   {                              padding: 2px;  border-width: 2px;                                 }
+#rematch-panel               {                              padding: 2px;  border-width: 2px;                                 }
+#controls                    {               height: 52px;  padding: 12px;                                                    }
+.b1                          {                                             border-width: 1px;                                 }
+.half                        { width: 50%;                                                                                    }
+#two-butts                   { max-width: 132px; flex: 1; }
+#controls .my-name           {                   flex: 1; }
+#controls .their-name        {                   flex: 1; }
 
 /* Items. */
-#start-panel .my-name        { width: 116px; height: 20px;  padding: 0px;  }
+#start-panel .my-name        { width: 116px; height: 20px;  padding: 0px;                                                     }
 #start-panel .my-name:focus  {                                                                            outline-width: 2px; }
-#start-panel .their-name     { width: 116px; height: 20px;  padding: 0px;  }
-.butt                        { width: 60px;  height: 20px;  padding: 0px;  }
+#start-panel .their-name     { width: 116px; height: 20px;  padding: 0px;                                                     }
+.butt                        { width: 60px;  height: 20px;  padding: 0px;                                                     }
 .butt:focus                  {                                                                            outline-width: 2px; }
-.sq                          { width: 20px;  height: 20px;  }
+.sq                          { width: 20px;  height: 20px;                                                                    }
 
 .m4 {
   margin: 4px;

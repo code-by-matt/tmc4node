@@ -34,10 +34,11 @@ block content
         label(tabindex="0" for="ready" class="butt") Ready
   div(id="controls" class="b1 col-between")
     div(class="row-between")
-      div(class="row-between")
+      div(class="row-center")
         canvas(id="future-canvas" width="1600" height="200")
         img(id="future-img" width="160" height="20" src="nothing.png")
-      div(class="row-between")
+        div(style="width: 12px")
+      div(id="two-butts" class="row-between")
         button(id="resign" class="butt") Resign
         button(id="number-toggle" class="butt") 1 2 3
     div(class="row-between")

@@ -19,8 +19,8 @@
 /* Items. */
 canvas                       { display: none;  }
 #start-panel .my-name:focus  {                                                                                                                                       outline-style: solid; }
-#controls .my-name           { display: block; flex: 1; }
-#controls .their-name        { display: block; flex: 1; }
+#controls .my-name           { display: block; }
+#controls .their-name        { display: block; }
 .timer                       { display: flex;  align-items: center; }
 input[type=radio]            { display: none;  }
 input[type=checkbox]         { display: none;  }
