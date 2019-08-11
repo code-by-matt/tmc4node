@@ -252,28 +252,6 @@ var game = gameModule();
     }
   });
 
-  // When reset is clicked, reset game and send reset request.
-  // readyBtn.addEventListener("change", function() {
-    // if (readyBtn.checked && theyAreReady) {
-    //   socket.emit("countdown", id);
-    //   d.countdown();
-    //   setTimeout(function() {
-    //     l.init(myNameDiv.textContent, theirNameDiv.textContent);
-    //     socket.emit("my game", id, game);
-    //     d.tryDraw();
-    //   }, 3000);
-    // }
-    // if (game.stats.winner != null) {
-    //   socket.emit("countdown", id);
-    //   d.countdown();
-    //   setTimeout(function() {
-    //     l.init(myNameDiv.textContent, theirNameDiv.textContent);
-    //     socket.emit("my game", id, game);
-    //     d.tryDraw();
-    //   }, 3000);
-    // }
-  // });
-
   // Disconnect before unload.
   window.addEventListener("beforeunload", function() {
     socket.emit("leave room", id);
