@@ -4,16 +4,17 @@
 @media (min-width: 576px) {
   #box      { width: 400px; margin-top: 88px; }
   #rematch  {               margin-top: 57px; }
+  #board-img  { width: 100%;  height: calc(2400px/7)                                                             }
 }
 @media (max-width: 576px) {
   #box      { width: 100vw;                   }
   #rematch  {               margin-top: 14vw; }
+  #board-img  { width: 100%;  height: calc(600vw/7)                                                             }
 }
 
                        /* Fixed-size containers. */
                  body  {                                                                margin: 0px;                    }
             #universe  { width: 100vw; height: 100vh;                                                                   }
-           #board-img  { width: 100%;                                                                                   }
                #start  { width: 276px; height: 84px;  padding: 12px; border-width: 2px;                                 }
 #play, #end, #rematch  {                              padding: 2px;  border-width: 2px;                                 }
             #controls  {               height: 52px;  padding: 12px;                                                    }
