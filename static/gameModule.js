@@ -4,22 +4,33 @@ const gameModule = function() {
   // The stats object is the only thing that is emitted by sockets.
   stats = {
 
+    // We call these the pre-start properties.
+    theyAreReady: false, // A Boolean that states whether or not my opponent is ready to start. It's SWAPPED with iAmReady when the opponent receives our game stats.
+    theirName: null,     // A string that is my opponent's name. It's SWAPPED with myName when my opponent receives our game stats.
+    iAmReady: false,     // A Boolean that states whether or not I am ready to start. It's SWAPPED with theyAreReady when the opponent receives our game stats.
+    myName: null,        // A string that is my name. It's SWAPPED with theirName when the opponent receives our game stats.
+
     // We call these the non-timing properties.
-    currentTurn: null, // An integer that is the position in the Thue-Morse sequence where the game is now.
-    firstTurn: null,   // An integer that is the position in the Thue-Morse sequence where the game started.
-    openRows: null,    // An integer array where element i is the lowest open row in column i of the board.
-    history: null,     // A string representing the squares on the board, in the order they were played.
-    future: null,      // A string of the colors of the next eight moves.
-    iAmRed: null,      // A Boolean that tells me if I'm red. It's REVERSED when the opponent receives our game stats.
+    currentTurn: null,   // An integer that is the position in the Thue-Morse sequence where the game is now.
+    firstTurn: null,     // An integer that is the position in the Thue-Morse sequence where the game started.
+    openRows: null,      // An integer array where element i is the lowest open row in column i of the board.
+    history: null,       // A string representing the squares on the board, in the order they were played.
+    future: null,        // A string of the colors of the next eight moves.
+    iAmRed: null,        // A Boolean that tells me if I'm red. It's REVERSED when the opponent receives our game stats.
 
     // We call these the timing properties.
-    moveStart: null,   // The moment in time (in ms) at which the current move started, whether it be red or blu.
-    redTime: null,     // The amount of time (in ms) that red has spent playing, excluding the current move.
-    bluTime: null,     // The amount of time (in ms) that blu has spent playing, excluding the current move.
+    timeControl: null,   // An integer that is the amount of time (in min) each player gets for this game.
+    moveStart: null,     // The moment in time (in ms) at which the current move started, whether it be red or blu.
+    redTime: null,       // The amount of time (in ms) that red has spent playing, excluding the current move.
+    bluTime: null,       // The amount of time (in ms) that blu has spent playing, excluding the current move.
 
     // We call these the winning properties.
-    winner: null,      // The winner of the game. Either "Red", "Blue", or null.
-    winBy: null,       // How the game was won. Either "connection", "timeout", "resignation", or null.
+    winner: null,        // The winner of the game. Either "Red", "Blue", or null.
+    winBy: null,         // How the game was won. Either "connection", "timeout", "resignation", or null.
+
+    // We call these the post-win properties.
+    theyWantMore: false, // A Boolean that states whether or not my opponent wants to rematch. It's SWAPPED with iWantMore when the opponent receives our game stats.
+    iWantMore: false,    // A Boolean that states whether or not I want to rematch. It's SWAPPED with theyWantMore when the opponent receives our game stats.
   };
 
   // PRIVATE FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -68,31 +79,57 @@ const gameModule = function() {
 
   // PUBLIC FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-  // Updates game stats with given new stats.
+  // States if the game is ready to start.
+  function isReadyToStart() {
+    return stats.myName != null && stats.theirName != null && stats.timeControl != null && stats.iAmReady && stats.theyAreReady;
+  }
+
+  // States if the game is in progress AND if the given column is a legal place to move.
+  function isLegalMove(col) {
+    return stats.moveStart != null && stats.openRows[col] < 6 && stats.winner == null;
+  }
+  
+  // Updates game stats with given new stats, altering as necessary.
   function assign(newStats) {
+
+    // Flip iAmRed.
     newStats.iAmRed = !newStats.iAmRed;
+
+    // Swap names.
+    var temp = newStats.myName;
+    newStats.myName = newStats.theirName;
+    newStats.theirName = temp;
+
+    // Swap readinesses.
+    temp = newStats.iAmReady;
+    newStats.iAmReady = newStats.theyAreReady;
+    newStats.theyAreReady = temp;
+
+    // Swap desires to rematch.
+    temp = newStats.iWantMore;
+    newStats.iWantMore = newStats.theyWantMore;
+    newStats.theyWantMore = temp;
+
+    // Update our stats.
     Object.assign(stats, newStats);
   }
   
   // Starts a game with the given time control.
-  function start(time) {
+  function start() {
 
     // Initialize the timing properties.
     stats.moveStart = new Date().getTime();
-    if (time == 1) {
+    if (stats.timeControl == 1) {
       stats.redTime = 60000;
       stats.bluTime = 60000;
     }
-    else if (time == 3) {
+    else if (stats.timeControl == 3) {
       stats.redTime = 180000;
       stats.bluTime = 180000;
     }
-    else if (time == 10) {
+    else if (stats.timeControl == 10) {
       stats.redTime = 600000;
       stats.bluTime = 600000;
-    }
-    else {
-      stats.moveStart = null; // The nullness of moveStart is how we will determine if the game has time control.
     }
 
     // Initialize the non-timing properties.
@@ -123,7 +160,7 @@ const gameModule = function() {
 
     // Update the timing properties if we're using time control.
     var moveEnd = new Date().getTime();
-    if (stats.moveStart != null) {
+    if (stats.timeControl != -1) {
       if (stats.future[0] == "r") {
         stats.redTime -= moveEnd - stats.moveStart;
       }
@@ -160,7 +197,7 @@ const gameModule = function() {
 
     // Update the timing properties if we're using time control.
     var moveEnd = new Date().getTime();
-    if (stats.moveStart != null) {
+    if (stats.timeControl != -1) {
       if (stats.future[0] == "r") {
         stats.redTime -= moveEnd - stats.moveStart;
       }
@@ -185,7 +222,7 @@ const gameModule = function() {
 
     // Update the timing properties if we're using time control.
     var moveEnd = new Date().getTime();
-    if (stats.moveStart != null) {
+    if (stats.timeControl != -1) {
       if (stats.future[0] == "r") {
         stats.redTime -= moveEnd - stats.moveStart;
       }
@@ -205,9 +242,11 @@ const gameModule = function() {
     stats.winBy = "resignation";
   }
 
-  // Make all the stats null.
+  // Resets all the stats EXCEPT myName, theirName, and timeControl.
   function clear() {
     newStats = {
+      theyAreReady: false,
+      iAmReady: false,
       currentTurn: null,
       firstTurn: null,
       openRows: null,
@@ -219,12 +258,16 @@ const gameModule = function() {
       bluTime: null,
       winner: null,
       winBy: null,
+      theyWantMore: false,
+      iWantMore: false,
     };
     Object.assign(stats, newStats);
   }
 
   return {
     stats: stats,
+    isReadyToStart: isReadyToStart,
+    isLegalMove: isLegalMove,
     assign: assign,
     start: start,
     move: move,

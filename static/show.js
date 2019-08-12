@@ -21,8 +21,10 @@ const show = function(stats, showNumbers, handle) {
 
   // Game over message is displayed here.
   var startPanel = document.getElementById("start");
+  var controls = document.getElementById("controls");
   var endPanel = document.getElementById("end");
   var rematchPanel = document.getElementById("rematch");
+  var rematchBtn = document.getElementById("rematch-btn");
 
   // HELPER FUNCTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -35,6 +37,46 @@ const show = function(stats, showNumbers, handle) {
       myColor.style.backgroundColor = "#007BFF";
       theirColor.style.backgroundColor = "#DC3545";
     }
+  }
+
+  function showStartPanel(myName, theirName, timeControl, iAmReady) {
+    startPanel.querySelectorAll(".name")[0].value = myName;
+    startPanel.querySelectorAll(".name")[1].textContent = theirName;
+    if (timeControl == 1) {
+      startPanel.querySelector("#one-min").checked = true;
+    }
+    else if (timeControl == 3) {
+      startPanel.querySelector("#thr-min").checked = true;
+    }
+    else if (timeControl == 10) {
+      startPanel.querySelector("#ten-min").checked = true;
+    }
+    else if (timeControl == -1) {
+      startPanel.querySelector("#inf-min").checked = true;
+    }
+    startPanel.querySelector("#ready").checked = iAmReady;
+    startPanel.style.display = "flex";
+  }
+
+  function hideStartPanel() {
+    startPanel.style.display = "none";
+  }
+
+  function showEndPanels(winner, winBy, iWantMore) {
+    endPanel.textContent = winner + " wins by " + winBy + "!";
+    rematchBtn.checked = iWantMore;
+    endPanel.style.display = "flex";
+    rematchPanel.style.display = "flex";
+  }
+
+  function hideEndPanels() {
+    endPanel.style.display = "none";
+    rematchPanel.style.display = "none";
+  }
+
+  function showNamesInControls(myName, theirName) {
+    controls.querySelectorAll(".name")[0].textContent = myName;
+    controls.querySelectorAll(".name")[1].textContent = theirName;
   }
 
   // Converts a time in ms into a human-readable string. If ms is non-positive, returns "00:00".
@@ -177,32 +219,38 @@ const show = function(stats, showNumbers, handle) {
 
   // THE ACTUAL FUNCTION –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––  
 
-  if (stats.history == null) {
-    startPanel.style.display = "flex";
-    endPanel.style.display = "none";
-    rematchPanel.style.display = "none";
+  // If the game has ended.
+  if (stats.winner != null) {
+    hideStartPanel();
+    showEndPanels(stats.winner, stats.winBy, stats.iWantMore);
+    showBoard(stats.history, showNumbers);
+    showFuture(stats.future);
+    showColors(stats.iAmRed);
+    if (stats.timeControl != -1) {
+      showStoppedTimes(stats.iAmRed, stats.redTime, stats.bluTime);
+    }
+  }
+
+  // If the game has started but not ended.
+  else if (stats.moveStart != null) {
+    hideStartPanel();
+    hideEndPanels();
+    showBoard(stats.history, showNumbers);
+    showFuture(stats.future);
+    showColors(stats.iAmRed);
+    showNamesInControls(stats.myName, stats.theirName);
+    if (stats.timeControl != -1) {
+      showRunningTimes(stats.iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
+    }
+  }
+
+  // If the game hasn't started.
+  else {
+    showStartPanel(stats.myName, stats.theirName, stats.timeControl, stats.iAmReady);
+    hideEndPanels();
     showBoard("", false);
     futureImg.src = "nothing.png";
     myColor.style.backgroundColor = "#D8D8D8";
     theirColor.style.backgroundColor = "#D8D8D8";
-  }
-  else {
-    startPanel.style.display = "none";
-    showBoard(stats.history, showNumbers);
-    showFuture(stats.future);
-    if (stats.winner == null) {
-      if (stats.moveStart != null) {
-        showRunningTimes(stats.iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
-      }
-    }
-    else {
-      if (stats.moveStart != null) {
-        showStoppedTimes(stats.iAmRed, stats.redTime, stats.bluTime);
-      }
-      endPanel.textContent = stats.winner + " wins by " + stats.winBy + "!";
-      endPanel.style.display = "flex";
-      rematchPanel.style.display = "flex";
-    }
-    showColors(stats.iAmRed);
   }
 };
