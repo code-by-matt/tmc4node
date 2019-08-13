@@ -9,6 +9,7 @@ const gameModule = function() {
     theirName: null,     // A string that is my opponent's name. It's SWAPPED with myName when my opponent receives our game stats.
     iAmReady: false,     // A Boolean that states whether or not I am ready to start. It's SWAPPED with theyAreReady when the opponent receives our game stats.
     myName: null,        // A string that is my name. It's SWAPPED with theirName when the opponent receives our game stats.
+    timeControl: null,   // An integer that is the amount of time (in min) each player gets for this game.
 
     // We call these the non-timing properties.
     currentTurn: null,   // An integer that is the position in the Thue-Morse sequence where the game is now.
@@ -19,7 +20,6 @@ const gameModule = function() {
     iAmRed: null,        // A Boolean that tells me if I'm red. It's REVERSED when the opponent receives our game stats.
 
     // We call these the timing properties.
-    timeControl: null,   // An integer that is the amount of time (in min) each player gets for this game.
     moveStart: null,     // The moment in time (in ms) at which the current move started, whether it be red or blu.
     redTime: null,       // The amount of time (in ms) that red has spent playing, excluding the current move.
     bluTime: null,       // The amount of time (in ms) that blu has spent playing, excluding the current move.
