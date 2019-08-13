@@ -17,6 +17,9 @@
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", id);
+  socket.on("room joined", function() {
+    document.querySelector(".row-center").textContent = "Connected!";
+  });
   socket.emit("my", "message", "sync", id);
 
   // Handle events that happen in the start panel.
