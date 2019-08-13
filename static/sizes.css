@@ -2,14 +2,14 @@
 
 /* The element with id="box" floats in the middle of large viewports and fills the entirety of small viewports. */
 @media (min-width: 576px) {
-  #box      { width: 400px; margin-top: 88px; }
-  #rematch  {               margin-top: 57px; }
-  #board-img  { width: 100%;  height: calc(2400px/7)                                                             }
+  #box        { width: 400px; margin-top: 88px;                                 }
+  #rematch    {               margin-top: calc(398px/7);                        }
+  #board-img  { width: 100%;                             height: calc(2388px/7) }
 }
 @media (max-width: 576px) {
-  #box      { width: 100vw;                   }
-  #rematch  {               margin-top: 14vw; }
-  #board-img  { width: 100%;  height: calc(600vw/7)                                                             }
+  #box        { width: 100vw;                                                   }
+  #rematch    {               margin-top: calc(100vw/7);                        }
+  #board-img  { width: 100%;                             height: calc(600vw/7)  }
 }
 
                        /* Fixed-size containers. */
