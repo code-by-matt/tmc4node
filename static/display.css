@@ -8,10 +8,12 @@
 #universe                    { display: flex;  flex-direction: column; justify-content: flex-start;    align-items: center;                                                                }
 #board-div                   { display: flex;                          justify-content: center;        align-items: center; position: relative;                                            }
 #board-img                   { display: block;                                                                                                                                             }
-.panel                       { display: none;                                                                               position: absolute; border-style: solid;                       }
-.col-between                 { display: flex;  flex-direction: column; justify-content: space-between;                                                                                     }
-.row-between                 { display: flex;                          justify-content: space-between;                                                                                     }
-.row-center                  { display: flex;                          justify-content: center;                                                                                            }
+.panel                       {                                                                                              position: absolute; border-style: solid;                       }
+.col-between                 {                 flex-direction: column; justify-content: space-between;                                                                                     }
+.row-between                 {                                         justify-content: space-between;                                                                                     }
+.row-center                  {                                         justify-content: center;                                                                                            }
+.flex                        { display: flex;                                                                                                                                              }
+.hidden                      { display: none;                                                                                                                                              }
 
 /* Items. */
 canvas                       { display: none;  }
@@ -25,6 +27,4 @@ input[type=checkbox]         { display: none;  }
 .butt:focus                  { outline-style: solid; }
 input                        { border-style: none; }
 
-.flex {
-  display: flex;
-}
+

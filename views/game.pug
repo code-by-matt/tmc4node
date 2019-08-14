@@ -4,25 +4,25 @@ block title
   title TMC4 | Play!
 
 block content
-  div(class="b1 row-center")
+  div(class="b1 flex row-center")
     div(class="m4") Thue-Morse
     img(class="m4" height="20" src="logo.png")
     div(class="m4") Connect Four
   div(id="board-div" class="b1")
     canvas(id="board-canvas" width="1400" height="1200")
     img(id="board-img")
-    div(id="loading" styl="display:none" class="panel") Loading...
-    div(id="rematch" class="panel")
+    div(id="loading" style="z-index: 1" class="flex panel") Loading...
+    div(id="rematch" class="hidden panel")
       input(id="rematch-btn" type="checkbox")
       label(tabindex="0" for="rematch-btn" class="butt") Rematch!
-    div(id="end" class="panel")
-    div(id="play" class="panel") Play!
-    div(id="start" class="panel col-between")
-      div(class="row-between")
+    div(id="end" class="hidden panel")
+    div(id="play" class="hidden panel") Play!
+    div(id="start" class="hidden panel col-between")
+      div(class="flex row-between")
         input(class="name" type="text" placeholder="enter a name" autofocus)
         div(style="width: 20px; text-align: center") vs
         div(class="name")
-      div(class="row-between")
+      div(class="flex row-between")
         input(id="one-min" name="time" type="radio")
         label(tabindex="0" for="one-min" class="butt") 1 min.
         input(id="thr-min" name="time" type="radio")
@@ -31,19 +31,19 @@ block content
         label(tabindex="0" for="ten-min" class="butt") 10 min.
         input(id="inf-min" name="time" type="radio")
         label(tabindex="0" for="inf-min" class="butt") ∞ min.
-      div(class="row-center")
+      div(class="flex row-center")
         input(id="ready" type="checkbox")
         label(tabindex="0" for="ready" class="butt") Ready
-  div(id="controls" class="b1 col-between")
-    div(class="row-between")
-      div(class="row-center")
+  div(id="controls" class="b1 flex col-between")
+    div(class="flex row-between")
+      div(class="flex row-center")
         canvas(id="future-canvas" width="1600" height="200")
         img(id="future-img" width="160" height="20" src="nothing.png")
         div(style="width: 12px")
-      div(id="two-butts" class="row-between")
+      div(id="two-butts" class="flex row-between")
         button(id="resign" class="butt") Resign
         button(id="number-toggle" class="butt") 1 2 3
-    div(class="row-between")
+    div(class="flex row-between")
       div(class="flex half")
         div(id="my-color" class="sq")
         div(style="width: 12px")
