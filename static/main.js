@@ -12,15 +12,19 @@
   var game = gameModule();
   var handle = {val: 0};
   var showNumbers = false;
-  show(game.stats, showNumbers, handle);
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", id);
+  if (first) {
+    show(game.stats, showNumbers, handle);
+  }
+  else {
+    socket.emit("my", "message", "sync", id);
+  }
   socket.on("room joined", function() {
     document.querySelector(".row-center").textContent = "Connected!";
   });
-  socket.emit("my", "message", "sync", id);
 
   // Uncheck ready if you click your name input.
   startPanel.querySelector(".name").addEventListener("click", function(event) {
