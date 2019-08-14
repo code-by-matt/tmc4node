@@ -47,8 +47,8 @@ describe("Gameplay.", function() {
   it("Should receive and show games correctly.", function() {
     var id = Math.random().toString(36).substr(6);
     cy.visit("http://localhost:8000/game?id=" + id);
-    cy.get(".row-center").eq(0)
-      .should("have.text", "Connected!");
+    cy.get("#loading")
+      .should("not.be.visible");
 
     // Check a game that hasn't started.
     cy.task("my", {type: "game stats", thing: {
@@ -162,8 +162,8 @@ describe("Gameplay.", function() {
   it("Should modify and send games correctly.", function() {
     var id = Math.random().toString(36).substr(6);
     cy.visit("http://localhost:8000/game?id=" + id);
-    cy.get(".row-center").eq(0)
-      .should("have.text", "Connected!");
+    cy.get("#loading")
+      .should("not.be.visible");
 
     // Check initial stats.
     cy.task("sync", id)

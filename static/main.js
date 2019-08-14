@@ -17,7 +17,6 @@
   var socket = io();
   socket.emit("join room", id);
   socket.on("room joined", function() {
-    document.querySelector(".row-center").textContent = "Connected!";
     document.querySelector("#loading").style.display = "none";
     if (first) {
       show(game.stats, showNumbers, handle);
