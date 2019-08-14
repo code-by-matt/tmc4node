@@ -16,14 +16,15 @@
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
   socket.emit("join room", id);
-  if (first) {
-    show(game.stats, showNumbers, handle);
-  }
-  else {
-    socket.emit("my", "message", "sync", id);
-  }
   socket.on("room joined", function() {
     document.querySelector(".row-center").textContent = "Connected!";
+    document.querySelector("#loading").style.display = "none";
+    if (first) {
+      show(game.stats, showNumbers, handle);
+    }
+    else {
+      socket.emit("my", "message", "sync", id);
+    }
   });
 
   // Uncheck ready if you click your name input.
