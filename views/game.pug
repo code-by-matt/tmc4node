@@ -11,6 +11,7 @@ block content
   div(id="board-div" class="b1")
     canvas(id="board-canvas" width="1400" height="1200")
     img(id="board-img")
+    div(id="loading" styl="display:none" class="panel") Loading...
     div(id="rematch" class="panel")
       input(id="rematch-btn" type="checkbox")
       label(tabindex="0" for="rematch-btn" class="butt") Rematch!
@@ -64,5 +65,6 @@ block scripts
   //Pug passes us the id.
   script.
     var id = "#{id}";
+    var first = "#{first}";
   //Gives us the main script.
   script(src="/main.js")

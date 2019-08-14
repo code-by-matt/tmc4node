@@ -36,11 +36,11 @@ app.get("/game", function(request, response) {
   else {
     if (io.sockets.adapter.rooms[request.query.id] == undefined) { // First to join this room.
       console.log("first to join room " + request.query.id);
-      response.render("game", {id: request.query.id});
+      response.render("game", {id: request.query.id, first: true});
     }
     else if (io.sockets.adapter.rooms[request.query.id].length == 1) { // Second to join this room.
       console.log("second to join room " + request.query.id);
-      response.render("game", {id: request.query.id});
+      response.render("game", {id: request.query.id, first: false});
     }
     else { // Third connection cannot join!
       console.log("cannot join room " + request.query.id + ", it is full!");
