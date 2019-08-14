@@ -53,7 +53,7 @@
       game.stats.theyAreReady = false;
     }
 
-    // If everything's ready, start the game and show the play animation.
+    // If everything's ready, start the game, show the play animation, and listen for timeouts.
     if (game.isReadyToStart()) {
       game.start();
       playPanel.style.display = "flex";
@@ -61,6 +61,15 @@
         playPanel.style.display = "none";
       }, 2000);
       socket.emit("my", "message", "play animation", id);
+      // Keep an eye out for timeouts.
+      var wao = setInterval(function() {
+        if (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00") {
+          clearInterval(wao);
+          game.timeout();
+          show(game.stats, showNumbers, handle);
+          socket.emit("my", "game stats", game.stats, id);
+        }
+      }, 100);
     }
 
     // Regardless of the game state, we show the game and emit the game stats.
@@ -133,16 +142,6 @@
     show(game.stats, showNumbers, handle);
     socket.emit("my", "game stats", game.stats, id);
   });
-
-  // Keep an eye out for timeouts.
-  var wao = setInterval(function() {
-    if (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00") {
-      clearInterval(wao);
-      game.timeout();
-      show(game.stats, showNumbers, handle);
-      socket.emit("my", "game stats", game.stats, id);
-    }
-  }, 100);
 
   // Handle socket stuff.
   socket.on("their", function(type, thing) {

@@ -252,5 +252,7 @@ const show = function(stats, showNumbers, handle) {
     futureImg.src = "nothing.png";
     myColor.style.backgroundColor = "#D8D8D8";
     theirColor.style.backgroundColor = "#D8D8D8";
+    myTimeDiv.textContent = "";
+    theirTimeDiv.textContent = "";
   }
 };
