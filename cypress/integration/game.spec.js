@@ -302,6 +302,50 @@ describe("Gameplay.", function() {
       cy.wrap(stats).its("theyWantMore").should("be.false");
       cy.wrap(stats).its("iWantMore").should("be.false");
     });
+
+    // Check non-timing stats after making a move.
+    cy.task("my", {type: "game stats", thing: {
+      theyAreReady: true,
+      theirName: "Diane",
+      iAmReady: true,
+      myName: "Peanutbutter",
+      timeControl: -1,
+      currentTurn: 8,
+      firstTurn: 0,
+      openRows: [0, 0, 1, 4, 3, 0, 0],
+      history: "r30b40b41r42b31r32r33b20",
+      future: "brrbrbbr",
+      iAmRed: true,
+      moveStart: 69,
+      redTime: null,
+      bluTime: null,
+      theyWantMore: false,
+      iWantMore: false,
+    }, id: id});
+    cy.get("#board-img")
+      .click(150, 25);
+    cy.task("sync", id)
+      .should("deep.equal", {
+        theyAreReady: true,
+        theirName: "Peanutbutter",
+        iAmReady: true,
+        myName: "Diane",
+        timeControl: -1,
+        currentTurn: 9,
+        firstTurn: 0,
+        openRows: [0, 0, 2, 4, 3, 0, 0],
+        history: "r30b40b41r42b31r32r33b20b21",
+        future: "rrbrbbrb",
+        iAmRed: false,
+        moveStart: 69,
+        redTime: null,
+        bluTime: null,
+        winner: null,
+        winBy: null,
+        theyWantMore: false,
+        iWantMore: false,
+      }
+    );
   });
 
   // it("Should play a game with connection.", function() {
