@@ -242,6 +242,10 @@ const show = function(stats, showNumbers, handle) {
     if (stats.timeControl != -1) {
       showRunningTimes(stats.iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
     }
+    else {
+      myTimeDiv.textContent = "";
+      theirTimeDiv.textContent = "";
+    }
   }
 
   // If the game hasn't started.
