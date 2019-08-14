@@ -22,6 +22,13 @@
   });
   socket.emit("my", "message", "sync", id);
 
+  // Uncheck ready if you click your name input.
+  startPanel.querySelector(".name").addEventListener("click", function(event) {
+    game.stats.iAmReady = false;
+    show(game.stats, showNumbers, handle);
+    socket.emit("my", "game stats", game.stats, id);
+  });
+
   // Handle events that happen in the start panel.
   startPanel.addEventListener("change", function(event) {
 
