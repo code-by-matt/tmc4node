@@ -36,5 +36,21 @@ module.exports = (on, config) => {
       socket.emit("my", type, thing, id);
       return null;
     },
+
+    // Add a socket to the toom with the given id, then emit a sync, then return the received game stats.
+    sync(id) {
+      return new Promise(function(resolve) {
+        var socket = client("http://localhost:8000");
+        socket.emit("join room", id);
+        socket.on("room joined", function() {
+          socket.emit("my", "message", "sync", id);
+          socket.on("their", function(type, thing) {
+            if (type == "game stats") {
+              resolve(thing);
+            }
+          });
+        });
+      });
+    },
   });
 };
