@@ -72,7 +72,7 @@ describe("Gameplay.", function() {
       .should("be.checked");
     cy.get("#ten-min")
       .should("be.checked");
-    
+
     // Check a game that is in progress.
     cy.task("my", {type: "game stats", thing: {
       theyAreReady: true,
@@ -110,6 +110,44 @@ describe("Gameplay.", function() {
       .click()
       .pause();
 
+    // Check a game that has ended.
+    cy.task("my", {type: "game stats", thing: {
+      theyAreReady: true,
+      theirName: "BoJack",
+      iAmReady: true,
+      myName: "Carolyn",
+      timeControl: 10,
+      currentTurn: 8,
+      firstTurn: 0,
+      openRows: [0, 0, 1, 4, 3, 0, 0],
+      history: "r30b40b41r31b42r20r10b43",
+      future: "brrbrbbr",
+      iAmRed: false,
+      moveStart: new Date().getTime(),
+      redTime: 567000,
+      bluTime: 587500,
+      winner: "Blue",
+      winBy: "connection",
+    }, id: id});
+    cy.get("#start")
+      .should("not.be.visible");
+    cy.get("#play")
+      .should("not.be.visible");
+    cy.get("#end")
+      .should("be.visible");
+    cy.get("#rematch")
+      .should("be.visible");
+    cy.get("#controls .name").eq(0)
+      .should("have.text", "BoJack");
+    cy.get("#controls .name").eq(1)
+      .should("have.text", "Carolyn");
+    cy.get("#my-time")
+      .should("have.text", "09:27");
+    cy.get("#their-time")
+      .should("have.text", "09:47");
+    cy.get("#end")
+      .should("have.text", "Blue wins by connection!")
+      .pause();
   });
 
   // it("Should play a game with connection.", function() {
