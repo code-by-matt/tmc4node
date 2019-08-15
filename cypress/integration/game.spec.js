@@ -2,10 +2,10 @@
 
 describe("Routing.", function() {
 
-  it("Should display the welcome page.", function() {
+  it("Should display the home page.", function() {
     cy.visit("http://localhost:8000");
     cy.get("title")
-      .should("have.text", "TMC4 | Welcome!");
+      .should("have.text", "TMC4 | Home");
   });
 
   it("Should display a game for the first player.", function() {
