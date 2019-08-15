@@ -1,0 +1,5 @@
+/* A few special styles for the home page. */
+#home  { padding: 6px;                                  }
+   h3  {               margin: 6px; text-align: center; }
+.butt  {               margin: 6px;                     }
+#logo  {               margin: 6px;                     }

@@ -1,15 +1,18 @@
 extends base
 
 block title
+  link(rel="stylesheet" type="text/css" href="index.css")
   title TMC4 | Home
 
 block content
-  div(class="b1 flex row-center")
-    div(class="m4") Welcome to Thue-Morse Connect Four!
-  form(method="GET" action="/game" class="b1 flex row-center")
-    input(name="id" type="hidden")
-    button(class="m4 butt" autofocus) Play
-    a(class="m4 butt" href="/about") About
+  div(id="home" class="b1")
+    div(id="logo" class="flex row-center")
+      img(src="logo.png" width="30px")
+    h3 Thue-Morse Connect Four
+    form(method="GET" action="/game" class="flex row-center")
+      input(name="id" type="hidden")
+      button(class="butt" autofocus) Play
+      a(class="butt" href="/about") About
 
 block scripts
   script(src="/new.js")
