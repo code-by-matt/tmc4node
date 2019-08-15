@@ -5,7 +5,7 @@ var express = require("express");
 var app = express();
 
 // Start up a server listening on port 8000.
-var server = app.listen(8000, function() {
+var server = app.listen(process.env.PORT || 8000, function() {
   console.log("listening on port 8000!");
 });
 
