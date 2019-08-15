@@ -12,23 +12,25 @@
   #board-img  { width: 100%;                             height: calc(600vw/7)  }
 }
 
-                       /* Fixed-size containers. */
-                 body  {                                                                margin: 0px;                    }
-            #universe  { width: 100vw; height: 100vh;                                                                   }
-               #start  { width: 276px; height: 84px;  padding: 12px; border-width: 2px;                                 }
-#play, #end, #rematch, #loading  {                              padding: 2px;  border-width: 2px;                                 }
-            #controls  {               height: 52px;  padding: 12px;                                                    }
-                  .b1  {                                             border-width: 1px;                                 }
-                .half  { width: 50%;                                                                                    }
-           #two-butts  { max-width: 132px;  flex: 1; }
+                    /* Containers. */
+              body  {                                                                margin: 0px;                    }
+         #universe  { width: 100vw; height: 100vh;                                                                   }
+            #start  { width: 276px; height: 84px;  padding: 12px; border-width: 2px;                                 }
+               .b2  {                                             border-width: 2px;                                 }
+               .p2  {                              padding: 2px;                                                     }
+         #controls  {               height: 52px;  padding: 12px;                                                    }
+            #about  {                              padding: 0px 12px;                                                    }
+               .b1  {                                             border-width: 1px;                                 }
+             .half  { width: 50%;                                                                                    }
+        #two-butts  { max-width: 132px;  flex: 1; }
 
-                       /* Items. */
-         #start .name  { width: 116px; height: 20px;  padding: 0px;                                                     }
-   #start .name:focus  {                                                                            outline-width: 2px; }
-      #controls .name  {                    flex: 1; }
-                .butt  { width: 60px;  height: 20px;  padding: 0px;                                                     }
-          .butt:focus  {                                                                            outline-width: 2px; }
-                  .sq  { width: 20px;  height: 20px;                                                                    }
+                    /* Items. */
+      #start .name  { width: 116px; height: 20px;  padding: 0px;                                                     }
+#start .name:focus  {                                                                            outline-width: 2px; }
+   #controls .name  {                    flex: 1; }
+             .butt  { width: 60px;  height: 20px;  padding: 0px;                                                     }
+       .butt:focus  {                                                                            outline-width: 2px; }
+              .sq  { width: 20px;  height: 20px;                                                                    }
 
 .m4 {
   margin: 4px;

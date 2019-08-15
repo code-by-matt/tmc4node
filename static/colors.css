@@ -2,7 +2,7 @@
 
 /* Containers. */
 .panel                                { background-color:   white;                 border-color: gray;                           }
-.b1                                   {                                              border-color: gray;                           }
+.b1, .b2                              {                                              border-color: gray;                           }
 
 /* Items. */
                                  img  { background-color: #D8D8D8;                                                                 }
