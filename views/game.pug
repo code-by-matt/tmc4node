@@ -10,13 +10,13 @@ block content
     div(class="m4") Connect Four
   div(id="board-div" class="b1")
     canvas(id="board-canvas" width="1400" height="1200")
-    img(id="board-img")
-    div(id="loading" style="z-index: 1" class="flex panel") Loading...
-    div(id="rematch" class="hidden panel")
+    img(id="board-img" src="nothing.png")
+    div(id="loading" style="z-index: 1" class="flex panel p2 b2") Loading...
+    div(id="rematch" class="hidden panel p2 b2")
       input(id="rematch-btn" type="checkbox")
       label(tabindex="0" for="rematch-btn" class="butt") Rematch!
-    div(id="end" class="hidden panel")
-    div(id="play" class="hidden panel") Play!
+    div(id="end" class="hidden panel p2 b2")
+    div(id="play" class="hidden panel p2 b2") Play!
     div(id="start" class="hidden panel col-between")
       div(class="flex row-between")
         input(class="name" type="text" placeholder="enter a name" autofocus)
