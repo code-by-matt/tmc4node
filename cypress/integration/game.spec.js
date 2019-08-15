@@ -303,7 +303,7 @@ describe("Gameplay.", function() {
       cy.wrap(stats).its("iWantMore").should("be.false");
     });
 
-    // Check non-timing stats after making a move.
+    // Check non-timing stats after making a non-winning move.
     cy.task("my", {type: "game stats", thing: {
       theyAreReady: true,
       theirName: "Diane",
@@ -342,6 +342,54 @@ describe("Gameplay.", function() {
         bluTime: null,
         winner: null,
         winBy: null,
+        theyWantMore: false,
+        iWantMore: false,
+      }
+    );
+
+    // Check non-timing stats after making a winning move.
+    cy.task("my", {type: "game stats", thing: {
+      theyAreReady: true,
+      theirName: "Peanutbutter",
+      iAmReady: true,
+      myName: "Diane",
+      timeControl: -1,
+      currentTurn: 9,
+      firstTurn: 0,
+      openRows: [0, 0, 2, 4, 3, 0, 0],
+      history: "r30b40b41r42b31r32r33b20b21",
+      future: "rrbrbbrb",
+      iAmRed: false,
+      moveStart: 69,
+      redTime: null,
+      bluTime: null,
+      winner: null,
+      winBy: null,
+      theyWantMore: false,
+      iWantMore: false,
+    }, id: id});
+    cy.get("#board-img")
+      .click(200, 25);
+    cy.get("#board-img")
+      .click(200, 25);
+    cy.task("sync", id)
+      .should("deep.equal", {
+        theyAreReady: true,
+        theirName: "Diane",
+        iAmReady: true,
+        myName: "Peanutbutter",
+        timeControl: -1,
+        currentTurn: 11,
+        firstTurn: 0,
+        openRows: [0, 0, 2, 6, 3, 0, 0],
+        history: "r30b40b41r42b31r32r33b20b21r34r35",
+        future: "brbbrbrr",
+        iAmRed: true,
+        moveStart: 69,
+        redTime: null,
+        bluTime: null,
+        winner: "Red",
+        winBy: "connection",
         theyWantMore: false,
         iWantMore: false,
       }
