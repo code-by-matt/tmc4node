@@ -1,0 +1,11 @@
+/* A few special styles for the about page. */
+@media (min-width: 576px) {
+  #box  { width: calc(100% - 176px); margin: 88px; }
+}
+@media (max-width: 576px) {
+  #box  { width: 100%;                             }
+}
+
+h3  { margin: 12px 12px 0px 12px; text-align: center  }
+ p  { margin: 12px 12px 0px 12px; text-align: justify }
+ a  { margin: 12px                                    }
