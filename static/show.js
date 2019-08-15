@@ -1,5 +1,5 @@
 // Here are the functions that deal with displaying information.
-const show = function(stats, showNumbers, handle) {
+const show = function(stats, showNumbers, intervals) {
 
   // VARIABLES ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   
@@ -112,10 +112,10 @@ const show = function(stats, showNumbers, handle) {
 
   // Writes the player times every tenth of a second.
   function showRunningTimes(iAmRed, moveStart, redTime, bluTime) {
-    if (handle.val != 0) {
-      clearInterval(handle.val);
+    if (intervals.runner != 0) {
+      clearInterval(intervals.runner);
     }
-    handle.val = setInterval(function() {
+    intervals.runner = setInterval(function() {
       var yeet = times(moveStart, redTime, bluTime);
       if (iAmRed) {
         myTimeDiv.textContent = yeet[0];
@@ -131,8 +131,8 @@ const show = function(stats, showNumbers, handle) {
 
   // Writes the player times once, cuz they're not changing anymore.
   function showStoppedTimes(iAmRed, redTime, bluTime) {
-    if (handle.val != 0) {
-      clearInterval(handle.val);
+    if (intervals.runner != 0) {
+      clearInterval(intervals.runner);
     }
     if (iAmRed) {
       myTimeDiv.textContent = convert(redTime);
@@ -243,6 +243,7 @@ const show = function(stats, showNumbers, handle) {
       showRunningTimes(stats.iAmRed, stats.moveStart, stats.redTime, stats.bluTime);
     }
     else {
+      clearInterval(intervals.runner);
       myTimeDiv.textContent = "";
       theirTimeDiv.textContent = "";
     }
@@ -256,6 +257,7 @@ const show = function(stats, showNumbers, handle) {
     futureImg.src = "nothing.png";
     myColor.style.backgroundColor = "#D8D8D8";
     theirColor.style.backgroundColor = "#D8D8D8";
+    clearInterval(intervals.runner);
     myTimeDiv.textContent = "";
     theirTimeDiv.textContent = "";
   }

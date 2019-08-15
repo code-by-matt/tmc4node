@@ -10,8 +10,22 @@
 
   // Create a game and other pertinent variables.
   var game = gameModule();
-  var handle = {val: 0};
+  var intervals = {runner: 0};
   var showNumbers = false;
+
+  // Watch for timeouts.
+  var active = true;
+  setInterval(function() {
+    if (active && (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00")) {
+      active = false;
+      game.timeout();
+      show(game.stats, showNumbers, intervals);
+      socket.emit("my", "game stats", game.stats, id);
+    }
+    if (!active && controls.querySelector("#my-time").textContent != "00:00" && controls.querySelector("#their-time").textContent != "00:00") {
+      active = true;
+    }
+  }, 100);
   
   // Establish a websocket connection, join the right room, ask to sync (if necessary).
   var socket = io();
@@ -19,7 +33,7 @@
   socket.on("room joined", function() {
     document.querySelector("#loading").style.display = "none";
     if (first) {
-      show(game.stats, showNumbers, handle);
+      show(game.stats, showNumbers, intervals);
     }
     else {
       socket.emit("my", "message", "sync", id);
@@ -29,7 +43,7 @@
   // Uncheck ready if you click your name input.
   startPanel.querySelector(".name").addEventListener("click", function(event) {
     game.stats.iAmReady = false;
-    show(game.stats, showNumbers, handle);
+    show(game.stats, showNumbers, intervals);
     socket.emit("my", "game stats", game.stats, id);
   });
 
@@ -72,19 +86,10 @@
         playPanel.style.display = "none";
       }, 2000);
       socket.emit("my", "message", "play animation", id);
-      // Keep an eye out for timeouts.
-      var wao = setInterval(function() {
-        if (controls.querySelector("#my-time").textContent == "00:00" || controls.querySelector("#their-time").textContent == "00:00") {
-          clearInterval(wao);
-          game.timeout();
-          show(game.stats, showNumbers, handle);
-          socket.emit("my", "game stats", game.stats, id);
-        }
-      }, 100);
     }
 
     // Regardless of the game state, we show the game and emit the game stats.
-    show(game.stats, showNumbers, handle);
+    show(game.stats, showNumbers, intervals);
     socket.emit("my", "game stats", game.stats, id);
   });
 
@@ -122,12 +127,12 @@
     if (game.isLegalMove(col)) {
       if (game.stats.iAmRed && game.stats.future[0] == "r") {
         game.move(col);
-        show(game.stats, showNumbers, handle);
+        show(game.stats, showNumbers, intervals);
         socket.emit("my", "game stats", game.stats, id);
       }
       else if (!game.stats.iAmRed && game.stats.future[0] == "b") {
         game.move(col);
-        show(game.stats, showNumbers, handle);
+        show(game.stats, showNumbers, intervals);
         socket.emit("my", "game stats", game.stats, id);
       }
     }
@@ -136,11 +141,11 @@
   controls.addEventListener("click", function(event) {
     if (event.target.id == "number-toggle") {
       showNumbers = !showNumbers;
-      show(game.stats, showNumbers, handle);
+      show(game.stats, showNumbers, intervals);
     }
     else if (event.target.id == "resign" && game.stats.history != null && game.stats.winner == null) {
       game.resign(game.stats.iAmRed);
-      show(game.stats, showNumbers, handle);
+      show(game.stats, showNumbers, intervals);
       socket.emit("my", "game stats", game.stats, id);
     }
   });
@@ -150,7 +155,7 @@
     if (game.stats.iWantMore && game.stats.theyWantMore) {
       game.clear();
     }
-    show(game.stats, showNumbers, handle);
+    show(game.stats, showNumbers, intervals);
     socket.emit("my", "game stats", game.stats, id);
   });
 
@@ -177,7 +182,7 @@
     // Other types carry a custom thing.
     else if (type == "game stats") {
       game.assign(thing);
-      show(game.stats, showNumbers, handle);
+      show(game.stats, showNumbers, intervals);
     }
   });
 
