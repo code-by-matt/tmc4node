@@ -9,13 +9,51 @@ block content
     div(id="logo" class="flex row-center")
       img(src="logo.png" width="30px" height="30px")
     h3 How To Play
-    p Click "Play" on the home page to start a new game, then send the game URL to a friend. Once your friend visits that URL, the two of you will be connected. Enter a name, select a time control, then click "Ready." Once both of you are ready, the game will start! Red always goes first.
-    p Play is the same as regular Connect Four, except for the order of pieces. Upcoming pieces are displayed from left to right in the bottom left corner, above your name. Clicking "1 2 3" will number the pieces on the board in the order they were placed.
+    p 
+      | Click "Play" on the home page to start a new game,
+      | then send the game URL to a friend. Once your friend visits that URL,
+      | the two of you will be connected. Enter a name, select a time control,
+      | then click "Ready." Once both of you are ready, the game will start!
+      | Red always goes first.
+    p
+      | Play is the same as regular Connect Four, except for the order of pieces.
+      | Upcoming pieces are displayed from left to right in the bottom left corner,
+      | above your name. Clicking "1 2 3" will number the pieces on the board
+      | in the order they were placed.
     h3 How Upcoming Pieces Are Determined
-    p Players often get to play twice in a row, but never get to play three or more times in a row. Furthermore, if a game fills every square on the board, the board will alway be filled with 21 red pieces and 21 blue pieces. Every time you start a new game, the turn counter jumps to a random point in the Thue-Morse sequence and then increments as pieces are played.
-    p There are two questions I have about this game. The first question is, does it succeed in eliminating the first player advantage? I think this is a rather difficult question to answer. Maybe it's not even well-defined, because the turn sequence changes each time you play the game. I dunno! The second question is, is this a fun game to play? Does the ability to move two times in a row create interesting new strategies, or is it too powerful, making the game too easy to win? You can help me answer this question by playing the game with your friends and emailing your feedback to matthewfelixyuan@gmail.com. Thanks!
+    p
+      | The order of pieces is based on the 
+      a(href="https://en.wikipedia.org/wiki/Thue-Morse_sequence") Thue-Morse sequence
+      | , a binary sequence that is in some sense the "most fair" way to take turns.
+      | At the start of a game, a random integer 
+      em n 
+      | between 0 and 4999 (inclusive) is generated. The 2
+      em n
+      | th digit of the Thue-Morse sequence corresponds to the first piece of the game,
+      | which is alway red. If the 2
+      em n
+      | +1th digit is the same as the 2
+      em n
+      | th digit, then the second piece is also red. Otherwise, it's blue.
+      | All subsequent pieces are determined this way.
+    p
+      | We start at 2
+      em n 
+      | instead of 
+      em n 
+      | because this guarantees that there will be 21 red pieces and 21 blue pieces
+      | among the 42 total pieces that might be played in a game.
+      | Players often get to play twice in a row,
+      | but never get to play three or more times in a row. Many other interesting properties
+      | of the Thue-Morse sequence that might affect gameplay may be found with some research.
     h3 Why I Made This
-    p In regular Connect Four, the player who goes first has a guaranteed winning strategy. The Thue-Morse sequence is in some sense the "most fair" sequence for taking turns, so I thought using it to play Connect Four might eliminate the first player advantage, but this seems hard to verify. However, it's not hard to verify that the ability to sometimes play twice in a row gives rise to lots of new tactical considerations and forces you to think harder. Play a few games and let me know what you think!
+    p
+      | In regular Connect Four, the player who goes first has a guaranteed winning strategy.
+      | I thought using the Thue-Morse sequence to play Connect Four might eliminate the first player advantage,
+      | but this seems hard to verify. However, it's not hard to verify that
+      | the ability to sometimes play twice in a row gives rise to lots of
+      | new tactical considerations and forces you to think harder.
+      | Play a few games and let me know what you think!
     div(class="flex row-center")
       a(href="/" class="butt") Home
       a(href="mailto:thuemorseconnect4@gmail.com" class="butt") Contact

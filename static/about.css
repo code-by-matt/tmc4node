@@ -9,5 +9,6 @@
 #about  { padding: 6px;                                  }
     h3  {               margin: 6px; text-align: center  }
      p  {               margin: 6px; text-align: justify }
-     a  {               margin: 6px;                     }
+     a  {               margin: 0px;                     }
+ .butt  {               margin: 6px;                     }
  #logo  {               margin: 6px;                     }
