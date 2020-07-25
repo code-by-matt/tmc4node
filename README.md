@@ -1,4 +1,7 @@
 # Real-Time Thue-Morse Connect Four
+
+[This project has been deprecated. See https://code-by-matt.github.io/connect4/ for the previous version that's still online.]
+
 Hi! My name's Matt. Welcome to my game!
 
 In regular Connect Four, two players take turns dropping pieces into the board with the goal of forming a line of four pieces of their color in any direction. With perfect play, the first player can always force a win. I wanted to make a version of Connect Four without out a first player advantage, so instead of alternating turns, I based the turns off of the Thue-Morse sequence, which is in some sense the "most fair" turn sequence.
